@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "./global.css";
 
 export const metadata: Metadata = {
-  title: "",
-  description: "",
+	title: "",
+	description: "",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="ko">
-      <body>{children}</body>
-    </html>
-  );
+	return (
+		<html lang="ko">
+			<body>{children}</body>
+		</html>
+	);
 }
