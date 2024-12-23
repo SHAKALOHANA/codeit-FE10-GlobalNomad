@@ -15,6 +15,7 @@ export const theme = createGlobalTheme(":root", {
     gray7: "#dddddd",
     gray8: "#eeeeee",
     gray9: "#fafafa",
+    gray10: "#676767",
     green1: "#0b3b2d",
     green2: "#ced8d5",
     green3: "#00ac07",

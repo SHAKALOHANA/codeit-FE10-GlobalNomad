@@ -2,11 +2,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { headerStyle, linkStyle, linkAtrribute } from "./Header.css";
 
+
 const Header = () => {
 	return (
 		<header className={headerStyle}>
 			<Link href="/">
-				<Image src="/logo.svg" alt="로고" width={100} height={70} />
+				<Image src="/icons/logo.svg" alt="로고" width={100} height={50} />
 			</Link>
 			<div className={linkStyle}>
 				<Link href="/signin" className={linkAtrribute}>
