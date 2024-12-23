@@ -5,7 +5,7 @@ export const headerStyle = style({
 	display: "flex",
 	justifyContent: "space-between",
 	borderBottom: `1px solid ${theme.colors.gray7}`,
-	margin: "0 10px",
+	padding: "0px 360px",
 });
 
 export const linkStyle = style({
@@ -18,6 +18,5 @@ export const linkStyle = style({
 export const linkAtrribute = style({
 	textDecoration: "none",
 	color: theme.colors.black,
-	fontSize: "14px",
-	fontWeight: "500px",
+	...theme.text["xs-medium"],
 });
