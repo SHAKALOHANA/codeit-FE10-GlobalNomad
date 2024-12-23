@@ -24,7 +24,7 @@ export const modeTextMap: Record<CustomButtonMode, string> = {
   writeReview: '후기 작성',
   write: '작성하기',
   reserve: '예약하기',
-  confirm: '확인',
+  confirm: '확인', //예약하기 - 모바일버전에서만 변환되어 활용
   reservationCancel: '예약 취소',
   experienceRegistration: '체험 등록하기',
   edit: '수정하기',
@@ -32,5 +32,5 @@ export const modeTextMap: Record<CustomButtonMode, string> = {
   reservationReject: '거절하기',
   reservationConfirmed: '예약 확정',
   reservationDenied: '예약 거절',
-  check: '확인',
+  check: '확인', // 단순 팝업창 확인
 };
