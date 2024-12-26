@@ -5,7 +5,6 @@ import { theme } from '@/app/global.css';
 export const baseInput = style({
   color: theme.colors.nomadBlack,
   backgroundColor: theme.colors.white,
-  margin: '20px',
   borderRadius: '4px',
   outline: '1px solid theme.colors.gray2',
   padding: '16px 20px',
