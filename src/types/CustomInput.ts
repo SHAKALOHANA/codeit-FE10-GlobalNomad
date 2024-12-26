@@ -6,9 +6,7 @@ export type CustomInputMode =
   | 'search'
   | 'image'
   | 'profile'
-  | 'review'
   | 'title'
-  | 'description'
   | 'price'
   | 'address'
   | 'date'
@@ -27,9 +25,7 @@ export const placeholderMap: Record<CustomInputMode, string> = {
   search: '내가 원하는 체험은',
   image: '',
   profile: '',
-  review: '후기를 작성해주세요',
   title: '제목',
-  description: '설명',
   price: '가격',
   address: '주소를 입력해주세요',
   date: 'YY/MM/DD',
@@ -49,9 +45,7 @@ export const typeMap: Record<CustomInputMode, string> = {
   search: 'search',
   image: 'file',
   profile: 'file',
-  review: 'text',
   title: 'text',
-  description: 'text',
   price: 'number',
   address: 'text',
   date: 'date',
