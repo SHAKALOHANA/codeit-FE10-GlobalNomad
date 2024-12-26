@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css';
 import { theme } from '@/app/global.css';
-import { media } from '@/styles/media';
+import { mediaQueries } from '@/styles/media';
 
 export const baseButtonStyle = style({
   display: 'flex',
@@ -29,7 +29,7 @@ export const buttonVariants = styleVariants({
       },
     },
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '48px',
       },
@@ -45,7 +45,7 @@ export const buttonVariants = styleVariants({
       },
     },
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '48px',
       },
@@ -56,8 +56,8 @@ export const buttonVariants = styleVariants({
     height: '56px',
     borderRadius: '4px',
     '@media': {
-      [media.tablet]: {},
-      [media.mobile]: {
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {
         width: '96px',
         height: '56px',
       },
@@ -72,11 +72,11 @@ export const buttonVariants = styleVariants({
     width: '144px',
     height: '43px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '112px',
         height: '40px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         fontSize: theme.text['md-bold'].fontSize,
         lineHeight: theme.text['md-bold'].lineHeight,
         fontWeight: theme.text['md-bold'].fontWeight,
@@ -90,7 +90,7 @@ export const buttonVariants = styleVariants({
     height: '56px',
     borderRadius: '4px',
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '54px',
       },
@@ -107,10 +107,10 @@ export const buttonVariants = styleVariants({
       },
     },
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '100%',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '203px',
       },
     },
@@ -128,11 +128,11 @@ export const buttonVariants = styleVariants({
     width: '144px',
     height: '43px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '112px',
         height: '40px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         fontSize: theme.text['md-bold'].fontSize,
         lineHeight: theme.text['md-bold'].lineHeight,
         fontWeight: theme.text['md-bold'].fontWeight,
@@ -200,7 +200,7 @@ export const buttonVariants = styleVariants({
     fontWeight: theme.text['lg-medium'].fontWeight,
 
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         fontSize: theme.text['md-medium'].fontSize,
         lineHeight: theme.text['md-medium'].lineHeight,
         fontWeight: theme.text['md-medium'].fontWeight,
