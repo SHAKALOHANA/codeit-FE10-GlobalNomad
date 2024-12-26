@@ -3,7 +3,7 @@ export const breakpoints = {
   tablet: '1199px',
 };
 
-export const media = {
+export const mediaQueries = {
   mobile: `screen and (max-width: ${breakpoints.mobile})`,
   tablet: `screen and (max-width: ${breakpoints.tablet})`,
 };

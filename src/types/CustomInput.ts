@@ -8,7 +8,6 @@ export type CustomInputMode =
   | 'profile'
   | 'review'
   | 'title'
-  | 'category'
   | 'description'
   | 'price'
   | 'address'
@@ -30,7 +29,6 @@ export const placeholderMap: Record<CustomInputMode, string> = {
   profile: '',
   review: '후기를 작성해주세요',
   title: '제목',
-  category: '카테고리',
   description: '설명',
   price: '가격',
   address: '주소를 입력해주세요',
@@ -51,9 +49,8 @@ export const typeMap: Record<CustomInputMode, string> = {
   search: 'search',
   image: 'file',
   profile: 'file',
-  review: 'textarea',
+  review: 'text',
   title: 'text',
-  category: 'text',
   description: 'text',
   price: 'number',
   address: 'text',
@@ -64,27 +61,4 @@ export const typeMap: Record<CustomInputMode, string> = {
   myEmail: 'email',
   myPassword: 'password',
   myPasswordConfirm: 'password',
-};
-
-export const stepMap: Record<CustomInputMode, string | undefined> = {
-  email: undefined,
-  nickname: undefined,
-  password: undefined,
-  passwordConfirm: undefined,
-  search: undefined,
-  image: undefined,
-  profile: undefined,
-  review: undefined,
-  title: undefined,
-  category: undefined,
-  description: undefined,
-  price: undefined,
-  address: undefined,
-  date: undefined,
-  startTime: '60',
-  endTime: '60',
-  myNickname: undefined,
-  myEmail: undefined,
-  myPassword: undefined,
-  myPasswordConfirm: undefined,
 };

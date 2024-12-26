@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css';
-import { media } from '@/styles/media';
+import { mediaQueries } from '@/styles/media';
 import { theme } from '@/app/global.css';
 
 export const baseInput = style({
@@ -23,7 +23,7 @@ export const inputVariants = styleVariants({
     height: '58px',
     borderRadius: '6px',
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '56px',
       },
@@ -34,7 +34,7 @@ export const inputVariants = styleVariants({
     height: '58px',
     borderRadius: '6px',
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '56px',
       },
@@ -45,7 +45,7 @@ export const inputVariants = styleVariants({
     height: '58px',
     borderRadius: '6px',
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '56px',
       },
@@ -56,13 +56,25 @@ export const inputVariants = styleVariants({
     height: '58px',
     borderRadius: '6px',
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '350px',
         height: '56px',
       },
     },
   },
-  search: {},
+  search: {
+    width: '1004px',
+    height: '56px',
+
+    '@media': {
+      [mediaQueries.tablet]: {
+        width: '500px',
+      },
+      [mediaQueries.mobile]: {
+        width: '295px',
+      },
+    },
+  },
 
   image: {},
   profile: {},
@@ -70,9 +82,9 @@ export const inputVariants = styleVariants({
   review: {
     width: '432px',
     height: '240px',
-    resize: 'none',
+
     '@media': {
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
         height: '346px',
       },
@@ -83,24 +95,34 @@ export const inputVariants = styleVariants({
     width: '792px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
   },
-  category: {},
-  description: {},
+  description: {
+    width: '792px',
+    height: '346px',
+    '@media': {
+      [mediaQueries.tablet]: {
+        width: '429px',
+      },
+      [mediaQueries.mobile]: {
+        width: '343px',
+      },
+    },
+  },
   price: {
     width: '792px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
@@ -109,10 +131,10 @@ export const inputVariants = styleVariants({
     width: '792px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
@@ -121,10 +143,10 @@ export const inputVariants = styleVariants({
     width: '379px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '149px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
         height: '44px',
       },
@@ -135,10 +157,10 @@ export const inputVariants = styleVariants({
     width: '140px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '104px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '79px',
         height: '44px',
       },
@@ -149,10 +171,10 @@ export const inputVariants = styleVariants({
     width: '140px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '104px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '79px',
         height: '44px',
       },
@@ -163,10 +185,10 @@ export const inputVariants = styleVariants({
     width: '797px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
@@ -175,10 +197,10 @@ export const inputVariants = styleVariants({
     width: '797px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
@@ -187,10 +209,10 @@ export const inputVariants = styleVariants({
     width: '797px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
@@ -199,10 +221,10 @@ export const inputVariants = styleVariants({
     width: '797px',
     height: '56px',
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '429px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '343px',
       },
     },
@@ -213,29 +235,6 @@ export const passwordInputWrapper = style({
   position: 'relative',
   display: 'inline-block',
   width: '100%',
-});
-
-export const toggleIcon = style({
-  position: 'absolute',
-  top: '50%',
-  right: '12px',
-  transform: 'translateY(-50%)',
-  width: '24px',
-  height: '24px',
-  cursor: 'pointer',
-  userSelect: 'none',
-});
-
-export const errorOutline = style({
-  outline: '1px solid theme.colors.red4',
-});
-
-export const errorMessage = style({
-  color: theme.colors.red4,
-  fontSize: theme.text['xs-regular'].fontSize,
-  fontWeight: theme.text['xs-regular'].fontWeight,
-  lineHeight: theme.text['xs-regular'].lineHeight,
-  marginTop: '8px',
 });
 
 export const fileInputHidden = style({
@@ -253,11 +252,11 @@ export const uploadLabelVariants = styleVariants({
     cursor: 'pointer',
 
     '@media': {
-      [media.tablet]: {
+      [mediaQueries.tablet]: {
         width: '206px',
         height: '206px',
       },
-      [media.mobile]: {
+      [mediaQueries.mobile]: {
         width: '167px',
         height: '167px',
       },
