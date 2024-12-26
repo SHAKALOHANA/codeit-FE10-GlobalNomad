@@ -79,18 +79,6 @@ export const inputVariants = styleVariants({
   image: {},
   profile: {},
 
-  review: {
-    width: '432px',
-    height: '240px',
-
-    '@media': {
-      [mediaQueries.mobile]: {
-        width: '343px',
-        height: '346px',
-      },
-    },
-  },
-
   title: {
     width: '792px',
     height: '56px',
@@ -103,18 +91,7 @@ export const inputVariants = styleVariants({
       },
     },
   },
-  description: {
-    width: '792px',
-    height: '346px',
-    '@media': {
-      [mediaQueries.tablet]: {
-        width: '429px',
-      },
-      [mediaQueries.mobile]: {
-        width: '343px',
-      },
-    },
-  },
+
   price: {
     width: '792px',
     height: '56px',
