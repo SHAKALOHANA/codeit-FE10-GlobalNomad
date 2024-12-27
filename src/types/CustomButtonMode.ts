@@ -14,7 +14,8 @@ export type CustomButtonMode =
   | 'reservationReject'
   | 'reservationConfirmed'
   | 'reservationDenied'
-  | 'check';
+  | 'check'
+  | 'none';
 
 export const modeTextMap: Record<CustomButtonMode, string> = {
   login: '로그인하기',
@@ -33,4 +34,5 @@ export const modeTextMap: Record<CustomButtonMode, string> = {
   reservationConfirmed: '예약 확정',
   reservationDenied: '예약 거절',
   check: '확인', // 단순 팝업창 확인
+  none: '',
 };

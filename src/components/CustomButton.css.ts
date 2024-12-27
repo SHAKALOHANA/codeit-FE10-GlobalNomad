@@ -207,4 +207,12 @@ export const buttonVariants = styleVariants({
       },
     },
   },
+
+  none: {
+    width: '120px',
+    height: '48px',
+    borderRadius: '8px',
+    backgroundColor: theme.colors.white,
+    color: theme.colors.white,
+  },
 });
