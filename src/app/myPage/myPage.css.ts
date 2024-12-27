@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css';
 import { theme } from '../global.css';
 import { mediaQueries } from '@/styles/media';
 
-export const myInfoContainer = style({
+export const Container = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -17,7 +17,7 @@ export const myInfoContainer = style({
   },
 });
 
-export const Container = style({
+export const myInfoContainer = style({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
