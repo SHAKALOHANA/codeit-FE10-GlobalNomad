@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ReservationCard from './reservationCard';
+import ReservationCard from './ReservationCard';
 import {
   reservationsContainer,
   container,
@@ -8,7 +8,7 @@ import {
   statusFilter,
   statusFilterOptions,
   reservationList,
-} from './reservationsList.css';
+} from './ReservationsList.css';
 import { ReservationStatus, Reservations } from '@/types/ReservationList';
 import { isPastEvent } from '@/utils/isPastEvent';
 import { FIXED_OPTIONS } from '@/utils/translateStatus';

@@ -10,7 +10,7 @@ import {
   activityDate,
   activityPrice,
   activityInfoContainer,
-} from './reservationCard.css';
+} from './ReservationCard.css';
 import {
   ReservationStatus,
   Reservations,
