@@ -17,7 +17,7 @@ export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
     bodyObj,
   );
   return response.data;
-}; 
+};
 
 interface PostSignUpParams {
   email: string;
