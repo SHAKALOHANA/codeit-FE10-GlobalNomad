@@ -2,17 +2,17 @@ import React from 'react';
 import {
   myInfoContainer,
   header,
-  Container,
+  container,
   headerTitle,
   inputContainer,
   labelStyle,
-} from './myPage.css';
+} from './MyInfo.css';
 import CustomInput from '@/components/CustomInput';
 import CustomButton from '@/components/CustomButton';
 
-export default function MyPage() {
+export default function MyInfo() {
   return (
-    <div className={Container}>
+    <div className={container}>
       <div className={myInfoContainer}>
         <div className={header}>
           <h2 className={headerTitle}>내 정보</h2>

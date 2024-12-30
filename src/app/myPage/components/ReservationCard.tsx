@@ -60,23 +60,21 @@ export default function ReservationCard({
   const combinedClassName = [reservationStatus1, variantClass].join(' ');
 
   return (
-    <>
-      <div className={cardContainer}>
-        <div className={imageContainer}>
-          <Image src={activity.bannerImageUrl} alt={activity.title} fill />
-        </div>
-        <div className={activityInfoContainer}>
-          <p className={combinedClassName}>{translateStatus(statusEnum)}</p>
-          <h3 className={activityTitle}>{activity.title}</h3>
-          <p
-            className={activityDate}
-          >{`${date} | ${startTime} ~ ${endTime} | ${headCount}명`}</p>
-          <div>
-            <p className={activityPrice}>{`₩${totalPrice.toLocaleString()}`}</p>
-            <CustomButton mode={statusMode} />
-          </div>
+    <div className={cardContainer}>
+      <div className={imageContainer}>
+        <Image src={activity.bannerImageUrl} alt={activity.title} fill />
+      </div>
+      <div className={activityInfoContainer}>
+        <p className={combinedClassName}>{translateStatus(statusEnum)}</p>
+        <h3 className={activityTitle}>{activity.title}</h3>
+        <p
+          className={activityDate}
+        >{`${date} | ${startTime} ~ ${endTime} | ${headCount}명`}</p>
+        <div>
+          <p className={activityPrice}>{`₩${totalPrice.toLocaleString()}`}</p>
+          <CustomButton mode={statusMode} />
         </div>
       </div>
-    </>
+    </div>
   );
 }
