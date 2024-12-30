@@ -9,6 +9,10 @@ interface PostRefreshRes {
 }
 
 //리액트 쿼리 사용 시 참고
+<<<<<<< HEAD
+=======
+
+>>>>>>> f40d4373ff30a5fc39821fd0ce01d5d2ab82ff92
 export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
   const bodyObj = { refreshToken };
 
@@ -17,7 +21,12 @@ export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
     bodyObj,
   );
   return response.data;
+<<<<<<< HEAD
 };
+=======
+}; 
+
+>>>>>>> f40d4373ff30a5fc39821fd0ce01d5d2ab82ff92
 
 interface PostSignUpParams {
   email: string;
