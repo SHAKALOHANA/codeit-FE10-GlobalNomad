@@ -23,7 +23,6 @@ interface DropdownMenuProps {
 
 interface DropdownProps {
   items: DropdownItem[];
-  onChange: (value: string) => void;
 }
 
 const DropdownButton: React.FC<DropdownButtonProps> = ({ onClick, label }) => (
@@ -46,7 +45,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, onSelect, isVisible 
   </ul>
 );
 
-const Dropdown: React.FC<DropdownProps> = ({ items, onChange }) => {
+const Dropdown: React.FC<DropdownProps> = ({ items }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,7 +57,6 @@ const Dropdown: React.FC<DropdownProps> = ({ items, onChange }) => {
   const handleItemSelect = (value: string) => {
     setSelectedValue(value);
     setIsMenuOpen(false);
-    onChange(value);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
