@@ -1,8 +1,8 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../global.css';
+import { theme } from '../../global.css';
 import { mediaQueries } from '@/styles/media';
 
-export const Container = style({
+export const container = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
