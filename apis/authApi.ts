@@ -9,6 +9,7 @@ interface PostRefreshRes {
 }
 
 //리액트 쿼리 사용 시 참고
+
 export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
   const bodyObj = { refreshToken };
 
@@ -18,6 +19,7 @@ export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
   );
   return response.data;
 }; 
+
 
 interface PostSignUpParams {
   email: string;
