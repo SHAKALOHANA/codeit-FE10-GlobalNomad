@@ -4,7 +4,7 @@ import {
   starIcon,
   starIconFilled,
 } from './StarRating.css';
-import { ReactComponent as StarOffIcon } from '../../../../public/icons/star_off.svg';
+import StarOffIcon from '../../../../public/icons/star_off.svg';
 
 interface RatingProps {
   maxStars?: number;
