@@ -1,0 +1,33 @@
+name: Auto-generate Pull Request Title
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+
+jobs:
+  set-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set Pull Request Title
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_TITLE=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.head.ref }} \
+            | jq -r '.title')
+
+          if [ -z "$ISSUE_TITLE" ] || [ "$ISSUE_TITLE" == "null" ]; then
+            ISSUE_TITLE="Default PR Title: ${GITHUB_REF#refs/heads/}"
+          fi
+
+          curl -s -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"title\": \"$ISSUE_TITLE\"}" \
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}
