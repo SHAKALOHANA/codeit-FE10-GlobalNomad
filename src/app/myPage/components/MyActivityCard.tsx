@@ -13,8 +13,8 @@ import {
   dropdown,
 } from './MyActivityCard.css';
 import { MyActivityCardProps } from '@/types/MyActivityList';
-import { ReactComponent as StarOnIcon } from '../../../../public/icons/star_on.svg';
-import { ReactComponent as MeatballIcon } from '../../../../public/icons/meatball.svg';
+import StarOnIcon from '../../../../public/icons/star_on.svg';
+import MeatballIcon from '../../../../public/icons/meatball.svg';
 
 export default function MyExperienceCard({ ...activity }: MyActivityCardProps) {
   return (
