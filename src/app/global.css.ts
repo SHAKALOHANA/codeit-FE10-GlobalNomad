@@ -62,7 +62,7 @@ export const theme = createGlobalTheme(':root', {
 
 globalStyle('body', {
   fontFamily: 'Pretendard',
-  backgroundColor: theme.colors.white,
+  backgroundColor: theme.colors.gray9,
   color: theme.colors.black,
   margin: 0,
   padding: 0,
@@ -71,3 +71,4 @@ globalStyle('body', {
 globalStyle('*', {
   boxSizing: 'border-box',
 });
+
