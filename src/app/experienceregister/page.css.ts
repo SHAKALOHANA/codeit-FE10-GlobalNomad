@@ -40,6 +40,7 @@ export const contentContainer = style({
   backgroundColor: theme.colors.white,
   border: '1px solid #79747e',
   borderRadius: '4px',
+  padding: '0px 10px',
 });
 
 export const discriptionContainer = style({
@@ -48,6 +49,7 @@ export const discriptionContainer = style({
   backgroundColor: theme.colors.white,
   border: '1px solid #79747e',
   borderRadius: '4px',
+  padding: '0px 10px',
 });
 
 export const dateContainer = style({
@@ -138,8 +140,8 @@ export const imageButton = style({
 
 export const xButtonWrapper = style({
   position: 'absolute',
-  top: '0',
-  right: '0',
+  top: '-20px',
+  right: '-20px',
   backgroundColor: theme.colors.white,
   borderRadius: '50%',
   cursor: 'pointer',
@@ -147,8 +149,8 @@ export const xButtonWrapper = style({
 
 export const introImageWrapper = style({
   display: 'flex',
-  flexWrap: 'wrap',
   gap: '24px',
+  justifyContent: 'flex-start',
 });
 
 export const postSearchButton = style({

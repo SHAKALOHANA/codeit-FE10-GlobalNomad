@@ -148,7 +148,18 @@ const ExperienceRegister = () => {
           <h2>예약 가능한 시간대</h2>
           <div className={reservationContainer}>
             <div className={dateContainer}>
-              <p>YY/MM/DD</p>
+              <p>
+                {selectedDate
+                  ? `${selectedDate.getFullYear().toString().slice(-2)}/${(
+                      selectedDate.getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, '0')}/${selectedDate
+                      .getDate()
+                      .toString()
+                      .padStart(2, '0')}`
+                  : 'YY/MM/DD'}
+              </p>
               <Image
                 src="../../../icons/calendar.svg"
                 alt="달력버튼"
@@ -161,7 +172,10 @@ const ExperienceRegister = () => {
                 <div className={calendarWrapper}>
                   <DayPicker
                     selected={selectedDate}
-                    onDayClick={setSelectedDate}
+                    onDayClick={(date) => {
+                      setSelectedDate(date);
+                      setIsCalendarVisible(false);
+                    }}
                   />
                 </div>
               )}
