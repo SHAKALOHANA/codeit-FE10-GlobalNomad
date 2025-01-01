@@ -81,6 +81,15 @@ export const reservationContainer = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
 });
 
 export const addedDateWrapper = style({
@@ -123,34 +132,15 @@ export const line = style({
   marginTop: '15px',
   width: '792px',
   border: `1px solid ${theme.colors.gray7}`,
-});
 
-export const imageButton = style({
-  width: '180px',
-  height: '180px',
-  borderRadius: '12px',
-  border: `1px dashed ${theme.colors.gray1}`,
-  backgroundColor: theme.colors.gray9,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginRight: '24px',
-});
-
-export const xButtonWrapper = style({
-  position: 'absolute',
-  top: '-20px',
-  right: '-20px',
-  backgroundColor: theme.colors.white,
-  borderRadius: '50%',
-  cursor: 'pointer',
-});
-
-export const introImageWrapper = style({
-  display: 'flex',
-  gap: '24px',
-  justifyContent: 'flex-start',
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
 });
 
 export const postSearchButton = style({
@@ -161,5 +151,87 @@ export const postSearchButton = style({
   cursor: 'pointer',
   padding: '10px',
   backgroundColor: '#ccc',
+});
+
+export const imageRegister = style({
+  width: '180px',
+  height: '180px',
+  borderRadius: '12px',
+  border: `1px dashed ${theme.colors.gray1}`,
+  backgroundColor: theme.colors.gray9,
+  textAlign: 'center',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '206px',
+      height: '206px',
+    },
+    [mediaQueries.mobile]: {
+      width: '167px',
+      height: '167px',
+    },
+  },
+});
+
+export const imagePreviewContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+});
+
+export const bannerContainer = style({
+  width: '792px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '24px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
+});
+
+export const introContainer = style({
+  width: '792px',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '24px',
+  flexWrap: 'wrap',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+      gap: '17px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+      gap: '8px',
+    },
+  },
+});
+
+export const images = style({
+  width: '180px',
+  height: '180px',
+  borderRadius: '12px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '206px',
+      height: '206px',
+    },
+    [mediaQueries.mobile]: {
+      width: '167px',
+      height: '167px',
+    },
+  },
 });
 

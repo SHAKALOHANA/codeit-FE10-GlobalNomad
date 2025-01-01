@@ -18,10 +18,12 @@ import {
   addedDateContainer,
   calendarWrapper,
   line,
-  imageButton,
-  xButtonWrapper,
-  introImageWrapper,
   postSearchButton,
+  imageRegister,
+  imagePreviewContainer,
+  bannerContainer,
+  introContainer,
+  images,
 } from './page.css';
 
 const ExperienceRegister = () => {
@@ -30,6 +32,7 @@ const ExperienceRegister = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [bannerImage, setBannerImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [introImages, setIntroImages] = useState<File[]>([]);
   const [address, setAddress] = useState<string>('');
   const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
@@ -58,15 +61,14 @@ const ExperienceRegister = () => {
     setDates(dates.filter((_, idx) => idx !== index));
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBannerImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       setBannerImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
-  };
-
-  const handleRemoveImage = () => {
-    setBannerImage(null);
   };
 
   const handleIntroImageChange = (
@@ -74,15 +76,9 @@ const ExperienceRegister = () => {
   ) => {
     const files = event.target.files;
     if (files) {
-      setIntroImages((prevImages) => [
-        ...prevImages,
-        ...Array.from(files).slice(0, 4 - prevImages.length),
-      ]);
+      const newImages = Array.from(files).slice(0, 4 - introImages.length);
+      setIntroImages((prevImages) => [...prevImages, ...newImages]);
     }
-  };
-
-  const handleRemoveIntroImage = (index: number) => {
-    setIntroImages(introImages.filter((_, idx) => idx !== index));
   };
 
   const handlePostcodeComplete = (data: any) => {
@@ -206,95 +202,50 @@ const ExperienceRegister = () => {
             ))}
           </div>
           <h2>배너 이미지</h2>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleImageChange}
-              id="image-upload"
-            />
-            <label htmlFor="image-upload" className={imageButton}>
-              <Image
-                src="../../../icons/imageplus.svg"
-                alt="이미지 등록"
-                width={56}
-                height={56}
-                style={{ cursor: 'pointer' }}
+          <div className={bannerContainer}>
+            <label htmlFor="banner-upload" className={imageRegister}>
+              <input
+                id="banner-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleBannerImageChange}
               />
-              <p>이미지 등록</p>
+              {bannerImage ? '이미지 변경' : '이미지 업로드'}
             </label>
-            {bannerImage && (
-              <div style={{ marginLeft: '30px', position: 'relative' }}>
-                <Image
-                  src={URL.createObjectURL(bannerImage)}
-                  alt="업로드된 이미지"
-                  width={180}
-                  height={180}
-                  style={{ objectFit: 'cover', borderRadius: '12px' }}
-                />
-                <div className={xButtonWrapper} onClick={handleRemoveImage}>
-                  <Image
-                    src="../../../icons/xbutton.svg"
-                    alt="삭제버튼"
-                    width={40}
-                    height={40}
-                    style={{ cursor: 'pointer' }}
-                  />
-                </div>
-              </div>
+            {previewUrl && (
+              <img
+                className={images}
+                src={previewUrl}
+                alt="배너 이미지 미리보기"
+              />
             )}
           </div>
           <h2>소개 이미지</h2>
           <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-            }}
+            className={introContainer}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              style={{ display: 'none' }}
-              onChange={handleIntroImageChange}
-              id="intro-image-upload"
-            />
-            <label htmlFor="intro-image-upload" className={imageButton}>
-              <Image
-                src="../../../icons/imageplus.svg"
-                alt="이미지 등록"
-                width={56}
-                height={56}
-                style={{ cursor: 'pointer' }}
+            <label htmlFor="intro-upload" className={imageRegister}>
+              <input
+                id="intro-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={handleIntroImageChange}
               />
-              <p>소개 이미지 등록</p>
+              이미지 업로드
             </label>
-            <div className={introImageWrapper}>
-              {introImages.map((file, index) => (
-                <div key={index} style={{ position: 'relative' }}>
-                  <Image
-                    src={URL.createObjectURL(file)}
-                    alt={`소개 이미지 ${index + 1}`}
-                    width={180}
-                    height={180}
-                    style={{ objectFit: 'cover', borderRadius: '12px' }}
-                  />
-                  <div
-                    className={xButtonWrapper}
-                    onClick={() => handleRemoveIntroImage(index)}
-                  >
-                    <Image
-                      src="../../../icons/xbutton.svg"
-                      alt="삭제버튼"
-                      width={40}
-                      height={40}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+
+            {introImages.map((image, index) => (
+              <div key={index}>
+                <img
+                  className={images}
+                  src={URL.createObjectURL(image)}
+                  alt={`소개 이미지 ${index + 1}`}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
