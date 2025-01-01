@@ -22,6 +22,7 @@ export const theme = createGlobalTheme(':root', {
     red1: '#ff472e',
     red2: '#ffc2ba',
     red3: '#ffe4e0',
+    red4: '#ff4040',
     orange1: '#ff7c1d',
     orange2: '#fff4e8',
     yellow1: '#FFc23d',
