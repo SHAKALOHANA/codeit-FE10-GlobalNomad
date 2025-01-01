@@ -151,3 +151,13 @@ export const introImageWrapper = style({
   gap: '24px',
 });
 
+export const postSearchButton = style({
+  position: 'absolute',
+  right: '20px',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  cursor: 'pointer',
+  padding: '10px',
+  backgroundColor: '#ccc',
+});
+

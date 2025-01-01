@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import DaumPostcode from 'react-daum-postcode';
 import {
   mainContainer,
   sideContainer,
@@ -19,7 +20,8 @@ import {
   line,
   imageButton,
   xButtonWrapper,
-  introImageWrapper, // 새로운 클래스 추가
+  introImageWrapper,
+  postSearchButton,
 } from './page.css';
 
 const ExperienceRegister = () => {
@@ -28,7 +30,9 @@ const ExperienceRegister = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [bannerImage, setBannerImage] = useState<File | null>(null);
-  const [introImages, setIntroImages] = useState<File[]>([]); // 소개 이미지 상태 추가
+  const [introImages, setIntroImages] = useState<File[]>([]);
+  const [address, setAddress] = useState<string>('');
+  const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
@@ -81,6 +85,15 @@ const ExperienceRegister = () => {
     setIntroImages(introImages.filter((_, idx) => idx !== index));
   };
 
+  const handlePostcodeComplete = (data: any) => {
+    setAddress(data.address);
+    setIsPostcodeVisible(false);
+  };
+
+  const handlePostcodeClick = () => {
+    setIsPostcodeVisible(true);
+  };
+
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -96,7 +109,7 @@ const ExperienceRegister = () => {
       <div className={mainContainer}>
         {!isMobile && <SideNavigationMenu />}
         <div className={sideContainer}>
-          <h2>내 체험 등록</h2>
+          <h2 style={{ marginTop: '0px' }}>내 체험 등록</h2>
           <input
             className={contentContainer}
             type="text"
@@ -117,11 +130,21 @@ const ExperienceRegister = () => {
           <h2>가격</h2>
           <input className={contentContainer} type="text" placeholder="가격" />
           <h2>주소</h2>
-          <input
-            className={contentContainer}
-            type="text"
-            placeholder="주소를 입력해주세요"
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              className={contentContainer}
+              type="text"
+              placeholder="주소를 입력해주세요"
+              value={address}
+              readOnly
+            />
+            <button className={postSearchButton} onClick={handlePostcodeClick}>
+              우편번호 검색
+            </button>
+          </div>
+          {isPostcodeVisible && (
+            <DaumPostcode onComplete={handlePostcodeComplete} />
+          )}
           <h2>예약 가능한 시간대</h2>
           <div className={reservationContainer}>
             <div className={dateContainer}>
