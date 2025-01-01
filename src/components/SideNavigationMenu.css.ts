@@ -89,12 +89,13 @@ export const inactiveText = style({
   color: '#a1a1a1',
 });
 
-// 이미지 색상이 바뀌는 것은 아직 구현하지 못함
 export const activeImage = style({
-  fill: '#112211',
+  filter:
+    'invert(21%) sepia(13%) saturate(1362%) hue-rotate(122deg) brightness(96%) contrast(93%)',
 });
 
 export const inactiveImage = style({
-  fill: '#a1a1a1',
+  filter:
+    'invert(61%) sepia(4%) saturate(145%) hue-rotate(186deg) brightness(94%) contrast(90%)',
 });
 

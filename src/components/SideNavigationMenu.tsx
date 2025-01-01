@@ -29,6 +29,22 @@ const SideNavigationMenu = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+      const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+      const maxSizeInMB = 5;
+
+      const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+        alert('이미지 파일만 업로드할 수 있습니다. (jpg, jpeg, png, gif)');
+        event.target.value = '';
+        return;
+      }
+
+      if (file.size > maxSizeInMB * 1024 * 1024) {
+        alert(`파일 크기는 최대 ${maxSizeInMB}MB를 초과할 수 없습니다.`);
+        event.target.value = '';
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImageSrc(reader.result as string);
