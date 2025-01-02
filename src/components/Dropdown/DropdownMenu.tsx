@@ -13,15 +13,21 @@ interface DropdownMenuProps {
 
 const DropdownMenu: React.FC<DropdownMenuProps> = ({ items, onSelect, isVisible }) => (
   <ul className={`${styles.dropdownMenu} ${isVisible ? styles.dropdownMenuVisible : ''}`}>
-    {items.map((item) => (
-      <li
-        key={item.value}
-        onClick={() => onSelect(item.value)}
-        className={styles.dropdownItem}
-      >
-        {item.label}
-      </li>
-    ))}
+    {items.map((item, index) => {
+      const itemClassName = `${styles.dropdownItem} ${
+        index === 0 ? styles.dropdownItemTop : index === items.length - 1 ? styles.dropdownItemBottom : ''
+      }`;
+
+      return (
+        <li
+          key={item.value}
+          onClick={() => onSelect(item.value)}
+          className={itemClassName}
+        >
+          {item.label}
+        </li>
+      );
+    })}
   </ul>
 );
 

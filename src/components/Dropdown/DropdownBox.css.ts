@@ -11,20 +11,55 @@ export const dropdownButton = style({
   height: '53px',
   backgroundColor: theme.colors.white,
   color: theme.colors.green1,
-  fontSize: theme.text['sm-medium'].fontSize,
+  fontSize: theme.text['2lg-medium'].fontSize,
   lineHeight: theme.text['2lg-medium'].lineHeight,
   fontWeight: theme.text['2lg-medium'].fontWeight,
-  padding: '16px 12px',
+  whiteSpace: 'nowrap', // 줄 바꿈 방지
+  overflow: 'hidden', // 넘치는 텍스트 숨김
+  textOverflow: 'ellipsis', // 줄임표 처리
+  wordBreak: 'break-all',
+  padding: '16px 36px 16px 20px',
+  boxSizing: 'border-box',
   border: `1px solid ${theme.colors.green1}`,
   borderRadius: '15px',
   cursor: 'pointer',
   transition: 'background-color 0.3s',
+  position: 'relative', // 자식 요소의 절대 위치 지정 가능
   selectors: {
     '&:hover': {
       backgroundColor: theme.colors.green2,
     },
+    '&::after': {
+      content: '"▼"', // 아이콘 표시
+      position: 'absolute',
+      right: '10px', // 오른쪽에서 아이콘 배치
+      top: '50%',
+      transform: 'translateY(-50%)',
+      fontSize: '16px',
+      color: theme.colors.green1,
+    },
   },
 });
+
+
+export const dropdownIn = style({
+  width: '800px',
+  height: '56px',
+  border: `1px solid ${theme.colors.gray2}`,
+  borderRadius: '4px',
+  selectors: {
+    '&::after': {
+      content: '"▼"', // 아이콘 표시
+      position: 'absolute',
+      right: '10px',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      fontSize: '16px',
+      color: '#888',
+      pointerEvents: 'none', // 아이콘 클릭 방지
+    },
+  },
+})
 
 export const defaultDropdown = style({
   display: 'flex',

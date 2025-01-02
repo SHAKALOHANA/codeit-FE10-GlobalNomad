@@ -8,17 +8,12 @@ export const dropdownMenu = style({
   left: 0,
   backgroundColor: theme.colors.white,
   color: theme.colors.green1,
-  fontSize: theme.text['2lg-medium'].fontSize,
-  lineHeight: theme.text['2lg-medium'].lineHeight,
-  fontWeight: theme.text['2lg-medium'].fontWeight,
-  border: `1px solid ${theme.colors.gray1}`,
   borderRadius: '6px',
   boxShadow: '0 4px 16px rgba(17, 34, 17, 0.05)',
   zIndex: 1000,
   marginTop: '5px',
   listStyle: 'none',
   padding: 0,
-  minWidth: '150px',
   display: 'none',
   cursor: 'pointer',
 });
@@ -29,10 +24,16 @@ export const dropdownMenuVisible = style({
 
 export const dropdownItem = style({
   width: '127px',
-  height: '53px',
-  padding: '10px 15px',
-  fontSize: theme.text['sm-medium'].fontSize,
-  lineHeight: '22px',
+  height: '56px',
+  boxSizing: 'border-box',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: theme.text['lg-medium'].fontSize,
+  lineHeight: theme.text['sm-medium'].lineHeight,
+  fontWeight: theme.text['lg-medium'].fontWeight,
+  border: `1px solid ${theme.colors.gray1}`,
+  borderTop: 'none',
   color: theme.colors.gray1,
   cursor: 'pointer',
   transition: 'background-color 0.3s, color 0.3s',
@@ -46,6 +47,17 @@ export const dropdownItem = style({
       color: '#0056b3',
     },
   },
+});
+
+export const dropdownItemTop = style({
+  borderTop: `1px solid ${theme.colors.gray1}`,
+  borderTopLeftRadius: '6px',
+  borderTopRightRadius: '6px',
+});
+
+export const dropdownItemBottom = style({
+  borderBottomLeftRadius: '6px',
+  borderBottomRightRadius: '6px',
 });
 
 export const variantsMenu = styleVariants({
