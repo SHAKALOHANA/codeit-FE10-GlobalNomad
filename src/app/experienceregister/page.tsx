@@ -24,6 +24,7 @@ import {
   bannerContainer,
   introContainer,
   images,
+  deleteButton,
 } from './page.css';
 
 const ExperienceRegister = () => {
@@ -36,6 +37,8 @@ const ExperienceRegister = () => {
   const [introImages, setIntroImages] = useState<File[]>([]);
   const [address, setAddress] = useState<string>('');
   const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
+  const [price, setPrice] = useState<string>('');
+  const [priceError, setPriceError] = useState<string | null>(null);
 
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
@@ -50,6 +53,17 @@ const ExperienceRegister = () => {
       setDates([...dates, formattedDate]);
       setSelectedDate(undefined);
       setIsCalendarVisible(false);
+    }
+  };
+
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (/^\d*$/.test(value)) {
+      setPrice(value);
+      setPriceError(null);
+    } else {
+      setPriceError('가격은 숫자만 입력 가능합니다.');
     }
   };
 
@@ -124,7 +138,17 @@ const ExperienceRegister = () => {
             placeholder="설명"
           />
           <h2>가격</h2>
-          <input className={contentContainer} type="text" placeholder="가격" />
+          <input
+            className={contentContainer}
+            type="text"
+            placeholder="가격"
+            value={price}
+            onChange={handlePriceChange}
+          />
+          {priceError && (
+            <p style={{ color: 'red', fontSize: '12px' }}>{priceError}</p>
+          )}
+
           <h2>주소</h2>
           <div style={{ position: 'relative' }}>
             <input
@@ -214,18 +238,23 @@ const ExperienceRegister = () => {
               {bannerImage ? '이미지 변경' : '이미지 업로드'}
             </label>
             {previewUrl && (
-              <img
-                className={images}
-                src={previewUrl}
-                alt="배너 이미지 미리보기"
-              />
+              <div style={{ position: 'relative' }}>
+                <img className={images} src={previewUrl} alt="배너 이미지" />
+                <img
+                  src="../../../icons/xbutton.svg"
+                  alt="삭제 버튼"
+                  className={deleteButton}
+                  onClick={() => {
+                    setBannerImage(null);
+                    setPreviewUrl(null);
+                  }}
+                  role="button"
+                />
+              </div>
             )}
           </div>
           <h2>소개 이미지</h2>
-          <div
-            className={introContainer}
-            style={{ display: 'flex', alignItems: 'center' }}
-          >
+          <div className={introContainer}>
             <label htmlFor="intro-upload" className={imageRegister}>
               <input
                 id="intro-upload"
@@ -238,11 +267,22 @@ const ExperienceRegister = () => {
             </label>
 
             {introImages.map((image, index) => (
-              <div key={index}>
+              <div key={index} style={{ position: 'relative' }}>
                 <img
                   className={images}
                   src={URL.createObjectURL(image)}
                   alt={`소개 이미지 ${index + 1}`}
+                />
+                <img
+                  src="../../../icons/xbutton.svg"
+                  alt="이미지 삭제"
+                  className={deleteButton}
+                  onClick={() =>
+                    setIntroImages((prevImages) =>
+                      prevImages.filter((_, idx) => idx !== index)
+                    )
+                  }
+                  role="button"
                 />
               </div>
             ))}

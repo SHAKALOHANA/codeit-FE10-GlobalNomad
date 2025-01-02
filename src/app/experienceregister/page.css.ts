@@ -235,3 +235,23 @@ export const images = style({
   },
 });
 
+export const deleteButton = style({
+  position: 'absolute',
+  top: '0px',
+  right: '0px',
+  width: '40px',
+  height: '40px',
+  cursor: 'pointer',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '32px',
+      height: '32px',
+    },
+    [mediaQueries.mobile]: {
+      width: '24px',
+      height: '24px',
+    },
+  },
+});
+
