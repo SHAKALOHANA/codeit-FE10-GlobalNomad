@@ -89,6 +89,7 @@ export const inactiveText = style({
   color: '#a1a1a1',
 });
 
+
 export const activeImage = style({
   filter:
     'invert(21%) sepia(13%) saturate(1362%) hue-rotate(122deg) brightness(96%) contrast(93%)',
@@ -97,5 +98,6 @@ export const activeImage = style({
 export const inactiveImage = style({
   filter:
     'invert(61%) sepia(4%) saturate(145%) hue-rotate(186deg) brightness(94%) contrast(90%)',
+
 });
 

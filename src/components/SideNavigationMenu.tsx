@@ -29,6 +29,8 @@ const SideNavigationMenu = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
+
+
       const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
       const maxSizeInMB = 5;
 
@@ -44,6 +46,7 @@ const SideNavigationMenu = () => {
         event.target.value = '';
         return;
       }
+
 
       const reader = new FileReader();
       reader.onloadend = () => {
