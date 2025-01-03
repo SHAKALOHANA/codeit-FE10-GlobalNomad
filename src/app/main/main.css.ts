@@ -131,18 +131,19 @@ export const PaginationArrow = style({
   textAlign: 'center',
 });
 
-export const cardContainer = style({
+export const cardHotContainer = style({
   display: 'flex',
   gap: '24px',
 });
 
-export const card = style({
+export const cardHot = style({
   width: '384px',
   height: '384px',
-  border: '1px solid #ddd',
+  border: '0',
   borderRadius: '20px',
   overflow: 'hidden',
   position: 'relative',
+  color: theme.colors.white,
 });
 
 export const cardImage = style({
@@ -164,19 +165,58 @@ export const cardH = style({
   margin: '0',
   fontSize: theme.text['3xl-bold'].fontSize,
   fontWeight: theme.text['3xl-bold'].fontWeight,
-  color: theme.colors.white,
 });
 
 export const cardP = style({
   margin: '0',
   fontSize: theme.text['xl-bold'].fontSize,
   fontWeight: theme.text['xl-bold'].fontWeight,
-  color: theme.colors.white,
+  //color: theme.colors.white,
 });
 
 export const cardSmall = style({
   fontSize: theme.text['md-regular'].fontSize,
   fontWeight: theme.text['md-regular'].fontWeight,
+});
+
+export const cardActivityContainer = style({
+  width: '100%',
+  height: '897px',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gridTemplateRows: 'repeat(2, 1fr)',
+  columnGap: '16px',
+  rowGap: '24px',
+});
+
+export const cardActivity = style({
+  width: '100%',
+  height: '100%',
+  border: '0',
+  borderRadius: '20px',
+  overflow: 'hidden',
+  position: 'relative',
+  /*
+  selectors: {
+    '&::after': {
+      display: 'block',
+      content: '',
+      paddingBottom: '100%',
+    },
+  },
+  */
+});
+
+export const cardActivityImage = style({
+  width: '100%',
+  borderRadius: '20px',
+  selectors: {
+    '&::after': {
+      display: 'block',
+      content: '',
+      paddingBottom: '100%',
+    },
+  },
 });
 
 export const pagination = style({

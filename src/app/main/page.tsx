@@ -33,8 +33,8 @@ export default function Main() {
               <p className={style.PaginationArrow}>&gt;</p>
             </div>
           </div>
-          <div className={style.cardContainer}>
-            <div className={style.card}>
+          <div className={style.cardHotContainer}>
+            <div className={style.cardHot}>
               <img className={style.cardImage} src="/images/dance.png" alt="스트릿 댄스" />
               <div className={style.cardText}>
                 <p className={style.cardH}>
@@ -44,7 +44,7 @@ export default function Main() {
                 <p className={style.cardP}>₩38,000 <small className={style.cardSmall}>/ 인</small></p>
               </div>
             </div>
-            <div className={style.card}>
+            <div className={style.cardHot}>
               <img className={style.cardImage} src="/images/bridge.png" alt="다리 건너기" />
               <div className={style.cardText}>
                 <p className={style.cardH}>
@@ -54,7 +54,7 @@ export default function Main() {
                 <p className={style.cardP}>₩5,600 <small className={style.cardSmall}>/ 인</small></p>
               </div>
             </div>
-            <div className={style.card}>
+            <div className={style.cardHot}>
               <img className={style.cardImage} src="/images/vr.png" alt="VR 게임" />
               <div className={style.cardText}>
                 <p className={style.cardH}>
@@ -68,18 +68,18 @@ export default function Main() {
         </section>
         <section className={style.section}>
           <h2 className={style.sectionTitle}>🧳 모든 체험</h2>
-          <div className={style.cardContainer}>
-            <div className={style.card}>
-              <img className={style.cardImage} src="/images/fiord.png" alt="피오르 체험" />
+          <div className={style.cardActivityContainer}>
+            <div className={style.cardActivity}>
+              <img className={style.cardActivityImage} src="/images/fiord.png" alt="피오르 체험" />
               <h3 className={style.cardH}>피오르 체험</h3>
               <p className={style.cardP}>₩42,800 <small className={style.cardSmall}>/ 인</small></p>
             </div>
-            <div className={style.card}>
+            <div className={style.cardActivity}>
               <img className={style.cardImage} src="/images/town.png" alt="이탈리아 마을" />
-              <h3 className={style.cardH}>이탈리아 마을에서 1주일 살아보기</h3>
+              <h3 className={style.cardH}>해안가 마을에서 1주일 살아보기</h3>
               <p className={style.cardP}>₩217,000 <small className={style.cardSmall}>/ 인</small></p>
             </div>
-            <div className={style.card}>
+            <div className={style.cardActivity}>
               <img className={style.cardImage} src="/images/sunset.png" alt="석양 체험" />
               <h3 className={style.cardH}>세상에서 가장 멋진 석양</h3>
               <p className={style.cardP}>₩6,000 <small className={style.cardSmall}>/ 인</small></p>
