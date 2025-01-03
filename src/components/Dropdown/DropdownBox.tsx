@@ -16,7 +16,7 @@ const DropdownIn: React.FC<DropdownBoxProps> = ({ onClick, label }) => (
 
 const DropdownBox: React.FC<DropdownBoxProps> = ({ onClick, label }) => (
   <button onClick={onClick} className={styles.dropdownButton}>
-    {label}
+    <span className={styles.dropdownText}>{label}</span>
   </button>
 );
 
