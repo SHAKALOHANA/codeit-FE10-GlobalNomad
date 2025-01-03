@@ -2,7 +2,6 @@ import { style, styleVariants } from '@vanilla-extract/css';
 import { theme } from '@/app/global.css';
 import { mediaQueries } from '@/styles/media';
 
-
 export const dropdownButton = style({
   display: 'flex',
   alignItems: 'center',
@@ -14,11 +13,7 @@ export const dropdownButton = style({
   fontSize: theme.text['2lg-medium'].fontSize,
   lineHeight: theme.text['2lg-medium'].lineHeight,
   fontWeight: theme.text['2lg-medium'].fontWeight,
-  whiteSpace: 'nowrap', // 줄 바꿈 방지
-  overflow: 'hidden', // 넘치는 텍스트 숨김
-  textOverflow: 'ellipsis', // 줄임표 처리
-  wordBreak: 'break-all',
-  padding: '16px 36px 16px 20px',
+  padding: '16px 30px 16px 10px',
   boxSizing: 'border-box',
   border: `1px solid ${theme.colors.green1}`,
   borderRadius: '15px',
@@ -32,7 +27,7 @@ export const dropdownButton = style({
     '&::after': {
       content: '"▼"', // 아이콘 표시
       position: 'absolute',
-      right: '10px', // 오른쪽에서 아이콘 배치
+      right: '5px', // 오른쪽에서 아이콘 배치
       top: '50%',
       transform: 'translateY(-50%)',
       fontSize: '16px',
@@ -41,6 +36,13 @@ export const dropdownButton = style({
   },
 });
 
+export const dropdownText = style({
+  whiteSpace: 'nowrap', // 줄 바꿈 방지
+  overflow: 'hidden', // 넘치는 텍스트 숨김
+  textOverflow: 'ellipsis', // 줄임표 처리
+  wordBreak: 'break-all',
+  display: 'block',
+});
 
 export const dropdownIn = style({
   width: '800px',
