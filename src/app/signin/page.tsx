@@ -66,7 +66,10 @@ const SignIn = () => {
     // 로그인 API 호출
     try {
       const data = await postLogIn({ email, password });
-      localStorage.setItem('userToken', data.accessToken); // accessToken 저장
+
+      localStorage.setItem('accessToken', data.accessToken); // accessToken 저장
+      localStorage.setItem('refreshToken', data.refreshToken);
+      localStorage.setItem('email', data.user.email);
       router.push('/');
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -90,14 +93,15 @@ const SignIn = () => {
     <div className={container}>
       <div className={card}>
         <div className={logo}>
-        <Image
+          <Image
             src="/icons/logoGroup.svg"
             alt="로고"
             width={340}
             height={180}
+            priority
           />
         </div>
-        <div >
+        <div>
           <label className={label}>이메일</label>
           <input
             type="text"
@@ -131,7 +135,7 @@ const SignIn = () => {
             </p>
           )}
           {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
-      </div>
+        </div>
         <div className={signinBox}>
           <button onClick={handleLogin} className={signinBtn}>
             로그인 하기
@@ -140,7 +144,7 @@ const SignIn = () => {
         <div className={signupArea}>
           <p className={text}>회원이 아니신가요?</p>
           <div>
-            <Link href="/signup"className={linkButton}>
+            <Link href="/signup" className={linkButton}>
               회원가입하기
             </Link>
           </div>

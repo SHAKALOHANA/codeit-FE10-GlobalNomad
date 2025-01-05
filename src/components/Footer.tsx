@@ -32,6 +32,7 @@ const Footer: React.FC = () => (
 					alt="페이스북"
 					width={20}
 					height={20}
+          priority
 				/>
 			</a>
 			<a

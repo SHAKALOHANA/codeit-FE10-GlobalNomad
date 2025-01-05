@@ -116,6 +116,7 @@ const SignUp = () => {
             alt="로고"
             width={340}
             height={180}
+            priority
           />
         </Link>
         <form onSubmit={handleSubmit}>

@@ -19,26 +19,52 @@ export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
   return response.data;
 };
 
+// 로그인 요청 인터페이스
+interface PostLogInParams {
+  email: string;
+  password: string;
+}
+
+// 회원가입 요청 인터페이스
 interface PostSignUpParams {
   email: string;
   nickname: string;
   password: string;
 }
 
-interface PostSignUpRes {
+// 로그인 응답 인터페이스
+interface PostLogInRes {
   accessToken: string;
   refreshToken: string;
   user: {
     id: number;
     email: string;
     nickname: string;
-    teamId: string;
+    profileImageUrl: string;
     updatedAt: string;
     createdAt: string;
-    image: string | null;
   };
 }
 
+// 회원가입 응답 인터페이스
+interface PostSignUpRes {
+  id: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 로그인 응답 인터페이스
+export const postLogIn = async ({ email, password }: PostLogInParams): Promise<PostLogInRes> => {
+  const bodyObj = { email, password };
+
+  const response = await instance.post<PostLogInRes>('auth/login', bodyObj);
+  return response.data;
+};
+
+// 회원가입 응답 인터페이스
 export const postSignUp = async ({
   email,
   nickname,
@@ -46,20 +72,6 @@ export const postSignUp = async ({
 }: PostSignUpParams) => {
   const bodyObj = { email, nickname, password };
 
-  const response = await instance.post<PostSignUpRes>('auth/signUp', bodyObj);
-  return response.data;
-};
-
-interface PostLogInParams {
-  email: string;
-  password: string;
-}
-
-type PostLogInRes = PostSignUpRes;
-
-export const postLogIn = async ({ email, password }: PostLogInParams) => {
-  const bodyObj = { email, password };
-
-  const response = await instance.post<PostLogInRes>('auth/signIn', bodyObj);
+  const response = await instance.post<PostSignUpRes>('users', bodyObj);
   return response.data;
 };
