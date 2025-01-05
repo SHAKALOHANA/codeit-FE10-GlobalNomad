@@ -71,6 +71,7 @@ export const loginArea = style({
 export const text = style({
   fontSize: theme.text['lg-regular'].fontSize,
   color: '#333236',
+  margin: "auto",
 });
 
 export const linkButton = style({
