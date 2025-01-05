@@ -7,6 +7,7 @@ import SideNavigationMenu from '../../components/SideNavigationMenu';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
+import CustomButton from '../../components/CustomButton';
 import {
   mainContainer,
   sideContainer,
@@ -25,6 +26,7 @@ import {
   introContainer,
   images,
   deleteButton,
+  qqq,
 } from './page.css';
 
 const ExperienceRegister = () => {
@@ -119,7 +121,10 @@ const ExperienceRegister = () => {
       <div className={mainContainer}>
         {!isMobile && <SideNavigationMenu />}
         <div className={sideContainer}>
-          <h2 style={{ marginTop: '0px' }}>내 체험 등록</h2>
+          <div className={qqq}>
+            <h1>내 체험 등록</h1>
+            <CustomButton mode="experienceRegistration">등록하기</CustomButton>
+          </div>
           <input
             className={contentContainer}
             type="text"

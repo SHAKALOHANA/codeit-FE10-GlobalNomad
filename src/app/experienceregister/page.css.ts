@@ -255,3 +255,21 @@ export const deleteButton = style({
   },
 });
 
+export const qqq = style({
+  width: '792px',
+  height: '48px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '20px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
+});
+
