@@ -16,7 +16,7 @@ import {
   starRatingContainer,
   reviewTextarea,
 } from './ReviewModal.css';
-import { ReactComponent as Btn_X } from '../../../../public/icons/btn_x.svg';
+import Btn_X from '../../../../public/icons/btn_x.svg';
 import { Reservations } from '@/types/ReservationList';
 
 export default function ReviewModal({ ...reservation }: Reservations) {

@@ -10,7 +10,7 @@ import {
 import CustomButton from '@/components/CustomButton';
 import MyExperienceCard from './MyActivityCard';
 import { MyActivities } from '@/types/MyActivityList';
-import { ReactComponent as EmptyListIcon } from '../../../../public/icons/empty_list.svg';
+import EmptyListIcon from '../../../../public/icons/empty_list.svg';
 
 export default function MyExperienceSettings() {
   const [myActivities, setMyActivities] = useState<MyActivities[]>([]);

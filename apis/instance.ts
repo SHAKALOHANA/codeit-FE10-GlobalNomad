@@ -1,7 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { postRefresh } from "./authApi";
 
+
 const BASE_URL = "https://sp-globalnomad-api.vercel.app/10-1";
+
 
 export const instance = axios.create({
 	baseURL: BASE_URL,
@@ -10,6 +12,7 @@ export const instance = axios.create({
 
 instance.interceptors.request.use(async (config) => {
 	if (config.url === "/auth/tokens") return config; //요청 URL이 'auth/tokens'인 경우, 특별히 처리하지 않고 요청을 그대로 반환
+
 
 	try {
 		const refresh = localStorage.getItem("refreshToken");

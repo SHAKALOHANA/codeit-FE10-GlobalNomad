@@ -66,6 +66,7 @@ const SignIn = () => {
     // 로그인 API 호출
     try {
       const data = await postLogIn({ email, password });
+
       localStorage.setItem('accessToken', data.accessToken); // accessToken 저장
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('email', data.user.email);
