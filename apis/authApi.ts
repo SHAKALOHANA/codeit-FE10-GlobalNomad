@@ -8,6 +8,7 @@ interface PostRefreshRes {
   accessToken: string;
 }
 
+//리액트 쿼리 사용 시 참고
 export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
   const bodyObj = { refreshToken };
 
@@ -22,7 +23,6 @@ interface PostSignUpParams {
   email: string;
   nickname: string;
   password: string;
-  passwordConfirmation: string;
 }
 
 interface PostSignUpRes {
@@ -43,9 +43,8 @@ export const postSignUp = async ({
   email,
   nickname,
   password,
-  passwordConfirmation,
 }: PostSignUpParams) => {
-  const bodyObj = { email, nickname, password, passwordConfirmation };
+  const bodyObj = { email, nickname, password };
 
   const response = await instance.post<PostSignUpRes>('auth/signUp', bodyObj);
   return response.data;
