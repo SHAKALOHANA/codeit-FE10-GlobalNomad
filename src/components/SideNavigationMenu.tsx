@@ -23,9 +23,9 @@ const SideNavigationMenu = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === '/myPage') {
+    if (pathname === '/my-info') {
       setActiveIndex(0);
-    } else if (pathname === '/reservationContent') {
+    } else if (pathname === '/my-reservations') {
       setActiveIndex(1);
     } else if (pathname === '/experienceregister') {
       setActiveIndex(2);
