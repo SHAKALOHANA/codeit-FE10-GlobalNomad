@@ -6,11 +6,11 @@ import {
   DropDownBoxWrap,
   CategoryMenuBox,
   ListItem,
-} from './categoryDropdown.css';
+} from './CategoryDropDown.css';
 
 const CategoryDropDown = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('카테고리'); // 선택된 항목 상태
+  const [selectedCategory, setSelectedCategory] = useState<string>('카테고리');
 
   const onToggle = () => setIsOpen(!isOpen);
 
@@ -25,7 +25,7 @@ const CategoryDropDown = () => {
         <p
           style={{
             fontSize: '14px',
-            color: selectedCategory === '카테고리' ? '#a1a1a1' : '#000000', // 기본 회색, 선택 후 검정색
+            color: selectedCategory === '카테고리' ? '#a1a1a1' : '#000000',
           }}
         >
           {selectedCategory}

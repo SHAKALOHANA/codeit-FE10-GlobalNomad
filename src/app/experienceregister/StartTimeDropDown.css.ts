@@ -3,7 +3,7 @@ import { theme } from '../global.css';
 import { mediaQueries } from '@/styles/media';
 
 export const CategoryMenuBox = style({
-  width: '792px',
+  width: '140px',
   height: '56px',
   borderRadius: '4px',
   border: `1px solid ${theme.colors.gray2}`,
@@ -16,17 +16,17 @@ export const CategoryMenuBox = style({
 
   '@media': {
     [mediaQueries.tablet]: {
-      width: '429px',
+      width: '104px',
     },
     [mediaQueries.mobile]: {
-      width: '343px',
+      width: '79px',
     },
   },
 });
 
 export const DropDownBoxWrap = style({
   position: 'relative',
-  width: '792px',
+  width: '140px',
   borderRadius: '4px',
   border: `1px solid ${theme.colors.gray2}`,
   backgroundColor: theme.colors.white,
@@ -34,10 +34,10 @@ export const DropDownBoxWrap = style({
 
   '@media': {
     [mediaQueries.tablet]: {
-      width: '429px',
+      width: '104px',
     },
     [mediaQueries.mobile]: {
-      width: '343px',
+      width: '79px',
     },
   },
 });
@@ -54,7 +54,7 @@ export const ListItem = style({
   ':hover': {
     backgroundColor: theme.colors.gray2,
   },
-  fontSize: '16px',
+  fontSize: '14px',
   color: theme.colors.black,
 });
 

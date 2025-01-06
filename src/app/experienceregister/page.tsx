@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
-import CategoryDropDown from './categoryDropdown';
+import CategoryDropDown from './CategoryDropDown';
+import StartTimeDropDown from './StartTimeDropDown';
+import EndTimeDropDown from './EndTimeDropDown';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
@@ -29,12 +31,19 @@ import {
   deleteButton,
   qqq,
   inputWithPlaceholder,
+  tildeSymbol,
+  addedStartTimeContainer,
+  addedEndTimeContainer,
 } from './page.css';
 
 const ExperienceRegister = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [dates, setDates] = useState<string[]>([]);
+  const [dates, setDates] = useState<
+    { date: string; startTime: string; endTime: string }[]
+  >([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [startTime, setStartTime] = useState<string>('시간선택');
+  const [endTime, setEndTime] = useState<string>('시간선택');
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [bannerImage, setBannerImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -49,14 +58,12 @@ const ExperienceRegister = () => {
   };
 
   const handleAddDate = () => {
-    if (selectedDate) {
+    if (selectedDate && startTime !== '시간선택' && endTime !== '시간선택') {
       const year = selectedDate.getFullYear().toString().slice(-2);
       const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
       const day = String(selectedDate.getDate()).padStart(2, '0');
       const formattedDate = `${year}/${month}/${day}`;
-      setDates([...dates, formattedDate]);
-      setSelectedDate(undefined);
-      setIsCalendarVisible(false);
+      setDates([...dates, { date: formattedDate, startTime, endTime }]);
     }
   };
 
@@ -138,6 +145,7 @@ const ExperienceRegister = () => {
             className={`${discriptionContainer} ${inputWithPlaceholder}`}
             placeholder="설명"
           />
+
           <h2>가격</h2>
           <input
             className={`${contentContainer} ${inputWithPlaceholder}`}
@@ -166,10 +174,15 @@ const ExperienceRegister = () => {
           {isPostcodeVisible && (
             <DaumPostcode onComplete={handlePostcodeComplete} />
           )}
+
           <h2>예약 가능한 시간대</h2>
           <div className={reservationContainer}>
             <div className={dateContainer}>
-              <p>
+              <p
+                style={{
+                  color: selectedDate ? 'black' : '#a1a1a1',
+                }}
+              >
                 {selectedDate
                   ? `${selectedDate.getFullYear().toString().slice(-2)}/${(
                       selectedDate.getMonth() + 1
@@ -201,20 +214,41 @@ const ExperienceRegister = () => {
                 </div>
               )}
             </div>
+            <StartTimeDropDown onChange={setStartTime} selected={startTime} />
+            <p className={tildeSymbol}>~</p>
+            <EndTimeDropDown onChange={setEndTime} selected={endTime} />
             <Image
               src="../../../icons/plusbutton.svg"
               alt="추가버튼"
               width={56}
               height={56}
               onClick={handleAddDate}
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor:
+                  startTime === '시간선택' ||
+                  endTime === '시간선택' ||
+                  !selectedDate
+                    ? 'not-allowed'
+                    : 'pointer',
+                opacity:
+                  startTime === '시간선택' ||
+                  endTime === '시간선택' ||
+                  !selectedDate
+                    ? 0.5
+                    : 1,
+              }}
             />
           </div>
           <div className={line}></div>
           <div>
-            {dates.map((date, index) => (
+            {dates.map((dateInfo, index) => (
               <div key={index} className={addedDateWrapper}>
-                <div className={addedDateContainer}>{date}</div>
+                <div className={addedDateContainer}>{dateInfo.date}</div>
+                <div className={addedStartTimeContainer}>
+                  {dateInfo.startTime}
+                </div>
+                <p className={tildeSymbol}>~</p>
+                <div className={addedEndTimeContainer}>{dateInfo.endTime}</div>
                 <Image
                   src="../../../icons/minusbutton.svg"
                   alt="빼기버튼"
@@ -226,6 +260,7 @@ const ExperienceRegister = () => {
               </div>
             ))}
           </div>
+
           <h2>배너 이미지</h2>
           <div className={bannerContainer}>
             <label htmlFor="banner-upload" className={imageRegister}>
@@ -254,6 +289,7 @@ const ExperienceRegister = () => {
               </div>
             )}
           </div>
+
           <h2>소개 이미지</h2>
           <div className={introContainer}>
             <label htmlFor="intro-upload" className={imageRegister}>
