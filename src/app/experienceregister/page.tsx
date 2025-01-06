@@ -134,9 +134,8 @@ const ExperienceRegister = () => {
             style={{ marginBottom: '20px' }}
           />
           <CategoryDropDown />
-          <input
+          <textarea
             className={`${discriptionContainer} ${inputWithPlaceholder}`}
-            type="text"
             placeholder="설명"
           />
           <h2>가격</h2>
@@ -154,7 +153,7 @@ const ExperienceRegister = () => {
           <h2>주소</h2>
           <div style={{ position: 'relative' }}>
             <input
-              className={contentContainer}
+              className={`${contentContainer} ${inputWithPlaceholder}`}
               type="text"
               placeholder="주소를 입력해주세요"
               value={address}

@@ -49,7 +49,7 @@ export const discriptionContainer = style({
   backgroundColor: theme.colors.white,
   border: '1px solid #79747e',
   borderRadius: '4px',
-  padding: '0px 10px',
+  padding: '20px 10px',
   marginTop: '20px',
 });
 
@@ -276,13 +276,13 @@ export const qqq = style({
 
 export const inputWithPlaceholder = style({
   fontSize: '14px',
-  color: '#000000', // 입력된 텍스트 색상
+  color: '#000000',
+  resize: 'none',
 
-  // placeholder 색상 스타일 추가
   selectors: {
     '&::placeholder': {
-      color: '#a1a1a1', // placeholder 텍스트 색상
-      fontSize: '14px', // placeholder 텍스트 크기
+      color: '#a1a1a1',
+      fontSize: '14px',
     },
   },
 });

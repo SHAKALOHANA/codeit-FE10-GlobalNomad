@@ -13,6 +13,15 @@ export const CategoryMenuBox = style({
   alignItems: 'center',
   padding: '0 10px',
   cursor: 'pointer',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
 });
 
 export const DropDownBoxWrap = style({
@@ -22,6 +31,15 @@ export const DropDownBoxWrap = style({
   border: `1px solid ${theme.colors.gray2}`,
   backgroundColor: theme.colors.white,
   zIndex: 10,
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
 });
 
 export const DropDownContainer = style({
