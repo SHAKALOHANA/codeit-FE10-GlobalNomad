@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import {
   containerBox,
   profileImage,
@@ -19,6 +20,19 @@ import {
 const SideNavigationMenu = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [profileImageSrc, setProfileImageSrc] = useState<string | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === '/my-info') {
+      setActiveIndex(0);
+    } else if (pathname === '/my-reservations') {
+      setActiveIndex(1);
+    } else if (pathname === '/experienceregister') {
+      setActiveIndex(2);
+    } else if (pathname === '/precondition') {
+      setActiveIndex(3);
+    }
+  }, [pathname]);
 
   const handleClick = (index: number) => {
     setActiveIndex(index);
@@ -29,8 +43,6 @@ const SideNavigationMenu = () => {
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-
-
       const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
       const maxSizeInMB = 5;
 
@@ -46,7 +58,6 @@ const SideNavigationMenu = () => {
         event.target.value = '';
         return;
       }
-
 
       const reader = new FileReader();
       reader.onloadend = () => {
