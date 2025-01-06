@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
+import CategoryDropDown from './categoryDropdown';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
@@ -27,6 +28,7 @@ import {
   images,
   deleteButton,
   qqq,
+  inputWithPlaceholder,
 } from './page.css';
 
 const ExperienceRegister = () => {
@@ -126,25 +128,20 @@ const ExperienceRegister = () => {
             <CustomButton mode="experienceRegistration">등록하기</CustomButton>
           </div>
           <input
-            className={contentContainer}
+            className={`${contentContainer} ${inputWithPlaceholder}`}
             type="text"
             placeholder="제목"
             style={{ marginBottom: '20px' }}
           />
+          <CategoryDropDown />
           <input
-            className={contentContainer}
-            type="text"
-            placeholder="카테고리"
-            style={{ marginBottom: '20px' }}
-          />
-          <input
-            className={discriptionContainer}
+            className={`${discriptionContainer} ${inputWithPlaceholder}`}
             type="text"
             placeholder="설명"
           />
           <h2>가격</h2>
           <input
-            className={contentContainer}
+            className={`${contentContainer} ${inputWithPlaceholder}`}
             type="text"
             placeholder="가격"
             value={price}
