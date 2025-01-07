@@ -20,6 +20,8 @@ export const imageContainer = style({
   borderBottomLeftRadius: '24px',
   width: '204px',
   height: '204px',
+  overflow: 'hidden',
+  cursor: 'pointer',
 
   '@media': {
     [mediaQueries.tablet]: {
@@ -38,13 +40,19 @@ export const activityInfoContainer = style({
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'center',
+  width: '564px',
+  height: '204px',
   padding: '21px 24px',
   '@media': {
     [mediaQueries.tablet]: {
-      padding: '12px 16px 0px 12px',
+      width: '273px',
+      height: '156px',
+      padding: '12px 18px 12px 12px',
     },
     [mediaQueries.mobile]: {
-      padding: '11px 1px 0px 8px',
+      width: '202px',
+      height: '128px',
+      padding: '9px 14px 9px 8px',
     },
   },
 });
@@ -53,9 +61,12 @@ export const reservationStatus1 = style({
   fontSize: theme.text['lg-bold'].fontSize,
   fontWeight: theme.text['lg-bold'].fontWeight,
   lineHeight: theme.text['lg-bold'].lineHeight,
-  marginBottom: '8px',
+  margin: '0 0 8px 0',
 
   '@media': {
+    [mediaQueries.tablet]: {
+      margin: '0',
+    },
     [mediaQueries.mobile]: {
       fontSize: theme.text['md-bold'].fontSize,
       fontWeight: theme.text['md-bold'].fontWeight,
@@ -91,22 +102,38 @@ export const reservationStatus2 = styleVariants({
 });
 
 export const activityTitle = style({
+  margin: '0',
+});
+
+export const titleButton = style({
   color: theme.colors.nomadBlack,
   fontSize: theme.text['xl-bold'].fontSize,
   fontWeight: theme.text['xl-bold'].fontWeight,
   lineHeight: theme.text['xl-bold'].lineHeight,
-  marginBottom: '12px',
+  width: '491px',
+  border: 'none',
+  textAlign: 'left',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  margin: '0',
+  padding: '0 0 12px 0',
+  cursor: 'pointer',
 
   '@media': {
     [mediaQueries.tablet]: {
       fontSize: theme.text['2lg-bold'].fontSize,
       fontWeight: theme.text['2lg-bold'].fontWeight,
       lineHeight: theme.text['2lg-bold'].lineHeight,
+      width: '243px',
+      padding: '0 0 4px 0',
     },
     [mediaQueries.mobile]: {
       fontSize: theme.text['md-bold'].fontSize,
       fontWeight: theme.text['md-bold'].fontWeight,
       lineHeight: '26px',
+      width: '194px',
+      padding: '0',
     },
   },
 });
@@ -116,23 +143,45 @@ export const activityDate = style({
   fontSize: theme.text['2lg-regular'].fontSize,
   fontWeight: theme.text['2lg-regular'].fontWeight,
   lineHeight: theme.text['2lg-regular'].lineHeight,
-  marginBottom: '16px',
+  margin: '0 0 16px 0',
 
   '@media': {
     [mediaQueries.tablet]: {
       fontSize: theme.text['md-regular'].fontSize,
       fontWeight: theme.text['md-regular'].fontWeight,
       lineHeight: theme.text['md-regular'].lineHeight,
+      margin: '0 0 10px 0',
     },
     [mediaQueries.mobile]: {
       fontSize: theme.text['xs-regular'].fontSize,
       fontWeight: theme.text['xs-regular'].fontWeight,
       lineHeight: '24px',
+      margin: '0',
+    },
+  },
+});
+
+export const priceContainer = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  width: '100%',
+  height: '42px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      height: '40px',
+    },
+    [mediaQueries.mobile]: {
+      height: '32px',
     },
   },
 });
 
 export const activityPrice = style({
+  display: 'inline-block',
+  margin: '0',
   color: theme.colors.nomadBlack,
   fontSize: theme.text['2xl-medium'].fontSize,
   fontWeight: theme.text['2xl-medium'].fontWeight,

@@ -8,13 +8,6 @@ export const container = style({
   alignItems: 'center',
   justifyContent: 'center',
   margin: '0 auto',
-  paddingTop: '70px',
-
-  '@media': {
-    [mediaQueries.tablet]: {
-      paddingTop: '24px',
-    },
-  },
 });
 
 export const myInfoContainer = style({
@@ -24,7 +17,6 @@ export const myInfoContainer = style({
   width: '792px',
   height: '580px',
   gap: '24px',
-  padding: '16px 20px',
   '@media': {
     [mediaQueries.tablet]: {
       width: '429px',
@@ -40,17 +32,7 @@ export const header = style({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  width: '800px',
   height: '48px',
-
-  '@media': {
-    [mediaQueries.tablet]: {
-      width: '429px',
-    },
-    [mediaQueries.mobile]: {
-      width: '343px',
-    },
-  },
 });
 
 export const headerTitle = style({

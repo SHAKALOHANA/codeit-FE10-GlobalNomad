@@ -3,23 +3,11 @@ import Image from 'next/image';
 import Modal from './Modal';
 import StarRating from './StarRating';
 import CustomButton from '@/components/CustomButton';
-import {
-  reviewModalContainer,
-  reviewModalHeader,
-  modalCloseBtn,
-  activityInfoContainer,
-  activityInfo,
-  activityImage,
-  activityTitle,
-  activityDate,
-  activityPrice,
-  starRatingContainer,
-  reviewTextarea,
-} from './ReviewModal.css';
-import Btn_X from '../../../../public/icons/btn_x.svg';
-import { Reservations } from '@/types/ReservationList';
+import * as S from './ReviewModal.css';
+import Btn_X from '../../../../public/icons/btn_X.svg';
+import { ReservationsType } from '@/types/MyReservationsList';
 
-export default function ReviewModal({ ...reservation }: Reservations) {
+export default function ReviewModal({ ...reservation }: ReservationsType) {
   const [isOpen, setIsOpen] = useState(false);
   const [starValue, setStarValue] = useState(0);
   const [reviewText, setReviewText] = useState('');
@@ -36,39 +24,40 @@ export default function ReviewModal({ ...reservation }: Reservations) {
       <CustomButton mode="writeReview" onClick={() => setIsOpen(true)} />
 
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div className={reviewModalContainer}>
-          <div className={reviewModalHeader}>
+        <div className={S.reviewModalContainer}>
+          <div className={S.reviewModalHeader}>
             <h2>후기 작성</h2>
             <button onClick={() => setIsOpen(false)}>
-              <Btn_X className={modalCloseBtn} />
+              <Btn_X className={S.modalCloseBtn} />
             </button>
           </div>
-          <div className={activityInfoContainer}>
-            <div className={activityImage}>
+          <div className={S.activityInfoContainer}>
+            <div className={S.activityImage}>
               <Image
                 src={reservation.activity.bannerImageUrl}
                 alt={`${reservation.activity.title} 배너 이미지`}
                 fill
+                priority
               />
             </div>
-            <div className={activityInfo}>
-              <h3 className={activityTitle}>{reservation.activity.title}</h3>
+            <div className={S.activityInfo}>
+              <h3 className={S.activityTitle}>{reservation.activity.title}</h3>
               <p
-                className={activityDate}
+                className={S.activityDate}
               >{`${reservation.date} | ${reservation.startTime} ~ ${reservation.endTime} | ${reservation.headCount}명`}</p>
               <p
-                className={activityPrice}
+                className={S.activityPrice}
               >{`₩${reservation.totalPrice.toLocaleString()}`}</p>
             </div>
           </div>
-          <div className={starRatingContainer}>
+          <div className={S.starRatingContainer}>
             <StarRating
               value={starValue}
               onChange={(newValue) => setStarValue(newValue)}
             />
           </div>
           <textarea
-            className={reviewTextarea}
+            className={S.reviewTextarea}
             placeholder="후기를 작성해주세요"
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
