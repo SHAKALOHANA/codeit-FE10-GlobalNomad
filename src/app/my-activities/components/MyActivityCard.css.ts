@@ -20,6 +20,8 @@ export const imageContainer = style({
   borderBottomLeftRadius: '24px',
   width: '204px',
   height: '204px',
+  overflow: 'hidden',
+  cursor: 'pointer',
 
   '@media': {
     [mediaQueries.tablet]: {
@@ -38,21 +40,37 @@ export const activityInfoContainer = style({
   flexDirection: 'column',
   alignItems: 'flex-start',
   justifyContent: 'center',
-  padding: '21px 24px',
+  width: '564px',
+  height: '204px',
+  padding: '14px 24px',
   '@media': {
     [mediaQueries.tablet]: {
-      padding: '12px 16px 0px 12px',
+      width: '273px',
+      height: '156px',
+      padding: '12px 18px 13px 12px',
     },
     [mediaQueries.mobile]: {
-      padding: '11px 1px 0px 8px',
+      width: '202px',
+      height: '128px',
+      padding: '9.5px 0px 9.5px 8px',
     },
   },
 });
 
+export const ratingContainer = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  width: '100%',
+  height: '24px',
+  margin: '0 0 6px 0',
+});
+
 export const ratingStar = style({
+  justifyContent: 'center',
   width: '19px',
   height: '19px',
-
+  margin: '0',
   '@media': {
     [mediaQueries.mobile]: {
       width: '16px',
@@ -62,18 +80,18 @@ export const ratingStar = style({
 });
 
 export const rating = style({
+  display: 'inline-block',
   color: theme.colors.black,
   fontSize: theme.text['lg-regular'].fontSize,
   fontWeight: theme.text['lg-regular'].fontWeight,
   lineHeight: theme.text['lg-regular'].lineHeight,
-  marginBottom: '6px',
+  margin: '0 0 0 6px',
 
   '@media': {
     [mediaQueries.mobile]: {
       fontSize: theme.text['xs-regular'].fontSize,
       fontWeight: theme.text['xs-regular'].fontWeight,
       lineHeight: '24px',
-      marginBottom: '0px',
     },
   },
 });
@@ -83,18 +101,30 @@ export const activityTitle = style({
   fontSize: theme.text['xl-bold'].fontSize,
   fontWeight: theme.text['xl-bold'].fontWeight,
   lineHeight: theme.text['xl-bold'].lineHeight,
-  marginBottom: '12px',
+  width: '491px',
+  border: 'none',
+  textAlign: 'left',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  margin: '0',
+  padding: '0 0 72px 0',
+  cursor: 'pointer',
 
   '@media': {
     [mediaQueries.tablet]: {
       fontSize: theme.text['2lg-bold'].fontSize,
       fontWeight: theme.text['2lg-bold'].fontWeight,
       lineHeight: theme.text['2lg-bold'].lineHeight,
+      width: '243px',
+      padding: '0 0 33px 0',
     },
     [mediaQueries.mobile]: {
       fontSize: theme.text['md-bold'].fontSize,
       fontWeight: theme.text['md-bold'].fontWeight,
       lineHeight: '26px',
+      width: '194px',
+      padding: '0 0 29px 0',
     },
   },
 });
@@ -104,14 +134,34 @@ export const activityPriceContainer = style({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginBottom: '12px',
+  width: '100%',
+  height: '42px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      height: '40px',
+    },
+    [mediaQueries.mobile]: {
+      height: '32px',
+    },
+  },
+});
+
+export const activityPriceWrapper = style({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  height: '39px',
 });
 
 export const activityPrice = style({
+  display: 'inline-block',
   color: theme.colors.nomadBlack,
   fontSize: theme.text['2xl-medium'].fontSize,
   fontWeight: theme.text['2xl-medium'].fontWeight,
   lineHeight: theme.text['2xl-medium'].lineHeight,
+  margin: '0',
 
   '@media': {
     [mediaQueries.tablet]: {
@@ -128,10 +178,24 @@ export const activityPrice = style({
 });
 
 export const activityPriceUnit = style({
+  display: 'inline-block',
   color: theme.colors.gray1,
   fontSize: theme.text['lg-medium'].fontSize,
   fontWeight: theme.text['lg-medium'].fontWeight,
   lineHeight: theme.text['lg-medium'].lineHeight,
+  margin: '0 0 0 10px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      margin: '0 0 0 4px',
+    },
+    [mediaQueries.mobile]: {
+      fontSize: theme.text['xs-medium'].fontSize,
+      fontWeight: theme.text['xs-medium'].fontWeight,
+      lineHeight: theme.text['xs-medium'].lineHeight,
+      margin: '0 0 0 2px',
+    },
+  },
 });
 
 export const dropdown = style({

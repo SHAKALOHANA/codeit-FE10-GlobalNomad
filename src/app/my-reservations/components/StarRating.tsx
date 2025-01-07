@@ -1,9 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  starRatingContainer,
-  starIcon,
-  starIconFilled,
-} from './StarRating.css';
+import * as S from './StarRating.css';
 import StarOffIcon from '../../../../public/icons/star_off.svg';
 
 interface RatingProps {
@@ -71,7 +67,7 @@ export default function Rating({
   return (
     <div
       ref={containerRef}
-      className={starRatingContainer}
+      className={S.starRatingContainer}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -83,8 +79,8 @@ export default function Rating({
         const isFilled = starIndex <= rating;
 
         const combinedClassName = isFilled
-          ? `${starIconFilled} ${starIcon}`
-          : starIcon;
+          ? `${S.starIconFilled} ${S.starIcon}`
+          : S.starIcon;
 
         return <StarOffIcon key={starIndex} className={combinedClassName} />;
       })}
