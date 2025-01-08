@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
 import CategoryDropDown from './CategoryDropDown';
 import StartTimeDropDown from './StartTimeDropDown';
@@ -71,11 +70,11 @@ const ExperienceRegister = () => {
   const [priceError, setPriceError] = useState<string | null>(null);
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [category, setCategory] = useState<string>(''); // 카테고리 상태 관리
+  const [category, setCategory] = useState<string>('');
 
   const handleCategoryChange = (selectedCategory: string) => {
     console.log('선택된 카테고리:', selectedCategory);
-    setCategory(selectedCategory); // 카테고리 값 업데이트
+    setCategory(selectedCategory);
   };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,10 +93,10 @@ const ExperienceRegister = () => {
 
   const handleAddDate = () => {
     if (selectedDate && startTime !== '시간선택' && endTime !== '시간선택') {
-      const year = selectedDate.getFullYear(); // 4자리 연도
-      const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // MM
-      const day = String(selectedDate.getDate()).padStart(2, '0'); // DD
-      const formattedDate = `${year}-${month}-${day}`; // YYYY-MM-DD 형식으로 포맷
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`;
       setDates([...dates, { date: formattedDate, startTime, endTime }]);
     }
   };
@@ -187,7 +186,7 @@ const ExperienceRegister = () => {
       if (response.ok) {
         alert('성공');
       } else {
-        const errorText = await response.text(); // 응답 본문을 텍스트로 가져오기
+        const errorText = await response.text();
         console.error('API 응답 실패:', errorText);
         alert('실패');
       }
@@ -208,7 +207,6 @@ const ExperienceRegister = () => {
 
   return (
     <div>
-      <Header />
       <div className={mainContainer}>
         {!isMobile && <SideNavigationMenu />}
         <div className={sideContainer}>
