@@ -36,6 +36,23 @@ import {
   addedEndTimeContainer,
 } from './page.css';
 
+interface Schedule {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface ActivityData {
+  title: string;
+  category: string;
+  description: string;
+  address: string;
+  price: number;
+  schedules: Schedule[];
+  bannerImageUrl: string;
+  subImageUrls: string[];
+}
+
 const ExperienceRegister = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [dates, setDates] = useState<
@@ -52,6 +69,24 @@ const ExperienceRegister = () => {
   const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
   const [price, setPrice] = useState<string>('');
   const [priceError, setPriceError] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [category, setCategory] = useState<string>(''); // 카테고리 상태 관리
+
+  const handleCategoryChange = (selectedCategory: string) => {
+    console.log('선택된 카테고리:', selectedCategory);
+    setCategory(selectedCategory); // 카테고리 값 업데이트
+  };
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(event.target.value);
+  };
 
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
@@ -59,10 +94,10 @@ const ExperienceRegister = () => {
 
   const handleAddDate = () => {
     if (selectedDate && startTime !== '시간선택' && endTime !== '시간선택') {
-      const year = selectedDate.getFullYear().toString().slice(-2);
-      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
-      const day = String(selectedDate.getDate()).padStart(2, '0');
-      const formattedDate = `${year}/${month}/${day}`;
+      const year = selectedDate.getFullYear(); // 4자리 연도
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // MM
+      const day = String(selectedDate.getDate()).padStart(2, '0'); // DD
+      const formattedDate = `${year}-${month}-${day}`; // YYYY-MM-DD 형식으로 포맷
       setDates([...dates, { date: formattedDate, startTime, endTime }]);
     }
   };
@@ -115,6 +150,53 @@ const ExperienceRegister = () => {
     setIsPostcodeVisible(true);
   };
 
+  const handleSubmit = async () => {
+    const requestData: ActivityData = {
+      title,
+      category,
+      description,
+      address,
+      price: Number(price),
+      schedules: dates.map((date) => ({
+        date: date.date,
+        startTime: date.startTime,
+        endTime: date.endTime,
+      })),
+      bannerImageUrl:
+        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/10-1_1361_1736271222406.png',
+      subImageUrls: [
+        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/10-1_1361_1736271352229.png',
+      ],
+    };
+
+    try {
+      const token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjI3NjEyMiwiZXhwIjoxNzM2Mjc3OTIyLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.h74PY6G1hbQvxaLTlj36ln7__b0CivI7nexUpn2UKG4';
+      const response = await fetch(
+        'https://sp-globalnomad-api.vercel.app/10-1/activities',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+
+      if (response.ok) {
+        alert('성공');
+      } else {
+        const errorText = await response.text(); // 응답 본문을 텍스트로 가져오기
+        console.error('API 응답 실패:', errorText);
+        alert('실패');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('에러 발생');
+    }
+  };
+
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -132,18 +214,22 @@ const ExperienceRegister = () => {
         <div className={sideContainer}>
           <div className={qqq}>
             <h1>내 체험 등록</h1>
-            <CustomButton mode="experienceRegistration">등록하기</CustomButton>
+            <CustomButton mode="experienceRegistration" onClick={handleSubmit}>
+              등록하기
+            </CustomButton>
           </div>
           <input
             className={`${contentContainer} ${inputWithPlaceholder}`}
             type="text"
             placeholder="제목"
             style={{ marginBottom: '20px' }}
+            onChange={handleTitleChange}
           />
-          <CategoryDropDown />
+          <CategoryDropDown onCategorySelect={handleCategoryChange} />
           <textarea
             className={`${discriptionContainer} ${inputWithPlaceholder}`}
             placeholder="설명"
+            onChange={handleDescriptionChange}
           />
 
           <h2>가격</h2>

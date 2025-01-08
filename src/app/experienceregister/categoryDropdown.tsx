@@ -8,7 +8,11 @@ import {
   ListItem,
 } from './CategoryDropDown.css';
 
-const CategoryDropDown = () => {
+interface CategoryDropDownProps {
+  onCategorySelect: (category: string) => void;
+}
+
+const CategoryDropDown = ({ onCategorySelect }: CategoryDropDownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('카테고리');
 
@@ -16,6 +20,7 @@ const CategoryDropDown = () => {
 
   const onOptionClicked = (value: string) => () => {
     setSelectedCategory(value);
+    onCategorySelect(value); // 부모 컴포넌트로 선택된 카테고리 전달
     setIsOpen(false);
   };
 
