@@ -6,7 +6,6 @@ export const reservationsContainer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
   margin: '0 auto',
   width: '792px',
 
@@ -59,7 +58,7 @@ export const statusFilterOptions = style({
   height: '53px',
   borderRadius: '15px',
   color: theme.colors.green1,
-  outline: `1px solid ${theme.colors.green1}`,
+  outline: `1px solid theme.colors.green1`,
   ...theme.text['2lg-medium'],
 });
 

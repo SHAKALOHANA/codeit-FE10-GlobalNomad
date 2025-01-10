@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReservationCard from './ReservationCard';
 import * as S from './ReservationsList.css';
-import { isPastEvent } from '@/utils/isPastEvent';
 import { FIXED_OPTIONS } from '@/utils/translateStatus';
 import { instance } from '../../../../apis/instance';
 import {
@@ -30,18 +29,10 @@ export default function ReservationsList() {
 
   let filteredReservations = reservations;
 
-  if (selectedStatus !== '') {
-    if (selectedStatus === 'completed_experience') {
-      filteredReservations = reservations.filter((res) => {
-        return (
-          res.status === 'completed' && isPastEvent(res.date, res.startTime)
-        );
-      });
-    } else {
-      filteredReservations = reservations.filter(
-        (res) => res.status === selectedStatus
-      );
-    }
+  if (selectedStatus) {
+    filteredReservations = reservations.filter(
+      (r) => r.status === selectedStatus
+    );
   }
 
   function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -49,7 +40,7 @@ export default function ReservationsList() {
   }
 
   if (isLoading) {
-    return <p>불러오는 중...</p>;
+    return <p className={S.reservationsContainer}>불러오는 중...</p>;
   }
 
   if (isError) {

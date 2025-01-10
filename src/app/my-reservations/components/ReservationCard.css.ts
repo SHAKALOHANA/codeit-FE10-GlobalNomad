@@ -6,7 +6,6 @@ export const cardContainer = style({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
   margin: '0 auto',
 });
 
@@ -110,6 +109,7 @@ export const titleButton = style({
   fontSize: theme.text['xl-bold'].fontSize,
   fontWeight: theme.text['xl-bold'].fontWeight,
   lineHeight: theme.text['xl-bold'].lineHeight,
+  backgroundColor: theme.colors.gray9,
   width: '491px',
   border: 'none',
   textAlign: 'left',
