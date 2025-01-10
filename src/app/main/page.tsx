@@ -66,23 +66,19 @@ export default function Main() {
             </div>
           </div>
         </section>
+        <div className={style.tagContainer}>
+          <div className={style.tags}>문화 · 예술</div>
+        </div>
         <section className={style.section}>
-          <h2 className={style.sectionTitle}>🧳 모든 체험</h2>
+          <div className={style.sectionTitle}>
+          <h2 className={style.sectionTitleH}>🧳 모든 체험</h2>
+          </div>
           <div className={style.cardActivityContainer}>
             <div className={style.cardActivity}>
               <img className={style.cardActivityImage} src="/images/fiord.png" alt="피오르 체험" />
+              <p> 3.9(108)</p>
               <h3 className={style.cardH}>피오르 체험</h3>
               <p className={style.cardP}>₩42,800 <small className={style.cardSmall}>/ 인</small></p>
-            </div>
-            <div className={style.cardActivity}>
-              <img className={style.cardImage} src="/images/town.png" alt="이탈리아 마을" />
-              <h3 className={style.cardH}>해안가 마을에서 1주일 살아보기</h3>
-              <p className={style.cardP}>₩217,000 <small className={style.cardSmall}>/ 인</small></p>
-            </div>
-            <div className={style.cardActivity}>
-              <img className={style.cardImage} src="/images/sunset.png" alt="석양 체험" />
-              <h3 className={style.cardH}>세상에서 가장 멋진 석양</h3>
-              <p className={style.cardP}>₩6,000 <small className={style.cardSmall}>/ 인</small></p>
             </div>
           </div>
         </section>

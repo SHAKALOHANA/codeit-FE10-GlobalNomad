@@ -179,9 +179,26 @@ export const cardSmall = style({
   fontWeight: theme.text['md-regular'].fontWeight,
 });
 
+export const tagContainer = style({
+  display: 'flex',
+  gap: '10px',
+  margin: '24px',
+});
+
+export const tags = style({
+  width: '127px',
+  height: '58px',
+  border: `1px solid ${theme.colors.green1}`,
+  borderRadius: '15px',
+  textAlign: 'center',
+  fontSize: theme.text['2lg-medium'].fontSize,
+  fontWeight: theme.text['2lg-medium'].fontWeight,
+  lineHeight: theme.text['2lg-medium'].lineHeight,
+  padding: '16px',
+});
+
 export const cardActivityContainer = style({
   width: '100%',
-  height: '897px',
   display: 'grid',
   gridTemplateColumns: 'repeat(4, 1fr)',
   gridTemplateRows: 'repeat(2, 1fr)',
@@ -209,6 +226,8 @@ export const cardActivity = style({
 
 export const cardActivityImage = style({
   width: '100%',
+  height: 'auto',
+  aspectRatio: '1/1',
   borderRadius: '20px',
   selectors: {
     '&::after': {
@@ -223,11 +242,18 @@ export const pagination = style({
   display: 'flex',
   justifyContent: 'center',
   gap: '10px',
+  marginBottom: '50px',
 });
 
 export const pagBu = style({
   padding: '5px 10px',
-  border: '1px solid #ddd',
+  border: `1px solid ${theme.colors.green1}`,
+  borderRadius: '15px',
   backgroundColor: theme.colors.white,
+  color: theme.colors.green1,
+  fontSize: theme.text['2lg-regular'].fontSize,
+  fontWeight: theme.text['2lg-regular'].fontWeight,
   cursor: 'pointer',
+  width: '55px',
+  height: '55px',
 });
