@@ -49,7 +49,8 @@ export const discriptionContainer = style({
   backgroundColor: theme.colors.white,
   border: '1px solid #79747e',
   borderRadius: '4px',
-  padding: '0px 10px',
+  padding: '20px 10px',
+  marginTop: '20px',
 });
 
 export const dateContainer = style({
@@ -70,7 +71,6 @@ export const dateContainer = style({
     },
     [mediaQueries.mobile]: {
       width: '130px',
-      height: '44px',
     },
   },
 });
@@ -80,7 +80,7 @@ export const reservationContainer = style({
   height: '100%',
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'flex-start',
 
   '@media': {
     [mediaQueries.tablet]: {
@@ -105,9 +105,9 @@ export const addedDateContainer = style({
   backgroundColor: theme.colors.white,
   border: '1px solid #79747e',
   borderRadius: '4px',
+  padding: '8px',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
 
   '@media': {
     [mediaQueries.tablet]: {
@@ -251,6 +251,93 @@ export const deleteButton = style({
     [mediaQueries.mobile]: {
       width: '24px',
       height: '24px',
+    },
+  },
+});
+
+export const qqq = style({
+  width: '792px',
+  height: '48px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: '20px',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '429px',
+    },
+    [mediaQueries.mobile]: {
+      width: '343px',
+    },
+  },
+});
+
+export const inputWithPlaceholder = style({
+  fontSize: '14px',
+  color: '#000000',
+  resize: 'none',
+
+  selectors: {
+    '&::placeholder': {
+      color: '#a1a1a1',
+      fontSize: '14px',
+    },
+  },
+});
+
+export const tildeSymbol = style({
+  display: 'inline',
+  '@media': {
+    [mediaQueries.tablet]: {
+      display: 'none',
+    },
+    [mediaQueries.mobile]: {
+      display: 'none',
+    },
+  },
+});
+
+export const addedStartTimeContainer = style({
+  width: '140px',
+  height: '56px',
+  borderRadius: '4px',
+  border: `1px solid ${theme.colors.gray2}`,
+  backgroundColor: theme.colors.white,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '0 10px',
+  cursor: 'pointer',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '104px',
+    },
+    [mediaQueries.mobile]: {
+      width: '79px',
+    },
+  },
+});
+
+export const addedEndTimeContainer = style({
+  width: '140px',
+  height: '56px',
+  borderRadius: '4px',
+  border: `1px solid ${theme.colors.gray2}`,
+  backgroundColor: theme.colors.white,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '0 10px',
+  cursor: 'pointer',
+
+  '@media': {
+    [mediaQueries.tablet]: {
+      width: '104px',
+    },
+    [mediaQueries.mobile]: {
+      width: '79px',
     },
   },
 });

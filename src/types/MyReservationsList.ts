@@ -16,7 +16,7 @@ export const STATUS_LIST: ReservationStatus[] = [
   ReservationStatus.completed_experience,
 ];
 
-export interface Reservations {
+export interface ReservationsType {
   id: number;
   teamId: string;
   userId: number;
@@ -37,9 +37,9 @@ export interface Reservations {
   updatedAt: string;
 }
 
-export interface MyReservations {
+export interface MyReservationsType {
   cursorId: number;
-  reservations: Reservations[];
+  reservations: ReservationsType[];
   totalCount: number;
 }
 

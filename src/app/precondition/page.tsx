@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
 import Calendar from './FullCalendar';
 
+
 import { mainContainer, sideContainer } from './page.css';
 
 const Precondition = () => {
@@ -29,6 +30,7 @@ const Precondition = () => {
       <div className={mainContainer}>
         {!isMobile && <SideNavigationMenu />}
         <div className={sideContainer}>
+
           <h1>예약 현황</h1>
           <Calendar />
         </div>

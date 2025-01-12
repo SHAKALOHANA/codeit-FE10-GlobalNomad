@@ -1,4 +1,4 @@
-export interface MyActivities {
+export interface MyActivitiesType {
   cursorId: number;
   totalCount: number;
   activities: [
