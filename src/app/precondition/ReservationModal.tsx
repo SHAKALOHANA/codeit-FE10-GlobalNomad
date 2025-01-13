@@ -10,6 +10,7 @@ import {
   buttonContainer,
 } from './ReservationModal.css';
 import CustomButton from '../../components/CustomButton';
+import TimeDropDown from './TimeDropDown';
 
 interface ReservationModalProps {
   date: string | null;
@@ -42,12 +43,16 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       </div>
       <h2>예약 날짜</h2>
       <p>{date}</p>
+      <TimeDropDown
+        selectedActivityId={3593} // 적절한 활동 ID로 변경해야 함
+        onTimeSelect={(time) => console.log('선택된 시간:', time)} // 선택된 시간을 처리하는 함수
+      />
       <h2>예약 내역</h2>
       <div className={reservationContainer}>
         <p>닉네임</p>
         <p>인원</p>
         <div className={buttonContainer}>
-          <CustomButton mode="reservationFinalize">등록하기</CustomButton>
+          <CustomButton mode="reservationFinalize">승인하기</CustomButton>
           <CustomButton mode="reservationReject">거절하기</CustomButton>
         </div>
       </div>
@@ -55,7 +60,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         <p>닉네임</p>
         <p>인원</p>
         <div className={buttonContainer}>
-          <CustomButton mode="reservationFinalize">등록하기</CustomButton>
+          <CustomButton mode="reservationFinalize">승인하기</CustomButton>
           <CustomButton mode="reservationReject">거절하기</CustomButton>
         </div>
       </div>
