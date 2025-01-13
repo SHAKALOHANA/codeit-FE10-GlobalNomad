@@ -5,55 +5,92 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { EventClickArg } from '@fullcalendar/core';
 import koLocale from '@fullcalendar/core/locales/ko';
 import ReservationModal from './ReservationModal';
-import { headerToolbar, dayCellContent } from './FullCalendar.css';
+import {
+  pendingEvent,
+  completedEvent,
+  confirmedEvent,
+} from './FullCalendar.css';
 
 interface CalendarProps {
-  selectedTitle: string;
+  selectedId: string;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ selectedTitle }) => {
-  const [events, setEvents] = useState<{ title: string; date: string }[]>([]);
+const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
+  const [events, setEvents] = useState<
+    { title: string; date: string; classNames?: string[] }[]
+  >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [currentMonth, setCurrentMonth] = useState<number>(
+    new Date().getMonth() + 1
+  );
+  const [currentYear, setCurrentYear] = useState<number>(
+    new Date().getFullYear()
+  );
 
   const fetchEvents = async () => {
     try {
       const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjcwODA2MSwiZXhwIjoxNzM2NzA5ODYxLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.WTy11QmdbrKRBd9RZeGhNImJfM4hKuHC_NOsjByDzlI';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjgwMDU0MSwiZXhwIjoxNzM2ODAyMzQxLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.wn0icX6eRrgdXDtf_mRw__M5Gda9enqREXrYslkUC1w';
 
-      const response = await fetch(
-        'https://sp-globalnomad-api.vercel.app/10-1/my-activities?size=40',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
+        currentMonth
+      ).padStart(2, '0')}`;
+
+      console.log('API 호출 URL:', url);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch events: ${response.statusText}`);
+        console.error('API 호출 실패:', response.status, response.statusText);
+        return;
       }
 
       const data = await response.json();
+      console.log('API 응답 데이터:', data);
 
-      const filteredActivities = data.activities.filter(
-        (activity: { title: string }) => activity.title === selectedTitle
-      );
+      if (!Array.isArray(data)) {
+        console.error('Invalid data format:', data);
+        return;
+      }
 
-      const dateCount: { [key: string]: number } = {};
-      filteredActivities.forEach((activity: { createdAt: string }) => {
-        const date = activity.createdAt.split('T')[0];
-        dateCount[date] = (dateCount[date] || 0) + 1;
+      const apiEvents = data.flatMap((entry) => {
+        const { date, reservations } = entry;
+        const eventsForDate = [];
+
+        if (reservations.pending > 0) {
+          eventsForDate.push({
+            title: `예약 ${reservations.pending}`,
+            date,
+            classNames: ['pending'],
+          });
+        }
+
+        if (reservations.completed > 0) {
+          eventsForDate.push({
+            title: `완료 ${reservations.completed}`,
+            date,
+            classNames: ['completed'],
+          });
+        }
+
+        if (reservations.confirmed > 0) {
+          eventsForDate.push({
+            title: `승인 ${reservations.confirmed}`,
+            date,
+            classNames: ['confirmed'],
+          });
+        }
+
+        return eventsForDate;
       });
-
-      const apiEvents = Object.entries(dateCount).map(([date, count]) => ({
-        title: count > 1 ? `예약 ${count}` : '예약 1',
-        date,
-      }));
 
       setEvents(apiEvents);
     } catch (error) {
@@ -62,17 +99,17 @@ const Calendar: React.FC<CalendarProps> = ({ selectedTitle }) => {
   };
 
   useEffect(() => {
-    if (selectedTitle !== '체험을 선택하세요') {
+    if (selectedId) {
       fetchEvents();
     }
-  }, [selectedTitle]);
+  }, [selectedId, currentYear, currentMonth]);
 
   const handleDateClick = (info: { dateStr: string }) => {
-    setSelectedDate(info.dateStr); // 모달에 날짜 전달
+    setSelectedDate(info.dateStr);
   };
 
   const handleCloseModal = () => {
-    setSelectedDate(null); // 모달 닫기
+    setSelectedDate(null);
   };
 
   return (
@@ -92,10 +129,25 @@ const Calendar: React.FC<CalendarProps> = ({ selectedTitle }) => {
         }}
         dayHeaderFormat={{ weekday: 'short' }}
         dayCellContent={(arg) => (
-          <div className={dayCellContent}>
-            {arg.dayNumberText.replace('일', '')}
-          </div>
+          <div>{arg.dayNumberText.replace('일', '')}</div>
         )}
+        eventContent={(eventInfo) => {
+          let eventStyle = '';
+
+          if (eventInfo.event.classNames.includes('pending')) {
+            eventStyle = pendingEvent;
+          } else if (eventInfo.event.classNames.includes('completed')) {
+            eventStyle = completedEvent;
+          } else if (eventInfo.event.classNames.includes('confirmed')) {
+            eventStyle = confirmedEvent;
+          }
+
+          return (
+            <div className={eventStyle}>
+              <span>{eventInfo.event.title}</span>
+            </div>
+          );
+        }}
       />
       <ReservationModal date={selectedDate} onClose={handleCloseModal} />
     </div>

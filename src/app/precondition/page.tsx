@@ -23,7 +23,7 @@ const Precondition = () => {
         <div className={sideContainer}>
           <h1>예약 현황</h1>
           <ExperienceNameDropdown onCategorySelect={handleCategoryChange} />
-          <Calendar selectedTitle={category} />
+          <Calendar selectedId={category} />
         </div>
       </div>
     </div>
