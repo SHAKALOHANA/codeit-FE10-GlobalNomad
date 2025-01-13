@@ -11,9 +11,8 @@ export const container = style({
 });
 
 export const card = style({
-  width: "496px",
+  width: "700px",
   height: "803px",
-  backgroundColor: theme.colors.white,
   borderRadius: "16px",
   padding: "80px 48px",
   display: "flex",
@@ -57,7 +56,7 @@ export const signinBox = style({
   display: "flex",
   flexDirection: "column",
   gap: "15px",
-  padding: "56px 32px",
+  padding: "56px 0",
 });
 
 export const signinBtn = style({
@@ -66,12 +65,12 @@ export const signinBtn = style({
   borderRadius: '6px',
   color: theme.colors.white,
   backgroundColor: theme.colors.nomadBlack,
-  marginBottom: '40px',
 });
 
 export const signupArea = style({
   display: "flex",
   gap: "10px",
+  marginBottom: "48px",
 })
 
 export const text = style({
