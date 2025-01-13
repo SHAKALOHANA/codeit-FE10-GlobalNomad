@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
-import CategoryDropDown from './CategoryDropDown';
+import CategoryDropDown from './CategoryDropdown';
 import StartTimeDropDown from './StartTimeDropDown';
 import EndTimeDropDown from './EndTimeDropDown';
 import { DayPicker } from 'react-day-picker';

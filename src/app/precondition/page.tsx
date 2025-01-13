@@ -1,38 +1,29 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
 import Calendar from './FullCalendar';
-
+import ExperienceNameDropdown from './ExperienceNameDropdown';
 
 import { mainContainer, sideContainer } from './page.css';
 
 const Precondition = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [category, setCategory] = useState<string>('체험을 선택하세요');
 
-  const handleResize = () => {
-    setIsMobile(window.innerWidth < 767);
+  const handleCategoryChange = (selectedCategory: string) => {
+    setCategory(selectedCategory);
   };
-
-  useEffect(() => {
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   return (
     <div>
       <Header />
       <div className={mainContainer}>
-        {!isMobile && <SideNavigationMenu />}
+        <SideNavigationMenu />
         <div className={sideContainer}>
-
           <h1>예약 현황</h1>
-          <Calendar />
+          <ExperienceNameDropdown onCategorySelect={handleCategoryChange} />
+          <Calendar selectedTitle={category} />
         </div>
       </div>
     </div>

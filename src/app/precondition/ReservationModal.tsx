@@ -1,3 +1,7 @@
+'use client';
+
+import React from 'react';
+import Image from 'next/image';
 import {
   modalContainer,
   header,
@@ -5,10 +9,19 @@ import {
   reservationContainer,
   buttonContainer,
 } from './ReservationModal.css';
-import Image from 'next/image';
 import CustomButton from '../../components/CustomButton';
 
-const ReservationModal = () => {
+interface ReservationModalProps {
+  date: string | null;
+  onClose: () => void;
+}
+
+const ReservationModal: React.FC<ReservationModalProps> = ({
+  date,
+  onClose,
+}) => {
+  if (!date) return null; // 날짜가 없으면 모달을 렌더링하지 않음
+
   return (
     <div className={modalContainer}>
       <div className={header}>
@@ -19,6 +32,7 @@ const ReservationModal = () => {
           width={40}
           height={40}
           style={{ cursor: 'pointer' }}
+          onClick={onClose}
         />
       </div>
       <div className={menu}>
@@ -27,6 +41,7 @@ const ReservationModal = () => {
         <p>거절</p>
       </div>
       <h2>예약 날짜</h2>
+      <p>{date}</p>
       <h2>예약 내역</h2>
       <div className={reservationContainer}>
         <p>닉네임</p>

@@ -6,7 +6,7 @@ import {
   DropDownBoxWrap,
   CategoryMenuBox,
   ListItem,
-} from './CategoryDropDown.css';
+} from './CategoryDropdown.css';
 
 interface CategoryDropDownProps {
   onCategorySelect: (category: string) => void;
