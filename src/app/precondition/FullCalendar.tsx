@@ -31,8 +31,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
 
   const fetchEvents = async () => {
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjgwMDU0MSwiZXhwIjoxNzM2ODAyMzQxLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.wn0icX6eRrgdXDtf_mRw__M5Gda9enqREXrYslkUC1w';
+      const token = ''; //토큰
 
       const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
         currentMonth

@@ -27,8 +27,7 @@ const ExperienceNameDropdown = ({
 
   const fetchActivities = async () => {
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjgwMDU0MSwiZXhwIjoxNzM2ODAyMzQxLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.wn0icX6eRrgdXDtf_mRw__M5Gda9enqREXrYslkUC1w';
+      const token = ''; //토큰
 
       const response = await fetch(
         'https://sp-globalnomad-api.vercel.app/10-1/my-activities?size=40',
