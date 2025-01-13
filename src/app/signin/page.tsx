@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { postLogIn } from '../../../apis/authApi';
+import { postLogIn } from '../api/authApi';
+import SocialLogin from './socialSignin';
 import Link from 'next/link';
 import axios from 'axios';
 import Image from 'next/image';
@@ -28,6 +29,8 @@ interface ApiError {
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // TODO: error가 세개가 모두 잘 쓰이는지 확인 필요
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -41,11 +44,13 @@ const SignIn = () => {
   const handleEmailBlur = () => {
     if (!email) {
       setEmailError('이메일은 필수 입력입니다.');
-    } else if (!validateEmail(email)) {
-      setEmailError('이메일 형식으로 작성해 주세요.');
-    } else {
-      setEmailError('');
+      return;
     }
+    if (!validateEmail(email)) {
+      setEmailError('이메일 형식으로 작성해 주세요.');
+      return;
+    }
+    setEmailError('');
   };
 
   const handlePasswordBlur = () => {
@@ -65,12 +70,15 @@ const SignIn = () => {
     }
     // 로그인 API 호출
     try {
+      console.log('Calling login API...');
       const data = await postLogIn({ email, password });
+      console.log('Login response:', data);
       localStorage.setItem('accessToken', data.accessToken); // accessToken 저장
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('email', data.user.email);
       router.push('/');
     } catch (error) {
+      console.error('Error during login:', error);
       if (axios.isAxiosError(error)) {
         // Axios 에러인 경우
         const apiError = error.response?.data as ApiError; // 서버에서 반환한 에러 메시지
@@ -82,16 +90,11 @@ const SignIn = () => {
       setEmailError('이메일 혹은 비밀번호를 확인해주세요.');
     }
   };
-  const handleKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      handleLogin();
-    }
-  };
 
   return (
     <div className={container}>
       <div className={card}>
-        <div className={logo}>
+        <Link href="/" className={logo}>
           <Image
             src="/icons/logoGroup.svg"
             alt="로고"
@@ -99,47 +102,51 @@ const SignIn = () => {
             height={180}
             priority
           />
-        </div>
-        <div>
-          <label className={label}>이메일</label>
-          <input
-            type="text"
-            placeholder="이메일 입력"
-            className={inputField}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={handleEmailBlur}
-            onKeyPress={handleKeyPress}
-          />
-          {emailError && (
-            <p className={`${errorMessage} ${emailError ? errorVisible : ''}`}>
-              {emailError}
-            </p>
-          )}
-        </div>
-        <div>
-          <label className={label}>비밀번호</label>
-          <input
-            type="password"
-            placeholder="비밀번호 입력"
-            className={inputField}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onBlur={handlePasswordBlur}
-            onKeyPress={handleKeyPress}
-          />
-          {passwordError && (
-            <p className={`${errorMessage} ${emailError ? errorVisible : ''}`}>
-              {passwordError}
-            </p>
-          )}
-          {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
-        </div>
-        <div className={signinBox}>
-          <button onClick={handleLogin} className={signinBtn}>
-            로그인 하기
-          </button>
-        </div>
+        </Link>
+        <form onSubmit={handleLogin}>
+          <div>
+            <label className={label}>이메일</label>
+            <input
+              type="text"
+              placeholder="이메일 입력"
+              className={inputField}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={handleEmailBlur}
+            />
+            {emailError && (
+              <p
+                className={`${errorMessage} ${emailError ? errorVisible : ''}`}
+              >
+                {emailError}
+              </p>
+            )}
+          </div>
+          <div>
+            <label className={label}>비밀번호</label>
+            <input
+              type="password"
+              placeholder="비밀번호 입력"
+              className={inputField}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={handlePasswordBlur}
+            />
+            {passwordError && (
+              <p
+                className={`${errorMessage} ${emailError ? errorVisible : ''}`}
+              >
+                {passwordError}
+              </p>
+            )}
+            {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
+          </div>
+          <div className={signinBox}>
+            <button type="submit" className={signinBtn}>
+              로그인 하기
+            </button>
+          </div>
+        </form>
         <div className={signupArea}>
           <p className={text}>회원이 아니신가요?</p>
           <div>
@@ -147,6 +154,11 @@ const SignIn = () => {
               회원가입하기
             </Link>
           </div>
+        </div>
+        <div>
+          {loginError && <div className="error-message">{loginError}</div>}{' '}
+          {/* 오류 메시지 표시 */}
+          <SocialLogin setLoginError={setLoginError} />
         </div>
       </div>
     </div>
