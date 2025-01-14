@@ -1,12 +1,18 @@
+'use client'
+
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import React from "react";
+import Map from "../../components/Map";
+import BasicMap from "@/components/Kakaomap";
+//import { useState , useEffect } from "react";
 import * as styles from "./detail.css";
 
 export default function Detail() {
+  //const [address, setAddress] = useState("");
+
   return (
     <div>
-      <Header />
+      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9070eccd51c9a7ceee9493b2835e12f7"></script>
     <div className={styles.container}>
       {/* 제목 섹션 */}
       <h1 className={styles.title}>함께 배우면 즐거운 스트릿 댄스</h1>
@@ -55,14 +61,12 @@ export default function Detail() {
       {/* 지도 섹션 */}
       <section className={styles.section}>
       <br /><hr /><br />
-      <div className={styles.mapContainer}>
-      <img
-          src="https://via.placeholder.com/800x500"
-          alt="Map"
-          className={styles.mapImage}
-        />
-        
-      </div>
+        <div className={styles.mapContainer}>
+          {/*}
+          <Map address={"서울 송파구 올림픽로 240"} />
+          */}
+          <BasicMap />
+        </div>
       </section>
       <br /><br /><hr />
 
@@ -123,7 +127,6 @@ export default function Detail() {
         </div>
       </div>
     </div>
-    <Footer />
     </div>
   );
 }
