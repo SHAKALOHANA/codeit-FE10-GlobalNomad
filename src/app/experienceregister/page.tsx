@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
+import CategoryDropDown from './CategoryDropdown';
+import StartTimeDropDown from './StartTimeDropDown';
+import EndTimeDropDown from './EndTimeDropDown';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
+import CustomButton from '../../components/CustomButton';
 import {
   mainContainer,
   sideContainer,
@@ -25,12 +28,38 @@ import {
   introContainer,
   images,
   deleteButton,
+  qqq,
+  inputWithPlaceholder,
+  tildeSymbol,
+  addedStartTimeContainer,
+  addedEndTimeContainer,
 } from './page.css';
+
+interface Schedule {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+interface ActivityData {
+  title: string;
+  category: string;
+  description: string;
+  address: string;
+  price: number;
+  schedules: Schedule[];
+  bannerImageUrl: string;
+  subImageUrls: string[];
+}
 
 const ExperienceRegister = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [dates, setDates] = useState<string[]>([]);
+  const [dates, setDates] = useState<
+    { date: string; startTime: string; endTime: string }[]
+  >([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [startTime, setStartTime] = useState<string>('시간선택');
+  const [endTime, setEndTime] = useState<string>('시간선택');
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [bannerImage, setBannerImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -39,20 +68,36 @@ const ExperienceRegister = () => {
   const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
   const [price, setPrice] = useState<string>('');
   const [priceError, setPriceError] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [category, setCategory] = useState<string>('');
+
+  const handleCategoryChange = (selectedCategory: string) => {
+    console.log('선택된 카테고리:', selectedCategory);
+    setCategory(selectedCategory);
+  };
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(event.target.value);
+  };
 
   const handleResize = () => {
     setIsMobile(window.innerWidth < 767);
   };
 
   const handleAddDate = () => {
-    if (selectedDate) {
-      const year = selectedDate.getFullYear().toString().slice(-2);
+    if (selectedDate && startTime !== '시간선택' && endTime !== '시간선택') {
+      const year = selectedDate.getFullYear();
       const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
       const day = String(selectedDate.getDate()).padStart(2, '0');
-      const formattedDate = `${year}/${month}/${day}`;
-      setDates([...dates, formattedDate]);
-      setSelectedDate(undefined);
-      setIsCalendarVisible(false);
+      const formattedDate = `${year}-${month}-${day}`;
+      setDates([...dates, { date: formattedDate, startTime, endTime }]);
     }
   };
 
@@ -104,6 +149,53 @@ const ExperienceRegister = () => {
     setIsPostcodeVisible(true);
   };
 
+  const handleSubmit = async () => {
+    const requestData: ActivityData = {
+      title,
+      category,
+      description,
+      address,
+      price: Number(price),
+      schedules: dates.map((date) => ({
+        date: date.date,
+        startTime: date.startTime,
+        endTime: date.endTime,
+      })),
+      bannerImageUrl:
+        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/10-1_1361_1736271222406.png',
+      subImageUrls: [
+        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/10-1_1361_1736271352229.png',
+      ],
+    };
+
+    try {
+      const token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjI3NjEyMiwiZXhwIjoxNzM2Mjc3OTIyLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.h74PY6G1hbQvxaLTlj36ln7__b0CivI7nexUpn2UKG4';
+      const response = await fetch(
+        'https://sp-globalnomad-api.vercel.app/10-1/activities',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+
+      if (response.ok) {
+        alert('성공');
+      } else {
+        const errorText = await response.text();
+        console.error('API 응답 실패:', errorText);
+        alert('실패');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('에러 발생');
+    }
+  };
+
   useEffect(() => {
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -115,31 +207,32 @@ const ExperienceRegister = () => {
 
   return (
     <div>
-      <Header />
       <div className={mainContainer}>
         {!isMobile && <SideNavigationMenu />}
         <div className={sideContainer}>
-          <h2 style={{ marginTop: '0px' }}>내 체험 등록</h2>
+          <div className={qqq}>
+            <h1>내 체험 등록</h1>
+            <CustomButton mode="experienceRegistration" onClick={handleSubmit}>
+              등록하기
+            </CustomButton>
+          </div>
           <input
-            className={contentContainer}
+            className={`${contentContainer} ${inputWithPlaceholder}`}
             type="text"
             placeholder="제목"
             style={{ marginBottom: '20px' }}
+            onChange={handleTitleChange}
           />
-          <input
-            className={contentContainer}
-            type="text"
-            placeholder="카테고리"
-            style={{ marginBottom: '20px' }}
-          />
-          <input
-            className={discriptionContainer}
-            type="text"
+          <CategoryDropDown onCategorySelect={handleCategoryChange} />
+          <textarea
+            className={`${discriptionContainer} ${inputWithPlaceholder}`}
             placeholder="설명"
+            onChange={handleDescriptionChange}
           />
+
           <h2>가격</h2>
           <input
-            className={contentContainer}
+            className={`${contentContainer} ${inputWithPlaceholder}`}
             type="text"
             placeholder="가격"
             value={price}
@@ -152,7 +245,7 @@ const ExperienceRegister = () => {
           <h2>주소</h2>
           <div style={{ position: 'relative' }}>
             <input
-              className={contentContainer}
+              className={`${contentContainer} ${inputWithPlaceholder}`}
               type="text"
               placeholder="주소를 입력해주세요"
               value={address}
@@ -165,10 +258,15 @@ const ExperienceRegister = () => {
           {isPostcodeVisible && (
             <DaumPostcode onComplete={handlePostcodeComplete} />
           )}
+
           <h2>예약 가능한 시간대</h2>
           <div className={reservationContainer}>
             <div className={dateContainer}>
-              <p>
+              <p
+                style={{
+                  color: selectedDate ? 'black' : '#a1a1a1',
+                }}
+              >
                 {selectedDate
                   ? `${selectedDate.getFullYear().toString().slice(-2)}/${(
                       selectedDate.getMonth() + 1
@@ -200,20 +298,41 @@ const ExperienceRegister = () => {
                 </div>
               )}
             </div>
+            <StartTimeDropDown onChange={setStartTime} selected={startTime} />
+            <p className={tildeSymbol}>~</p>
+            <EndTimeDropDown onChange={setEndTime} selected={endTime} />
             <Image
               src="../../../icons/plusbutton.svg"
               alt="추가버튼"
               width={56}
               height={56}
               onClick={handleAddDate}
-              style={{ cursor: 'pointer' }}
+              style={{
+                cursor:
+                  startTime === '시간선택' ||
+                  endTime === '시간선택' ||
+                  !selectedDate
+                    ? 'not-allowed'
+                    : 'pointer',
+                opacity:
+                  startTime === '시간선택' ||
+                  endTime === '시간선택' ||
+                  !selectedDate
+                    ? 0.5
+                    : 1,
+              }}
             />
           </div>
           <div className={line}></div>
           <div>
-            {dates.map((date, index) => (
+            {dates.map((dateInfo, index) => (
               <div key={index} className={addedDateWrapper}>
-                <div className={addedDateContainer}>{date}</div>
+                <div className={addedDateContainer}>{dateInfo.date}</div>
+                <div className={addedStartTimeContainer}>
+                  {dateInfo.startTime}
+                </div>
+                <p className={tildeSymbol}>~</p>
+                <div className={addedEndTimeContainer}>{dateInfo.endTime}</div>
                 <Image
                   src="../../../icons/minusbutton.svg"
                   alt="빼기버튼"
@@ -225,6 +344,7 @@ const ExperienceRegister = () => {
               </div>
             ))}
           </div>
+
           <h2>배너 이미지</h2>
           <div className={bannerContainer}>
             <label htmlFor="banner-upload" className={imageRegister}>
@@ -253,6 +373,7 @@ const ExperienceRegister = () => {
               </div>
             )}
           </div>
+
           <h2>소개 이미지</h2>
           <div className={introContainer}>
             <label htmlFor="intro-upload" className={imageRegister}>
