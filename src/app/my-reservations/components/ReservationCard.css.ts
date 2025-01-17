@@ -76,11 +76,11 @@ export const reservationStatus1 = style({
 
 export const reservationStatus2 = styleVariants({
   pending: {
-    color: theme.colors.yellow1,
+    color: theme.colors.blue2,
   },
 
   confirmed: {
-    color: theme.colors.orange1,
+    color: theme.colors.yellow1,
   },
 
   declined: {
@@ -92,10 +92,6 @@ export const reservationStatus2 = styleVariants({
   },
 
   completed: {
-    color: theme.colors.blue2,
-  },
-
-  completed_experience: {
     color: theme.colors.gray2,
   },
 });

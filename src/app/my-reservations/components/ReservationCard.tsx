@@ -6,23 +6,12 @@ import CustomButton from '@/components/CustomButton';
 import ReviewModal from './ReviewModal';
 import * as S from './ReservationCard.css';
 import {
-  ReservationStatus,
   ReservationsType,
+  ReservationStatus,
 } from '@/types/MyReservationsList';
 import { translateStatus } from '@/utils/translateStatus';
 import { useActivityNavigation } from '@/hooks/useActivityNavigation';
-import { instance } from '../../../../apis/instance';
-
-export type ButtonMode = 'none' | 'reservationCancel' | 'writeReview';
-
-export const statusToButtonMode: Record<ReservationStatus, ButtonMode> = {
-  [ReservationStatus.pending]: 'reservationCancel',
-  [ReservationStatus.confirmed]: 'reservationCancel',
-  [ReservationStatus.declined]: 'none',
-  [ReservationStatus.canceled]: 'none',
-  [ReservationStatus.completed]: 'reservationCancel',
-  [ReservationStatus.completed_experience]: 'writeReview',
-};
+import { instance } from '@/app/api/instance';
 
 export default function ReservationCard({
   id,
@@ -33,10 +22,11 @@ export default function ReservationCard({
   date,
   startTime,
   endTime,
+  reviewSubmitted,
 }: ReservationsType) {
   const NavigateToActivity = useActivityNavigation();
 
-  const variantClass = S.reservationStatus2;
+  const variantClass = S.reservationStatus2[status as ReservationStatus];
   const combinedClassName = [S.reservationStatus1, variantClass].join(' ');
 
   const handleCancelReservation = async (reservationId: number) => {
@@ -55,7 +45,6 @@ export default function ReservationCard({
   const renderButtonByMode = () => {
     switch (status) {
       case 'pending':
-      case 'confirmed':
         return (
           <CustomButton
             mode="reservationCancel"
@@ -63,19 +52,23 @@ export default function ReservationCard({
           />
         );
       case 'completed':
-        return (
-          <ReviewModal
-            {...{
-              id,
-              activity,
-              totalPrice,
-              headCount,
-              date,
-              startTime,
-              endTime,
-            }}
-          />
-        );
+        if (reviewSubmitted) {
+          return <CustomButton mode="none" />;
+        } else {
+          return (
+            <ReviewModal
+              {...{
+                id,
+                activity,
+                totalPrice,
+                headCount,
+                date,
+                startTime,
+                endTime,
+              }}
+            />
+          );
+        }
       default:
         return <CustomButton mode="none" />;
     }

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Modal from './Modal';
 import StarRating from './StarRating';
 import CustomButton from '@/components/CustomButton';
-import { instance } from '../../../../apis/instance';
+import { instance } from '@/app/api/instance';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import * as S from './ReviewModal.css';
@@ -73,13 +73,13 @@ export default function ReviewModal({ ...reservation }: ReviewModalProps) {
 
       switch (status) {
         case 400:
-          alert(msg || '잘못된 요청입니다.(400)');
+          alert(msg || '리뷰 내용은 문자열로 입력해주세요.(400)');
           break;
         case 401:
           alert(msg || '로그인이 필요합니다.(401)');
           break;
         case 403:
-          alert(msg || '리뷰 작성 권한이 없습니다.(403)');
+          alert(msg || '본인의 예약만 리뷰를 작성할 수 있습니다.(403)');
           break;
         case 404:
           alert(msg || '존재하지 않는 예약입니다.(404)');
@@ -89,7 +89,7 @@ export default function ReviewModal({ ...reservation }: ReviewModalProps) {
           break;
         default:
           console.error('리뷰 작성 중 에러 발생:', error);
-          alert('리뷰 작성 실패! 다시 시도해 주세요.');
+          alert('리뷰 작성 실패! 잠시 후 다시 시도해주세요.');
       }
     },
   });

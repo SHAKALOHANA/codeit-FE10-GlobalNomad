@@ -15,7 +15,7 @@ export const myInfoContainer = style({
   flexDirection: 'column',
   justifyContent: 'center',
   width: '792px',
-  height: '580px',
+  height: '502px',
   gap: '24px',
   '@media': {
     [mediaQueries.tablet]: {

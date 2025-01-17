@@ -3,7 +3,7 @@ export const translateStatus = (status: string) => {
     case 'pending':
       return '예약 신청';
     case 'confirmed':
-      return '예약 완료';
+      return '예약 승인';
     case 'declined':
       return '예약 거절';
     case 'canceled':
@@ -18,7 +18,7 @@ export const translateStatus = (status: string) => {
 export const FIXED_OPTIONS = [
   { label: '전체', value: '' },
   { label: '예약 신청', value: 'pending' },
-  { label: '예약 완료', value: 'confirmed' },
+  { label: '예약 승인', value: 'confirmed' },
   { label: '예약 거절', value: 'declined' },
   { label: '예약 취소', value: 'canceled' },
   { label: '체험 완료', value: 'completed' },
