@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import * as S from './MyInfo.css';
 import CustomInput from '@/components/CustomInput';
 
@@ -34,6 +34,11 @@ export default function MyInfo({
 }: MyInfoProps) {
   const passwordsMatch = password === passwordConfirm;
 
+  const [isPasswordConfirmTouched, setPasswordConfirmTouched] = useState(false);
+
+  const showPasswordError =
+    isPasswordConfirmTouched && passwordConfirm.length > 0 && !passwordsMatch;
+
   return (
     <div className={S.container}>
       <div className={S.myInfoContainer}>
@@ -65,11 +70,11 @@ export default function MyInfo({
             type="password"
             value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
+            onBlur={() => setPasswordConfirmTouched(true)}
+            className={showPasswordError ? S.invalidInput : undefined}
           />
-          {password.length > 0 && !passwordsMatch && (
-            <div style={{ color: 'red', marginTop: '4px' }}>
-              비밀번호가 일치하지 않습니다.
-            </div>
+          {showPasswordError && (
+            <div className={S.errorMessage}>비밀번호가 일치하지 않습니다.</div>
           )}
         </div>
       </div>

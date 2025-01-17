@@ -36,7 +36,7 @@ export const sideNavigationNone = style({
 export const myInfoContainer = style({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   width: '792px',
   height: '580px',
   gap: '24px',

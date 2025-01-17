@@ -105,19 +105,6 @@ export default function MyPage() {
     updateUserMutation.mutate(updateBody);
   };
 
-  // ------------------ 화면 표시 ------------------
-  if (isLoading || isFetching) {
-    return <div className={S.myPageContainer}>로딩 중입니다...</div>;
-  }
-
-  if (error) {
-    return (
-      <div className={S.myPageContainer}>
-        오류가 발생했습니다: {error.message}
-      </div>
-    );
-  }
-
   return (
     <div className={S.myPageContainer}>
       <div className={S.sideNavigationNone}>
