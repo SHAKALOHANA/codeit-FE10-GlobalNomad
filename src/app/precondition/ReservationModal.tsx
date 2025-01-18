@@ -1,27 +1,31 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import {
-  modalContainer,
-  header,
-  menu,
-  reservationContainer,
-  buttonContainer,
-} from './ReservationModal.css';
-import CustomButton from '../../components/CustomButton';
+
+import { modalContainer, header, menu } from './ReservationModal.css';
 import TimeDropDown from './TimeDropDown';
+import ReservationContent from './ReservationContent';
+
 
 interface ReservationModalProps {
   date: string | null;
+  selectedActivityId: string;
   onClose: () => void;
 }
 
 const ReservationModal: React.FC<ReservationModalProps> = ({
   date,
+  selectedActivityId,
   onClose,
 }) => {
-  if (!date) return null; // 날짜가 없으면 모달을 렌더링하지 않음
+  const [scheduleId, setScheduleId] = useState<string>('');
+
+  const handleTimeSelect = (selectedScheduleId: string) => {
+    setScheduleId(selectedScheduleId);
+  };
+
+  if (!date) return null;
 
   return (
     <div className={modalContainer}>
@@ -44,26 +48,19 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       <h2>예약 날짜</h2>
       <p>{date}</p>
       <TimeDropDown
-        selectedActivityId={3593} // 적절한 활동 ID로 변경해야 함
-        onTimeSelect={(time) => console.log('선택된 시간:', time)} // 선택된 시간을 처리하는 함수
+
+        selectedActivityId={selectedActivityId}
+        selectedDate={date}
+        onTimeSelect={handleTimeSelect}
       />
       <h2>예약 내역</h2>
-      <div className={reservationContainer}>
-        <p>닉네임</p>
-        <p>인원</p>
-        <div className={buttonContainer}>
-          <CustomButton mode="reservationFinalize">승인하기</CustomButton>
-          <CustomButton mode="reservationReject">거절하기</CustomButton>
-        </div>
-      </div>
-      <div className={reservationContainer}>
-        <p>닉네임</p>
-        <p>인원</p>
-        <div className={buttonContainer}>
-          <CustomButton mode="reservationFinalize">승인하기</CustomButton>
-          <CustomButton mode="reservationReject">거절하기</CustomButton>
-        </div>
-      </div>
+      {scheduleId && (
+        <ReservationContent
+          selectedActivityId={selectedActivityId}
+          scheduleId={scheduleId}
+        />
+      )}
+
     </div>
   );
 };

@@ -23,3 +23,4 @@ export const FIXED_OPTIONS = [
   { label: '예약 취소', value: 'canceled' },
   { label: '체험 완료', value: 'completed' },
 ];
+

@@ -9,26 +9,43 @@ import {
 } from './TimeDropDown.css';
 
 interface TimeDropDownProps {
-  onTimeSelect: (timeRange: string) => void;
-  selectedActivityId: number;
+
+  onTimeSelect: (scheduleId: string) => void;
+  selectedActivityId: string;
+  selectedDate: string;
+
 }
 
 const TimeDropDown = ({
   onTimeSelect,
   selectedActivityId,
+
+  selectedDate,
+
 }: TimeDropDownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedTime, setSelectedTime] = useState<string>('시간을 선택하세요');
   const [timeRanges, setTimeRanges] = useState<string[]>([]);
 
-  const fetchTimeRanges = async (selectedActivityId: number) => {
+  const [scheduleIds, setScheduleIds] = useState<string[]>([]);
+
+  const fetchTimeRanges = async () => {
+    if (!selectedActivityId || !selectedDate) return;
+
     try {
+      const token =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzIyNTczNCwiZXhwIjoxNzM3MjI3NTM0LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.Q6zxT7DlD_PQU_b_3m685V-DZPNeKlck5TX82q8f588'; // 액세스 토큰을 여기에 채워넣으세요
+
       const response = await fetch(
-        `https://sp-globalnomad-api.vercel.app/10-1/activities/${selectedActivityId}`,
+        `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reserved-schedule?date=${selectedDate}`,
+
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+
+            Authorization: `Bearer ${token}`,
+
           },
         }
       );
@@ -38,9 +55,18 @@ const TimeDropDown = ({
       }
 
       const data = await response.json();
-      const fetchedTimeRanges = data.schedules.map(
-        (schedule: { startTime: string; endTime: string }) =>
-          `${schedule.startTime} ~ ${schedule.endTime}`
+
+
+      const fetchedTimeRanges = data.map(
+        (schedule: {
+          startTime: string;
+          endTime: string;
+          scheduleId: string;
+        }) => {
+          setScheduleIds((prev) => [...prev, schedule.scheduleId]);
+          return `${schedule.startTime} ~ ${schedule.endTime}`;
+        }
+
       );
 
       setTimeRanges(fetchedTimeRanges);
@@ -50,17 +76,17 @@ const TimeDropDown = ({
   };
 
   useEffect(() => {
-    if (selectedActivityId) {
-      fetchTimeRanges(selectedActivityId);
-    }
-  }, [selectedActivityId]);
+
+    fetchTimeRanges();
+  }, [selectedActivityId, selectedDate]);
 
   const onToggle = () => setIsOpen(!isOpen);
 
-  const onOptionClicked = (value: string) => {
-    setSelectedTime(value);
+  const onOptionClicked = (index: number) => {
+    setSelectedTime(timeRanges[index]);
     setIsOpen(false);
-    onTimeSelect(value);
+    onTimeSelect(scheduleIds[index]);
+
   };
 
   return (
@@ -90,7 +116,9 @@ const TimeDropDown = ({
               <li
                 key={index}
                 className={ListItem}
-                onClick={() => onOptionClicked(timeRange)}
+
+                onClick={() => onOptionClicked(index)}
+
               >
                 {timeRange}
               </li>
