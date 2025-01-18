@@ -7,7 +7,6 @@ import { modalContainer, header, menu } from './ReservationModal.css';
 import TimeDropDown from './TimeDropDown';
 import ReservationContent from './ReservationContent';
 
-
 interface ReservationModalProps {
   date: string | null;
   selectedActivityId: string;
@@ -20,9 +19,22 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   onClose,
 }) => {
   const [scheduleId, setScheduleId] = useState<string>('');
+  const [scheduleCount, setScheduleCount] = useState<{
+    pending: number;
+    confirmed: number;
+    declined: number;
+  }>({
+    pending: 0,
+    confirmed: 0,
+    declined: 0,
+  });
 
-  const handleTimeSelect = (selectedScheduleId: string) => {
+  const handleTimeSelect = (
+    selectedScheduleId: string,
+    count: { pending: number; confirmed: number; declined: number }
+  ) => {
     setScheduleId(selectedScheduleId);
+    setScheduleCount(count);
   };
 
   if (!date) return null;
@@ -41,14 +53,13 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         />
       </div>
       <div className={menu}>
-        <p>신청</p>
-        <p>승인</p>
-        <p>거절</p>
+        <p>신청 ({scheduleCount.pending})</p>
+        <p>승인 ({scheduleCount.confirmed})</p>
+        <p>거절 ({scheduleCount.declined})</p>
       </div>
       <h2>예약 날짜</h2>
       <p>{date}</p>
       <TimeDropDown
-
         selectedActivityId={selectedActivityId}
         selectedDate={date}
         onTimeSelect={handleTimeSelect}
@@ -60,7 +71,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           scheduleId={scheduleId}
         />
       )}
-
     </div>
   );
 };

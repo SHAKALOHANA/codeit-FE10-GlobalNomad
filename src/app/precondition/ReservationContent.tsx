@@ -28,7 +28,7 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
         if (!scheduleId || !selectedActivityId) return;
 
         const token =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzIyNTczNCwiZXhwIjoxNzM3MjI3NTM0LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.Q6zxT7DlD_PQU_b_3m685V-DZPNeKlck5TX82q8f588'; // 토큰은 주석으로 남겨두고 실제로 채우세요
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzIyOTY2OSwiZXhwIjoxNzM3MjMxNDY5LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.rwnptiH6B0zfk06XoUg7Fa7ngMNWAJRtuH_gpTWq4Rg'; // 토큰은 주석으로 남겨두고 실제로 채우세요
         const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reservations?size=10&scheduleId=${scheduleId}&status=pending`;
 
         const response = await fetch(url, {
