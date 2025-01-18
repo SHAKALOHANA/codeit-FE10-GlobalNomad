@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { modalContainer, header, menu } from './ReservationModal.css';
 import TimeDropDown from './TimeDropDown';
@@ -17,6 +17,12 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
   selectedActivityId,
   onClose,
 }) => {
+  const [scheduleId, setScheduleId] = useState<string>('');
+
+  const handleTimeSelect = (selectedScheduleId: string) => {
+    setScheduleId(selectedScheduleId);
+  };
+
   if (!date) return null;
 
   return (
@@ -42,10 +48,15 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       <TimeDropDown
         selectedActivityId={selectedActivityId}
         selectedDate={date}
-        onTimeSelect={(time) => console.log('선택된 시간:', time)}
+        onTimeSelect={handleTimeSelect}
       />
       <h2>예약 내역</h2>
-      <ReservationContent />
+      {scheduleId && (
+        <ReservationContent
+          selectedActivityId={selectedActivityId}
+          scheduleId={scheduleId}
+        />
+      )}
     </div>
   );
 };

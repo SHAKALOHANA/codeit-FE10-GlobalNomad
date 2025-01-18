@@ -9,7 +9,7 @@ import {
 } from './TimeDropDown.css';
 
 interface TimeDropDownProps {
-  onTimeSelect: (timeRange: string) => void;
+  onTimeSelect: (scheduleId: string) => void;
   selectedActivityId: string;
   selectedDate: string;
 }
@@ -22,6 +22,7 @@ const TimeDropDown = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedTime, setSelectedTime] = useState<string>('시간을 선택하세요');
   const [timeRanges, setTimeRanges] = useState<string[]>([]);
+  const [scheduleIds, setScheduleIds] = useState<string[]>([]);
 
   const fetchTimeRanges = async () => {
     if (!selectedActivityId || !selectedDate) return;
@@ -48,8 +49,14 @@ const TimeDropDown = ({
       const data = await response.json();
 
       const fetchedTimeRanges = data.map(
-        (schedule: { startTime: string; endTime: string }) =>
-          `${schedule.startTime} ~ ${schedule.endTime}`
+        (schedule: {
+          startTime: string;
+          endTime: string;
+          scheduleId: string;
+        }) => {
+          setScheduleIds((prev) => [...prev, schedule.scheduleId]);
+          return `${schedule.startTime} ~ ${schedule.endTime}`;
+        }
       );
 
       setTimeRanges(fetchedTimeRanges);
@@ -64,10 +71,10 @@ const TimeDropDown = ({
 
   const onToggle = () => setIsOpen(!isOpen);
 
-  const onOptionClicked = (value: string) => {
-    setSelectedTime(value);
+  const onOptionClicked = (index: number) => {
+    setSelectedTime(timeRanges[index]);
     setIsOpen(false);
-    onTimeSelect(value);
+    onTimeSelect(scheduleIds[index]);
   };
 
   return (
@@ -97,7 +104,7 @@ const TimeDropDown = ({
               <li
                 key={index}
                 className={ListItem}
-                onClick={() => onOptionClicked(timeRange)}
+                onClick={() => onOptionClicked(index)}
               >
                 {timeRange}
               </li>
