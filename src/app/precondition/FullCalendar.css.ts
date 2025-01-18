@@ -20,6 +20,6 @@ export const confirmedEvent = style({
   backgroundColor: theme.colors.orange2,
   color: theme.colors.orange1,
   padding: '5px',
-  borderRadius: '30px',
+  borderRadius: '50px',
 });
 

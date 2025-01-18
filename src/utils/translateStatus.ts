@@ -28,3 +28,4 @@ export const FIXED_OPTIONS = [
   { label: '예약 완료', value: 'completed' },
   { label: '체험 완료', value: 'completed_experience' },
 ];
+

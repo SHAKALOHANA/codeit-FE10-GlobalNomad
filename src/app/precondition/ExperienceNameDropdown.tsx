@@ -9,7 +9,7 @@ import {
 } from './ExperienceNameDropdown.css';
 
 interface ExperienceNameDropDownProps {
-  onCategorySelect: (categoryId: string) => void; // ID만 전달
+  onCategorySelect: (categoryId: string) => void;
 }
 
 interface Activity {
@@ -22,13 +22,13 @@ const ExperienceNameDropdown = ({
 }: ExperienceNameDropDownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedTitle, setSelectedTitle] =
-    useState<string>('체험을 선택하세요'); // 선택된 제목 표시
-  const [activities, setActivities] = useState<Activity[]>([]); // ID와 Title 저장
+    useState<string>('체험을 선택하세요');
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   const fetchActivities = async () => {
     try {
       const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjgwMDU0MSwiZXhwIjoxNzM2ODAyMzQxLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.wn0icX6eRrgdXDtf_mRw__M5Gda9enqREXrYslkUC1w';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzIyNTczNCwiZXhwIjoxNzM3MjI3NTM0LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.Q6zxT7DlD_PQU_b_3m685V-DZPNeKlck5TX82q8f588';
 
       const response = await fetch(
         'https://sp-globalnomad-api.vercel.app/10-1/my-activities?size=40',

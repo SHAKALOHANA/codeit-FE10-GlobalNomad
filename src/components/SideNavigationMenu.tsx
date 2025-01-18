@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import {
   containerBox,
   profileImage,
@@ -33,10 +34,6 @@ const SideNavigationMenu = () => {
       setActiveIndex(3);
     }
   }, [pathname]);
-
-  const handleClick = (index: number) => {
-    setActiveIndex(index);
-  };
 
   const handleProfileImageChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -97,82 +94,86 @@ const SideNavigationMenu = () => {
         />
       </div>
       <div className={navigationBoxes}>
-        <div
-          className={`${navigationBox} ${
-            activeIndex === 0 ? activeNavigationBox : ''
-          }`}
-          onClick={() => handleClick(0)}
-        >
-          <Image
-            className={`${navigationBoxImage} ${
-              activeIndex === 0 ? activeImage : inactiveImage
+        <Link href="/my-info">
+          <div
+            className={`${navigationBox} ${
+              activeIndex === 0 ? activeNavigationBox : ''
             }`}
-            src="../../../icons/myprofileicon.svg"
-            alt="내정보"
-            width={24}
-            height={24}
-          />
-          <p className={activeIndex === 0 ? activeText : inactiveText}>
-            내 정보
-          </p>
-        </div>
-        <div
-          className={`${navigationBox} ${
-            activeIndex === 1 ? activeNavigationBox : ''
-          }`}
-          onClick={() => handleClick(1)}
-        >
-          <Image
-            className={`${navigationBoxImage} ${
-              activeIndex === 1 ? activeImage : inactiveImage
+          >
+            <Image
+              className={`${navigationBoxImage} ${
+                activeIndex === 0 ? activeImage : inactiveImage
+              }`}
+              src="../../../icons/myprofileicon.svg"
+              alt="내정보"
+              width={24}
+              height={24}
+            />
+            <p className={activeIndex === 0 ? activeText : inactiveText}>
+              내 정보
+            </p>
+          </div>
+        </Link>
+        <Link href="/my-reservations">
+          <div
+            className={`${navigationBox} ${
+              activeIndex === 1 ? activeNavigationBox : ''
             }`}
-            src="../../../icons/reservationdetail.svg"
-            alt="예약내역"
-            width={24}
-            height={24}
-          />
-          <p className={activeIndex === 1 ? activeText : inactiveText}>
-            예약 내역
-          </p>
-        </div>
-        <div
-          className={`${navigationBox} ${
-            activeIndex === 2 ? activeNavigationBox : ''
-          }`}
-          onClick={() => handleClick(2)}
-        >
-          <Image
-            className={`${navigationBoxImage} ${
-              activeIndex === 2 ? activeImage : inactiveImage
+          >
+            <Image
+              className={`${navigationBoxImage} ${
+                activeIndex === 1 ? activeImage : inactiveImage
+              }`}
+              src="../../../icons/reservationdetail.svg"
+              alt="예약내역"
+              width={24}
+              height={24}
+            />
+            <p className={activeIndex === 1 ? activeText : inactiveText}>
+              예약 내역
+            </p>
+          </div>
+        </Link>
+        <Link href="/experienceregister">
+          <div
+            className={`${navigationBox} ${
+              activeIndex === 2 ? activeNavigationBox : ''
             }`}
-            src="../../../icons/experiencemanage.svg"
-            alt="내 체험 관리"
-            width={24}
-            height={24}
-          />
-          <p className={activeIndex === 2 ? activeText : inactiveText}>
-            내 체험 관리
-          </p>
-        </div>
-        <div
-          className={`${navigationBox} ${
-            activeIndex === 3 ? activeNavigationBox : ''
-          }`}
-          onClick={() => handleClick(3)}
-        >
-          <Image
-            className={`${navigationBoxImage} ${
-              activeIndex === 3 ? activeImage : inactiveImage
+          >
+            <Image
+              className={`${navigationBoxImage} ${
+                activeIndex === 2 ? activeImage : inactiveImage
+              }`}
+              src="../../../icons/experiencemanage.svg"
+              alt="내 체험 관리"
+              width={24}
+              height={24}
+            />
+            <p className={activeIndex === 2 ? activeText : inactiveText}>
+              내 체험 관리
+            </p>
+          </div>
+        </Link>
+        <Link href="/precondition">
+          <div
+            className={`${navigationBox} ${
+              activeIndex === 3 ? activeNavigationBox : ''
             }`}
-            src="../../../icons/precondition.svg"
-            alt="예약 현황"
-            width={24}
-            height={24}
-          />
-          <p className={activeIndex === 3 ? activeText : inactiveText}>
-            예약현황
-          </p>
-        </div>
+          >
+            <Image
+              className={`${navigationBoxImage} ${
+                activeIndex === 3 ? activeImage : inactiveImage
+              }`}
+              src="../../../icons/precondition.svg"
+              alt="예약 현황"
+              width={24}
+              height={24}
+            />
+            <p className={activeIndex === 3 ? activeText : inactiveText}>
+              예약현황
+            </p>
+          </div>
+        </Link>
       </div>
     </div>
   );
