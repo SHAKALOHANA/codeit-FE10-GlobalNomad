@@ -208,11 +208,47 @@ export const buttonVariants = styleVariants({
     },
   },
 
+  cancel: {
+    backgroundColor: theme.colors.nomadBlack,
+    color: theme.colors.white,
+    fontSize: theme.text['md-bold'].fontSize,
+    lineHeight: theme.text['md-bold'].lineHeight,
+    fontWeight: theme.text['md-bold'].fontWeight,
+    width: '80px',
+    height: '38px',
+    borderRadius: '1px',
+    outline: `1px solid ${theme.colors.nomadBlack}`,
+  },
+
+  delete: {
+    backgroundColor: theme.colors.nomadBlack,
+    color: theme.colors.white,
+    fontSize: theme.text['md-bold'].fontSize,
+    lineHeight: theme.text['md-bold'].lineHeight,
+    fontWeight: theme.text['md-bold'].fontWeight,
+    width: '80px',
+    height: '38px',
+    borderRadius: '1px',
+    outline: `1px solid ${theme.colors.nomadBlack}`,
+  },
+
+  no: {
+    backgroundColor: theme.colors.white,
+    color: theme.colors.nomadBlack,
+    fontSize: theme.text['md-bold'].fontSize,
+    lineHeight: theme.text['md-bold'].lineHeight,
+    fontWeight: theme.text['md-bold'].fontWeight,
+    width: '80px',
+    height: '38px',
+    borderRadius: '1px',
+    outline: `1px solid ${theme.colors.nomadBlack}`,
+  },
+
   none: {
     width: '120px',
     height: '48px',
     borderRadius: '8px',
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.gray9,
     color: theme.colors.white,
   },
 });

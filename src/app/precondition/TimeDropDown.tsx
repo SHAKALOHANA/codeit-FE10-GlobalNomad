@@ -9,19 +9,24 @@ import {
 } from './TimeDropDown.css';
 
 interface TimeDropDownProps {
+
   onTimeSelect: (scheduleId: string) => void;
   selectedActivityId: string;
   selectedDate: string;
+
 }
 
 const TimeDropDown = ({
   onTimeSelect,
   selectedActivityId,
+
   selectedDate,
+
 }: TimeDropDownProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedTime, setSelectedTime] = useState<string>('시간을 선택하세요');
   const [timeRanges, setTimeRanges] = useState<string[]>([]);
+
   const [scheduleIds, setScheduleIds] = useState<string[]>([]);
 
   const fetchTimeRanges = async () => {
@@ -33,11 +38,14 @@ const TimeDropDown = ({
 
       const response = await fetch(
         `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reserved-schedule?date=${selectedDate}`,
+
         {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+
             Authorization: `Bearer ${token}`,
+
           },
         }
       );
@@ -48,6 +56,7 @@ const TimeDropDown = ({
 
       const data = await response.json();
 
+
       const fetchedTimeRanges = data.map(
         (schedule: {
           startTime: string;
@@ -57,6 +66,7 @@ const TimeDropDown = ({
           setScheduleIds((prev) => [...prev, schedule.scheduleId]);
           return `${schedule.startTime} ~ ${schedule.endTime}`;
         }
+
       );
 
       setTimeRanges(fetchedTimeRanges);
@@ -66,6 +76,7 @@ const TimeDropDown = ({
   };
 
   useEffect(() => {
+
     fetchTimeRanges();
   }, [selectedActivityId, selectedDate]);
 
@@ -75,6 +86,7 @@ const TimeDropDown = ({
     setSelectedTime(timeRanges[index]);
     setIsOpen(false);
     onTimeSelect(scheduleIds[index]);
+
   };
 
   return (
@@ -104,7 +116,9 @@ const TimeDropDown = ({
               <li
                 key={index}
                 className={ListItem}
+
                 onClick={() => onOptionClicked(index)}
+
               >
                 {timeRange}
               </li>

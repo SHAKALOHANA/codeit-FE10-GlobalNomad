@@ -19,10 +19,12 @@ interface CalendarProps {
 
 const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
   const [events, setEvents] = useState<
+
     { title: string; date: string; classNames?: string[]; scheduleId: string }[]
   >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [scheduleId, setScheduleId] = useState<string | null>(null);
+
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth() + 1
   );
@@ -32,8 +34,10 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
 
   const fetchEvents = async () => {
     try {
+
       const token =
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzIyNTczNCwiZXhwIjoxNzM3MjI3NTM0LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.Q6zxT7DlD_PQU_b_3m685V-DZPNeKlck5TX82q8f588';
+
 
       const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
         currentMonth
@@ -66,6 +70,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
         const { date, reservations } = entry;
         const eventsForDate = [];
 
+
         if (reservations.pending > 0) {
           eventsForDate.push({
             title: `예약 ${reservations.pending}`,
@@ -75,12 +80,15 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
           });
         }
 
+
         if (reservations.completed > 0) {
           eventsForDate.push({
             title: `완료 ${reservations.completed}`,
             date,
             classNames: ['completed'],
+
             scheduleId: entry.scheduleId,
+
           });
         }
 
@@ -89,7 +97,9 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
             title: `승인 ${reservations.confirmed}`,
             date,
             classNames: ['confirmed'],
+
             scheduleId: entry.scheduleId,
+
           });
         }
 
@@ -111,16 +121,20 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
   const handleDateClick = (info: { dateStr: string }) => {
     setSelectedDate(info.dateStr);
 
+
     const clickedEvent = events.find((event) => event.date === info.dateStr);
 
     if (clickedEvent) {
       setScheduleId(clickedEvent.scheduleId);
     }
+
   };
 
   const handleCloseModal = () => {
     setSelectedDate(null);
+
     setScheduleId(null);
+
   };
 
   return (
@@ -159,11 +173,13 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
             </div>
           );
         }}
+
       />
       <ReservationModal
         date={selectedDate}
         onClose={handleCloseModal}
         selectedActivityId={selectedId}
+
       />
     </div>
   );

@@ -198,7 +198,8 @@ export const activityPriceUnit = style({
   },
 });
 
-export const dropdown = style({
+export const dropdownContainer = style({
+  position: 'relative',
   width: '40px',
   height: '40px',
   cursor: 'pointer',
@@ -207,6 +208,48 @@ export const dropdown = style({
     [mediaQueries.mobile]: {
       width: '32px',
       height: '32px',
+    },
+  },
+});
+
+export const dropdown = style({
+  position: 'absolute',
+  width: '40px',
+  height: '40px',
+  cursor: 'pointer',
+
+  '@media': {
+    [mediaQueries.mobile]: {
+      width: '32px',
+      height: '32px',
+    },
+  },
+});
+
+export const dropdownContent = style({
+  position: 'absolute',
+  inset: '24px 0px auto auto',
+  borderRadius: '80px',
+});
+
+export const dropdownList = style({
+  listStyle: 'none',
+});
+
+export const dropdownItem = style({
+  fontSize: theme.text['2lg-medium'].fontSize,
+  fontWeight: theme.text['2lg-medium'].fontWeight,
+  lineHeight: theme.text['2lg-medium'].lineHeight,
+  outline: `1px solid ${theme.colors.gray7}`,
+  border: 'none',
+  width: '160px',
+  height: '62px',
+  cursor: 'pointer',
+  borderRadius: '6px',
+
+  selectors: {
+    '&:hover': {
+      backgroundColor: theme.colors.green2, // 호버 시 배경색 변경버 시 텍스트 색 변경
     },
   },
 });

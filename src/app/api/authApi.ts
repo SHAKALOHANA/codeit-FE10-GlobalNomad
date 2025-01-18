@@ -6,16 +6,21 @@ interface PostRefreshParams {
 
 interface PostRefreshRes {
   accessToken: string;
+  refreshToken: string;
 }
 
 //리액트 쿼리 사용 시 참고
 export const postRefresh = async ({ refreshToken }: PostRefreshParams) => {
-  const bodyObj = { refreshToken };
-
   const response = await instance.post<PostRefreshRes>(
-    'auth/tokens',
-    bodyObj,
+    '/auth/tokens',
+    undefined,
+    {
+      headers: {
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    }
   );
+
   return response.data;
 };
 
@@ -57,10 +62,13 @@ interface PostSignUpRes {
 }
 
 // 로그인 응답 인터페이스
-export const postLogIn = async ({ email, password }: PostLogInParams): Promise<PostLogInRes> => {
+export const postLogIn = async ({
+  email,
+  password,
+}: PostLogInParams): Promise<PostLogInRes> => {
   const bodyObj = { email, password };
 
-  const response = await instance.post<PostLogInRes>('auth/login', bodyObj);
+  const response = await instance.post<PostLogInRes>('/auth/login', bodyObj);
   return response.data;
 };
 
@@ -72,6 +80,6 @@ export const postSignUp = async ({
 }: PostSignUpParams) => {
   const bodyObj = { email, nickname, password };
 
-  const response = await instance.post<PostSignUpRes>('users', bodyObj);
+  const response = await instance.post<PostSignUpRes>('/users', bodyObj);
   return response.data;
 };

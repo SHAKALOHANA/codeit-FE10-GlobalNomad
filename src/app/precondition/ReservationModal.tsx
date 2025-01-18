@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+
 import { modalContainer, header, menu } from './ReservationModal.css';
 import TimeDropDown from './TimeDropDown';
 import ReservationContent from './ReservationContent';
+
 
 interface ReservationModalProps {
   date: string | null;
@@ -46,6 +48,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       <h2>예약 날짜</h2>
       <p>{date}</p>
       <TimeDropDown
+
         selectedActivityId={selectedActivityId}
         selectedDate={date}
         onTimeSelect={handleTimeSelect}
@@ -57,6 +60,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
           scheduleId={scheduleId}
         />
       )}
+
     </div>
   );
 };

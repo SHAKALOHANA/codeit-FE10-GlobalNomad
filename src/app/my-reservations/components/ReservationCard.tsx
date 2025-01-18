@@ -3,17 +3,18 @@
 import React from 'react';
 import Image from 'next/image';
 import CustomButton from '@/components/CustomButton';
+import ReviewModal from './ReviewModal';
 import * as S from './ReservationCard.css';
 import {
-  ReservationStatus,
   ReservationsType,
-  statusToButtonMode,
+  ReservationStatus,
 } from '@/types/MyReservationsList';
 import { translateStatus } from '@/utils/translateStatus';
-import { isPastEvent } from '@/utils/isPastEvent';
 import { useActivityNavigation } from '@/hooks/useActivityNavigation';
+import { instance } from '@/app/api/instance';
 
 export default function ReservationCard({
+  id,
   activity,
   status,
   totalPrice,
@@ -21,38 +22,57 @@ export default function ReservationCard({
   date,
   startTime,
   endTime,
+  reviewSubmitted,
 }: ReservationsType) {
-  const getStatusEnum = (
-    status: string,
-    date?: string,
-    startTime?: string
-  ): ReservationStatus => {
-    switch (status) {
-      case ReservationStatus.pending:
-        return ReservationStatus.pending;
-      case ReservationStatus.confirmed:
-        return ReservationStatus.confirmed;
-      case ReservationStatus.declined:
-        return ReservationStatus.declined;
-      case ReservationStatus.canceled:
-        return ReservationStatus.canceled;
-      case ReservationStatus.completed:
-        if (date && startTime && isPastEvent(date, startTime)) {
-          return ReservationStatus.completed_experience;
-        }
-        return ReservationStatus.completed;
-      default:
-        return ReservationStatus.pending;
+  const NavigateToActivity = useActivityNavigation();
+
+  const variantClass = S.reservationStatus2[status as ReservationStatus];
+  const combinedClassName = [S.reservationStatus1, variantClass].join(' ');
+
+  const handleCancelReservation = async (reservationId: number) => {
+    try {
+      await instance.patch(`/my-reservations/${reservationId}`, {
+        status: 'canceled',
+      });
+      alert('예약이 취소되었습니다.');
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert('예약 취소 중 문제가 발생했습니다.');
     }
   };
 
-  const statusEnum = getStatusEnum(status, date, startTime);
-  const NavigateToActivity = useActivityNavigation();
-
-  const statusMode = statusToButtonMode[statusEnum] ?? 'none';
-
-  const variantClass = S.reservationStatus2[statusEnum];
-  const combinedClassName = [S.reservationStatus1, variantClass].join(' ');
+  const renderButtonByMode = () => {
+    switch (status) {
+      case 'pending':
+        return (
+          <CustomButton
+            mode="reservationCancel"
+            onClick={() => handleCancelReservation(id)}
+          />
+        );
+      case 'completed':
+        if (reviewSubmitted) {
+          return <CustomButton mode="none" />;
+        } else {
+          return (
+            <ReviewModal
+              {...{
+                id,
+                activity,
+                totalPrice,
+                headCount,
+                date,
+                startTime,
+                endTime,
+              }}
+            />
+          );
+        }
+      default:
+        return <CustomButton mode="none" />;
+    }
+  };
 
   const base64 = 'data:image/jpeg;base64,';
   const blurImg =
@@ -74,7 +94,7 @@ export default function ReservationCard({
         />
       </div>
       <div className={S.activityInfoContainer}>
-        <p className={combinedClassName}>{translateStatus(statusEnum)}</p>
+        <p className={combinedClassName}>{translateStatus(status)}</p>
         <h3 className={S.activityTitle}>
           <button
             className={S.titleButton}
@@ -90,7 +110,7 @@ export default function ReservationCard({
           <p
             className={S.activityPrice}
           >{`￦${totalPrice.toLocaleString()}`}</p>
-          <CustomButton mode={statusMode} />
+          {renderButtonByMode()}
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ export const myInfoContainer = style({
   flexDirection: 'column',
   justifyContent: 'center',
   width: '792px',
-  height: '580px',
+  height: '502px',
   gap: '24px',
   '@media': {
     [mediaQueries.tablet]: {
@@ -56,6 +56,7 @@ export const inputContainer = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',
+  position: 'relative',
 });
 
 export const labelStyle = style({
@@ -63,4 +64,19 @@ export const labelStyle = style({
   fontSize: theme.text['2xl-bold'].fontSize,
   fontWeight: theme.text['2xl-bold'].fontWeight,
   lineHeight: theme.text['2xl-bold'].lineHeight,
+});
+
+export const invalidInput = style({
+  outline: `1px solid ${theme.colors.red1}`,
+  border: 'none',
+});
+
+export const errorMessage = style({
+  position: 'absolute',
+  color: theme.colors.red1,
+  // 실제 위치는 상황에 맞게 조정
+  top: 'calc(100% + 4px)',
+  // left: 0,  // 필요하면 조정
+  // 또는 bottom: '-20px' 등 원하는 위치로 조정 가능
+  // marginTop, marginLeft 등으로 미세 조정
 });

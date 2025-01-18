@@ -6,7 +6,6 @@ export const reservationsContainer = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
   margin: '0 auto',
   width: '792px',
 
@@ -18,49 +17,6 @@ export const reservationsContainer = style({
       width: '344px',
     },
   },
-});
-
-export const headerContainer = style({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: '24px',
-  width: '100%',
-  height: '48px',
-
-  '@media': {
-    [mediaQueries.mobile]: {
-      marginBottom: '12px',
-    },
-  },
-});
-
-export const headerTitle = style({
-  display: 'inline-block',
-  color: theme.colors.nomadBlack,
-  fontSize: theme.text['3xl-bold'].fontSize,
-  fontWeight: theme.text['3xl-bold'].fontWeight,
-  lineHeight: '38px',
-});
-
-export const statusFilter = style({
-  display: 'none',
-});
-
-export const statusFilterOptions = style({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: '13.5px 20px',
-  gap: '8px',
-  width: '160px',
-  height: '53px',
-  borderRadius: '15px',
-  color: theme.colors.green1,
-  outline: `1px solid ${theme.colors.green1}`,
-  ...theme.text['2lg-medium'],
 });
 
 export const arrowDown = style({
