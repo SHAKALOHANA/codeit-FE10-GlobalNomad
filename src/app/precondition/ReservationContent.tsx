@@ -17,7 +17,7 @@ interface Reservation {
 interface ReservationContentProps {
   selectedActivityId: string;
   scheduleId: string;
-  activeTab: 'pending' | 'confirmed' | 'declined'; // activeTab을 props로 받아옵니다
+  activeTab: 'pending' | 'confirmed' | 'declined';
 }
 
 const ReservationContent: React.FC<ReservationContentProps> = ({
