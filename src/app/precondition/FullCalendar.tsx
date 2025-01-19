@@ -11,7 +11,10 @@ import {
   pendingEvent,
   completedEvent,
   confirmedEvent,
+  dayGridDay,
+  dayNumberText,
 } from './FullCalendar.css';
+import { modalContainer } from './ReservationModal.css';
 
 interface CalendarProps {
   selectedId: string;
@@ -19,7 +22,6 @@ interface CalendarProps {
 
 const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
   const [events, setEvents] = useState<
-
     { title: string; date: string; classNames?: string[]; scheduleId: string }[]
   >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -34,10 +36,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
 
   const fetchEvents = async () => {
     try {
-
       const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzIyNTczNCwiZXhwIjoxNzM3MjI3NTM0LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.Q6zxT7DlD_PQU_b_3m685V-DZPNeKlck5TX82q8f588';
-
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzMxNzE5MCwiZXhwIjoxNzM3MzE4OTkwLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.iX1cqOX0PoztNlP6r81C6NBN0jAYMLs2EDLPPW_Lb7s';
 
       const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
         currentMonth
@@ -70,7 +70,6 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
         const { date, reservations } = entry;
         const eventsForDate = [];
 
-
         if (reservations.pending > 0) {
           eventsForDate.push({
             title: `예약 ${reservations.pending}`,
@@ -80,15 +79,12 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
           });
         }
 
-
         if (reservations.completed > 0) {
           eventsForDate.push({
             title: `완료 ${reservations.completed}`,
             date,
             classNames: ['completed'],
-
             scheduleId: entry.scheduleId,
-
           });
         }
 
@@ -97,9 +93,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
             title: `승인 ${reservations.confirmed}`,
             date,
             classNames: ['confirmed'],
-
             scheduleId: entry.scheduleId,
-
           });
         }
 
@@ -112,33 +106,57 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
     }
   };
 
+  const updateEventStatus = () => {
+    const now = new Date();
+
+    setEvents((prevEvents) =>
+      prevEvents.map((event) => {
+        if (
+          event.classNames?.includes('confirmed') &&
+          new Date(event.date) < now
+        ) {
+          return {
+            ...event,
+            title: event.title.replace('승인', '완료'),
+            classNames: ['completed'],
+          };
+        }
+        return event;
+      })
+    );
+  };
+
   useEffect(() => {
     if (selectedId) {
       fetchEvents();
     }
+
+    const interval = setInterval(() => {
+      updateEventStatus();
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, [selectedId, currentYear, currentMonth]);
 
   const handleDateClick = (info: { dateStr: string }) => {
     setSelectedDate(info.dateStr);
-
 
     const clickedEvent = events.find((event) => event.date === info.dateStr);
 
     if (clickedEvent) {
       setScheduleId(clickedEvent.scheduleId);
     }
-
   };
 
   const handleCloseModal = () => {
     setSelectedDate(null);
 
     setScheduleId(null);
-
   };
 
+  const calendarHeight = 'auto';
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -154,8 +172,13 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
         }}
         dayHeaderFormat={{ weekday: 'short' }}
         dayCellContent={(arg) => (
-          <div>{arg.dayNumberText.replace('일', '')}</div>
+          <div className={dayGridDay}>
+            <span className={dayNumberText}>
+              {arg.dayNumberText.replace('일', '')}
+            </span>
+          </div>
         )}
+        height={calendarHeight}
         eventContent={(eventInfo) => {
           let eventStyle = '';
 
@@ -173,13 +196,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
             </div>
           );
         }}
-
       />
       <ReservationModal
         date={selectedDate}
         onClose={handleCloseModal}
         selectedActivityId={selectedId}
-
       />
     </div>
   );
