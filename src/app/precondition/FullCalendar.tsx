@@ -115,7 +115,6 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
           event.classNames?.includes('confirmed') &&
           new Date(event.date) < now
         ) {
-          // "승인" 상태가 "완료"로 변경
           return {
             ...event,
             title: event.title.replace('승인', '완료'),
@@ -132,12 +131,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
       fetchEvents();
     }
 
-    // 일정 상태 업데이트 주기적 확인 (1분 간격)
     const interval = setInterval(() => {
       updateEventStatus();
     }, 60000);
 
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 정리
+    return () => clearInterval(interval);
   }, [selectedId, currentYear, currentMonth]);
 
   const handleDateClick = (info: { dateStr: string }) => {

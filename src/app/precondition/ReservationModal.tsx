@@ -136,12 +136,11 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
       <h2>예약 내역</h2>
 
-      {/* 각 상태별 예약 내역 */}
       {scheduleId && (
         <ReservationContent
           selectedActivityId={selectedActivityId}
           scheduleId={scheduleId}
-          activeTab={activeTab} // activeTab을 props로 전달
+          activeTab={activeTab}
         />
       )}
     </div>
