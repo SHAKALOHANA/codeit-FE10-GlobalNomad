@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {
   reservationContainer,
   buttonContainer,
+  confirmedButton,
+  declinedButton,
 } from './ReservationContent.css';
 import CustomButton from '../../components/CustomButton';
 
@@ -15,11 +17,13 @@ interface Reservation {
 interface ReservationContentProps {
   selectedActivityId: string;
   scheduleId: string;
+  activeTab: 'pending' | 'confirmed' | 'declined'; // activeTab을 props로 받아옵니다
 }
 
 const ReservationContent: React.FC<ReservationContentProps> = ({
   selectedActivityId,
   scheduleId,
+  activeTab,
 }) => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
 
@@ -29,8 +33,9 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
         if (!scheduleId || !selectedActivityId) return;
 
         const token =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzI4ODA0NSwiZXhwIjoxNzM3Mjg5ODQ1LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.uDEBwxWbUItL4iTCOsb6BdNZDgsAL0xePzp8nzTKvFY';
-        const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reservations?size=10&scheduleId=${scheduleId}&status=pending`;
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzMxNzE5MCwiZXhwIjoxNzM3MzE4OTkwLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.iX1cqOX0PoztNlP6r81C6NBN0jAYMLs2EDLPPW_Lb7s';
+
+        const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reservations?size=10&scheduleId=${scheduleId}&status=${activeTab}`;
 
         const response = await fetch(url, {
           method: 'GET',
@@ -61,12 +66,13 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
     };
 
     fetchReservations();
-  }, [selectedActivityId, scheduleId]);
+  }, [selectedActivityId, scheduleId, activeTab]);
 
   const handleApproveReservation = async (id: number) => {
     try {
       const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzI4ODA0NSwiZXhwIjoxNzM3Mjg5ODQ1LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.uDEBwxWbUItL4iTCOsb6BdNZDgsAL0xePzp8nzTKvFY';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzMxNzE5MCwiZXhwIjoxNzM3MzE4OTkwLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.iX1cqOX0PoztNlP6r81C6NBN0jAYMLs2EDLPPW_Lb7s';
+
       const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reservations/${id}`;
       const data = {
         status: 'confirmed',
@@ -89,11 +95,7 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
       }
 
       setReservations((prevReservations) =>
-        prevReservations.map((reservation) =>
-          reservation.id === id
-            ? { ...reservation, status: 'confirmed' }
-            : reservation
-        )
+        prevReservations.filter((reservation) => reservation.id !== id)
       );
 
       console.log('예약 승인 성공');
@@ -105,13 +107,11 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
 
   return (
     <>
-      {reservations.length === 0 ? (
-        <p>예약 내역이 없습니다.</p>
-      ) : (
-        reservations.map((reservation) => (
-          <div key={reservation.id} className={reservationContainer}>
-            <p>{reservation.nickname}</p>
-            <p>{reservation.headCount}명</p>
+      {reservations.map((reservation) => (
+        <div key={reservation.id} className={reservationContainer}>
+          <p>{reservation.nickname}</p>
+          <p>{reservation.headCount}명</p>
+          {activeTab === 'pending' && (
             <div className={buttonContainer}>
               <CustomButton
                 mode="reservationFinalize"
@@ -119,11 +119,20 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
               >
                 승인하기
               </CustomButton>
-              <CustomButton mode="reservationReject">거절하기</CustomButton>
             </div>
-          </div>
-        ))
-      )}
+          )}
+          {activeTab === 'confirmed' && (
+            <div className={buttonContainer}>
+              <button className={confirmedButton}>예약 승인</button>
+            </div>
+          )}
+          {activeTab === 'declined' && (
+            <div className={buttonContainer}>
+              <button className={declinedButton}>예약 거절</button>
+            </div>
+          )}
+        </div>
+      ))}
     </>
   );
 };
