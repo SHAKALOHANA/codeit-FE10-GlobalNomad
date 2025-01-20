@@ -146,15 +146,17 @@ const ExperienceRegister = () => {
 
   const handleSubmit = async () => {
     try {
+      console.log('Banner Image:', bannerImage);
+      console.log('Intro Images:', introImages);
       const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzI4MDA3NSwiZXhwIjoxNzM3MjgxODc1LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.HLr-mlscoWY3u4GCvEzsKRwNcUW5mg_y-oM3YOUGJz4';
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzM1NTg3OSwiZXhwIjoxNzM3MzU3Njc5LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.3zE0gEKtwkaK8qIAekSiqd4j_UwE67kvA-pkEc5-oqw';
       let uploadedBannerUrl = '';
       let uploadedSubImageUrls: string[] = [];
 
       // 배너 이미지 업로드
       if (bannerImage) {
         const bannerFormData = new FormData();
-        bannerFormData.append('file', bannerImage);
+        bannerFormData.append('image', bannerImage);
 
         const bannerResponse = await fetch(
           'https://sp-globalnomad-api.vercel.app/10-1/activities/image',
@@ -187,7 +189,7 @@ const ExperienceRegister = () => {
       // 소개 이미지 업로드
       for (const image of introImages) {
         const introFormData = new FormData();
-        introFormData.append('file', image);
+        introFormData.append('image', image);
 
         const introResponse = await fetch(
           'https://sp-globalnomad-api.vercel.app/10-1/activities/image',
