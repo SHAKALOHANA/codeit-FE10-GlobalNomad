@@ -1,14 +1,15 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const REDIRECT_URI = 'http://localhost:3000/api/auth/kakao'; // 리디렉션 URI
+const REDIRECT_URI = 'http://localhost:3000/nickname'; // 리디렉션 URI
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get('code');
-  console.log(code);
+  console.log("route:", code);
 
   if (!code) {
+    console.log('nonCode')
     return NextResponse.json({ message: 'No code provided' }, { status: 400 });
   }
 
@@ -28,23 +29,8 @@ export async function GET(req: Request) {
     );
     console.log(tokenResponse);
 
-    const accessToken = tokenResponse.data.access_token;
-
-    // 사용자 정보 요청
-    const userInfoResponse = await axios.get(
-      'https://kapi.kakao.com/v2/user/me?property_keys=["kakao_account.name"]',
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
-    console.log(userInfoResponse);
-
-    const userInfo = userInfoResponse.data;
-
     // 사용자 정보 반환
-    return NextResponse.json(userInfo);
+    return NextResponse.json(tokenResponse.data);
   } catch (error) {
     console.error('Error fetching data from Kakao:', error);
     return NextResponse.json(

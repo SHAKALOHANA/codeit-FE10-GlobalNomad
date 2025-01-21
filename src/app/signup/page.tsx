@@ -18,7 +18,12 @@ import {
   linkButton,
   text,
   logoBlock,
+  modalOverlay,
+  modalContent,
+  closeButton,
 } from './SignUp.css';
+import { isAxiosError } from 'axios';
+import SocialLogin from '../signin/socialSignin';
 
 const SignUp = () => {
   const router = useRouter();
@@ -27,13 +32,15 @@ const SignUp = () => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const [loginError, setLoginError] = useState('');
   const [errors, setErrors] = useState({
     email: '',
     nickname: '',
     password: '',
     confirmPassword: '',
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const handleBlur = (field: string) => {
     let errorMessage = '';
@@ -98,12 +105,38 @@ const SignUp = () => {
       confirmPassword;
 
     if (isValid) {
-      await postSignUp({
-        email,
-        nickname,
-        password,
-      });
-      router.push('/signin');
+      try {
+        await postSignUp({
+          email,
+          nickname,
+          password,
+        });
+        setModalMessage('가입이 완료되었습니다!');
+        setIsModalOpen(true);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 409) {
+            setModalMessage('이미 사용 중인 이메일입니다.'); // 409 에러 메시지
+          } else {
+            setModalMessage('가입 중 오류가 발생했습니다.'); // 다른 Axios 에러 처리
+          }
+        } else if (error instanceof Error) {
+          // 일반 에러 처리
+          setModalMessage(error.message); // 사용자 정의 에러 메시지 사용
+        } else {
+          setModalMessage('가입 중 오류가 발생했습니다.'); // 다른 오류 처리
+        }
+        setIsModalOpen(true);
+        console.log('Modal opened:', isModalOpen);
+      }
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalMessage('');
+    if (modalMessage === '가입이 완료되었습니다!') {
+      router.push('/signin'); // 성공 시 로그인 페이지로 이동
     }
   };
 
@@ -216,7 +249,22 @@ const SignUp = () => {
             로그인하기
           </Link>
         </div>
+        <div>
+          {loginError && <div className="error-message">{loginError}</div>}{' '}
+          {/* 오류 메시지 표시 */}
+          <SocialLogin setLoginError={setLoginError} />
+        </div>
       </div>
+      {isModalOpen && (
+        <div className={modalOverlay}>
+          <div className={modalContent}>
+            <h2>{modalMessage}</h2>
+            <button className={closeButton} onClick={closeModal}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

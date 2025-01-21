@@ -1,5 +1,6 @@
 'use client';
 
+import { useProfileContext } from '../context/ProfileContext';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { postLogIn } from '../api/authApi';
@@ -29,6 +30,7 @@ interface ApiError {
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setIsLoggedIn, setProfileImageUrl } = useProfileContext();
 
   // TODO: error가 세개가 모두 잘 쓰이는지 확인 필요
   const [emailError, setEmailError] = useState('');
@@ -61,7 +63,9 @@ const SignIn = () => {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
+
     handleEmailBlur();
     handlePasswordBlur();
 
@@ -70,9 +74,12 @@ const SignIn = () => {
     }
     // 로그인 API 호출
     try {
-      console.log('Calling login API...');
       const data = await postLogIn({ email, password });
       console.log('Login response:', data);
+
+      setIsLoggedIn(true);
+      setProfileImageUrl(data.user.profileImageUrl);
+
       localStorage.setItem('accessToken', data.accessToken); // accessToken 저장
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('email', data.user.email);
