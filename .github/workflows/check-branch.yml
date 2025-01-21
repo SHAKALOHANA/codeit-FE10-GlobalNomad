@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Ensure PR is from develop
         run: |
-          if [ "${{ github.base_ref }}" != "develop" ]; then
+          if [ "${{ github.head_ref }}" != "develop" ]; then
             echo "PRs to main must come from develop branch."
             exit 1
           fi
