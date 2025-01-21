@@ -13,10 +13,11 @@ interface DropdownItem {
 }
 
 interface DropdownProps {
+  label: string;
   items: DropdownItem[];
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ items }) => {
+const Dropdown: React.FC<DropdownProps> = ({ label, items }) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,7 @@ const Dropdown: React.FC<DropdownProps> = ({ items }) => {
   }, []);
 
   const selectedLabel =
-    items.find((item) => item.value === selectedValue)?.label || '가격';
+    items.find((item) => item.value === selectedValue)?.label || label;
 
   return (
     <div className={styles.dropdown} ref={dropdownRef}>

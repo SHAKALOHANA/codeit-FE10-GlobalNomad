@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import * as S from './MyActivityCard.css';
 import { MyActivityCardProps } from '@/types/MyActivitiesList';
@@ -26,12 +26,8 @@ const dropList = dropdownItems.map((option) => ({
 }));
 
 export default function MyExperienceCard({ ...activity }: MyActivityCardProps) {
+  const router = useRouter();
   const [deleteModalState, setDeleteModalState] = useState<{
-    isOpen: boolean;
-    id: number | null;
-  }>({ isOpen: false, id: null });
-
-  const [editModalState, setEditModalState] = useState<{
     isOpen: boolean;
     id: number | null;
   }>({ isOpen: false, id: null });
@@ -42,14 +38,6 @@ export default function MyExperienceCard({ ...activity }: MyActivityCardProps) {
 
   const closeDeleteModal = () => {
     setDeleteModalState({ isOpen: false, id: null });
-  };
-
-  const openEditModal = (id: number) => {
-    setEditModalState({ isOpen: true, id });
-  };
-
-  const closeEditModal = () => {
-    setEditModalState({ isOpen: false, id: null });
   };
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -70,7 +58,7 @@ export default function MyExperienceCard({ ...activity }: MyActivityCardProps) {
     switch (value) {
       case 'edit':
         // 수정하기
-        openEditModal(activity.id);
+        router.push(`/experienceedit?activityId=${activity.id}`);
         break;
       case 'delete':
         // 삭제하기
@@ -126,15 +114,6 @@ export default function MyExperienceCard({ ...activity }: MyActivityCardProps) {
           isOpen={deleteModalState.isOpen}
           activityId={deleteModalState.id}
           onClose={closeDeleteModal}
-        />
-      )}
-
-      {/* 활동 수정 모달 */}
-      {editModalState.isOpen && (
-        <DeleteActivityModal
-          isOpen={editModalState.isOpen}
-          activityId={editModalState.id}
-          onClose={closeEditModal}
         />
       )}
     </>

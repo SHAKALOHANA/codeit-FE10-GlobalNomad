@@ -28,7 +28,7 @@ const SideNavigationMenu = () => {
       setActiveIndex(0);
     } else if (pathname === '/my-reservations') {
       setActiveIndex(1);
-    } else if (pathname === '/experienceregister') {
+    } else if (pathname === '/my-activities') {
       setActiveIndex(2);
     } else if (pathname === '/precondition') {
       setActiveIndex(3);
@@ -79,7 +79,7 @@ const SideNavigationMenu = () => {
         )}
         <Image
           className={editButton}
-          src="../../../icons/profileeditbutton.svg"
+          src="/icons/profileeditbutton.svg"
           alt="프로필편집버튼"
           width={44}
           height={44}
@@ -104,7 +104,7 @@ const SideNavigationMenu = () => {
               className={`${navigationBoxImage} ${
                 activeIndex === 0 ? activeImage : inactiveImage
               }`}
-              src="../../../icons/myprofileicon.svg"
+              src="/icons/myprofileicon.svg"
               alt="내정보"
               width={24}
               height={24}
@@ -124,7 +124,7 @@ const SideNavigationMenu = () => {
               className={`${navigationBoxImage} ${
                 activeIndex === 1 ? activeImage : inactiveImage
               }`}
-              src="../../../icons/reservationdetail.svg"
+              src="/icons/reservationdetail.svg"
               alt="예약내역"
               width={24}
               height={24}
@@ -134,7 +134,7 @@ const SideNavigationMenu = () => {
             </p>
           </div>
         </Link>
-        <Link href="/experienceregister">
+        <Link href="/my-activities">
           <div
             className={`${navigationBox} ${
               activeIndex === 2 ? activeNavigationBox : ''
@@ -144,7 +144,7 @@ const SideNavigationMenu = () => {
               className={`${navigationBoxImage} ${
                 activeIndex === 2 ? activeImage : inactiveImage
               }`}
-              src="../../../icons/experiencemanage.svg"
+              src="/icons/experiencemanage.svg"
               alt="내 체험 관리"
               width={24}
               height={24}
@@ -180,4 +180,3 @@ const SideNavigationMenu = () => {
 };
 
 export default SideNavigationMenu;
-

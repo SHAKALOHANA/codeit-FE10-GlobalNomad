@@ -85,7 +85,8 @@ export const bookingForm = style({
   display: "flex",
   flexDirection: "column",
   gap: "10px",
-  maxWidth: "300px",
+  maxWidth: "320px",
+  paddingLeft: '10px',
 });
 
 export const input = style({
@@ -143,4 +144,8 @@ export const pagBu = style({
   cursor: 'pointer',
   width: '55px',
   height: '55px',
+});
+
+export const labels = style({
+  width: '308px',
 });

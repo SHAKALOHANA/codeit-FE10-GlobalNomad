@@ -9,6 +9,7 @@ export const containerBox = style({
   padding: '24px',
   gap: '40px',
   borderRadius: '12px',
+  textDecorationLine: 'none',
   border: `1px solid ${theme.colors.gray7}`,
 
   '@media': {
@@ -97,4 +98,3 @@ export const inactiveImage = style({
   filter:
     'invert(61%) sepia(4%) saturate(145%) hue-rotate(186deg) brightness(94%) contrast(90%)',
 });
-
