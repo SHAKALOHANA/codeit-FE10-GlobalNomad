@@ -1,7 +1,6 @@
 import { style } from "@vanilla-extract/css";
 import { theme } from '@/app/global.css';
 
-
 export const container = style({
   maxWidth: "1200px",
   margin: "0 auto",
@@ -9,10 +8,31 @@ export const container = style({
 });
 
 export const title = style({
-  fontSize: "2rem",
-  fontWeight: "bold",
-  marginBottom: "20px",
+  fontSize: theme.text["3xl-bold"].fontSize,
+  fontWeight: theme.text["3xl-bold"].fontWeight,
+  lineHeight: theme.text["3xl-bold"].lineHeight,
+  color: theme.colors.nomadBlack,
+  margin: "10px 0px",
   textAlign: "left",
+});
+
+export const extraText = style({
+  fontSize: theme.text["md-regular"].fontSize,
+  fontWeight: theme.text["md-regular"].fontWeight,
+  lineHeight: theme.text["md-regular"].lineHeight,
+});
+
+export const extra = style({
+  display: 'flex',
+  gap: '20px',
+});
+
+export const colorNomad = style({
+  color: theme.colors.nomadBlack,
+});
+
+export const colorBlack = style({
+  color: theme.colors.black,
 });
 
 export const imageSection = style({
