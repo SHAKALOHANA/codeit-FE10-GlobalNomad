@@ -4,15 +4,23 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Map from "../../components/Map";
 import BasicMap from "@/components/Kakaomap";
-//import { useState , useEffect } from "react";
+import { useState } from "react";
 import * as styles from "./detail.css";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/style.css";
 
 export default function Detail() {
   //const [address, setAddress] = useState("");
+  const [selected, setSelected] = useState<Date>();
 
   return (
     <div>
-      <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9070eccd51c9a7ceee9493b2835e12f7"></script>
+      {/*
+      <Script
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9070eccd51c9a7ceee9493b2835e12f7&libraries=services,clusterer&autoload=false"
+          strategy="beforeInteractive"
+          />
+          */}
     <div className={styles.container}>
       {/* 제목 섹션 */}
       <h1 className={styles.title}>함께 배우면 즐거운 스트릿 댄스</h1>
@@ -104,14 +112,22 @@ export default function Detail() {
           </div>
       </section>
         </div>
-        <div className={styles.registerContainer}>
-          
+      
+      <div className={styles.registerContainer}>  
       {/* 예약 섹션 */}
       <section className={styles.section}>
         <h2>&#8361; 1,000 <small> / 인</small></h2>
         <form className={styles.bookingForm}>
-          <label>
+          <label className={styles.labels}>
             날짜
+            <DayPicker
+      mode="single"
+      selected={selected}
+      onSelect={setSelected}
+      footer={
+        selected ? `Selected: ${selected.toLocaleDateString()}` : ""
+      }
+    />
           </label>
           <label>
             시간
