@@ -337,10 +337,6 @@ export default function ExperienceEdit() {
     patchMutation.mutate(updateBody);
   };
 
-  // 로딩/에러 처리
-  if (isLoadingActivity) return <p>로딩 중...</p>;
-  if (isActivityError) return <p>데이터를 불러오는 중 오류가 발생했습니다.</p>;
-
   // 렌더링
   return (
     <div>
@@ -354,215 +350,220 @@ export default function ExperienceEdit() {
             </CustomButton>
           </div>
 
-          {/* 제목 입력 */}
-          <input
-            className={`${S.contentContainer} ${S.inputWithPlaceholder}`}
-            type="text"
-            placeholder="제목"
-            value={title}
-            onChange={handleTitleChange}
-            style={{ marginBottom: '20px' }}
-          />
-
-          {/* 카테고리 선택 */}
-          <CategoryDropDown
-            onCategorySelect={handleCategoryChange}
-            selectedCategory={category}
-          />
-
-          {/* 설명 입력 */}
-          <textarea
-            className={`${S.descriptionContainer} ${S.inputWithPlaceholder}`}
-            placeholder="설명"
-            value={description}
-            onChange={handleDescriptionChange}
-          />
-
-          {/* 가격 */}
-          <h2>가격</h2>
-          <input
-            className={`${S.contentContainer} ${S.inputWithPlaceholder}`}
-            type="text"
-            placeholder="가격"
-            value={price}
-            onChange={handlePriceChange}
-          />
-          {priceError && (
-            <p style={{ color: 'red', fontSize: '12px' }}>{priceError}</p>
-          )}
-
-          {/* 주소 */}
-          <h2>주소</h2>
-          <div style={{ position: 'relative' }}>
-            <input
-              className={`${S.contentContainer} ${S.inputWithPlaceholder}`}
-              type="text"
-              placeholder="주소를 입력해주세요"
-              value={address}
-              readOnly
-            />
-            <button
-              className={S.postSearchButton}
-              onClick={handlePostcodeClick}
-            >
-              우편번호 검색
-            </button>
-          </div>
-          {isPostcodeVisible && (
-            <DaumPostcode onComplete={handlePostcodeComplete} />
-          )}
-
-          {/* 예약 가능한 시간대 */}
-          <h2>예약 가능한 시간대</h2>
-          <div className={S.reservationContainer}>
-            <div className={S.dateContainer}>
-              <p style={{ color: selectedDate ? 'black' : '#a1a1a1' }}>
-                {selectedDate
-                  ? `${selectedDate.getFullYear().toString().slice(-2)}/${(
-                      selectedDate.getMonth() + 1
-                    )
-                      .toString()
-                      .padStart(2, '0')}/${selectedDate
-                      .getDate()
-                      .toString()
-                      .padStart(2, '0')}`
-                  : 'YY/MM/DD'}
-              </p>
-              <Image
-                src="../../../icons/calendar.svg"
-                alt="달력버튼"
-                width={32}
-                height={32}
-                style={{
-                  position: 'absolute',
-                  right: '8px',
-                  cursor: 'pointer',
-                }}
-                onClick={() => setIsCalendarVisible((prev) => !prev)}
+          {isLoadingActivity ? (
+            <p>로딩 중...</p>
+          ) : isActivityError ? (
+            <p>데이터를 불러오는 중 오류가 발생했습니다.</p>
+          ) : (
+            <div>
+              <input
+                className={`${S.contentContainer} ${S.inputWithPlaceholder}`}
+                type="text"
+                placeholder="제목"
+                value={title}
+                onChange={handleTitleChange}
+                style={{ marginBottom: '20px' }}
               />
-              {isCalendarVisible && (
-                <div className={S.calendarWrapper}>
-                  <DayPicker
-                    selected={selectedDate}
-                    onDayClick={(date) => {
-                      setSelectedDate(date);
-                      setIsCalendarVisible(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
-            <StartTimeDropDown onChange={setStartTime} selected={startTime} />
-            <p className={S.tildeSymbol}>~</p>
-            <EndTimeDropDown onChange={setEndTime} selected={endTime} />
-            <Image
-              src="/icons/plusbutton.svg"
-              alt="추가버튼"
-              width={56}
-              height={56}
-              onClick={handleAddDate}
-              style={{
-                cursor:
-                  startTime === '시간선택' ||
-                  endTime === '시간선택' ||
-                  !selectedDate
-                    ? 'not-allowed'
-                    : 'pointer',
-                opacity:
-                  startTime === '시간선택' ||
-                  endTime === '시간선택' ||
-                  !selectedDate
-                    ? 0.5
-                    : 1,
-              }}
-            />
-          </div>
-          <div className={S.line} />
 
-          {/* 일정 목록 */}
-          <div>
-            {dates.map((dateInfo, index) => (
-              <div key={index} className={S.addedDateWrapper}>
-                <div className={S.addedDateContainer}>{dateInfo.date}</div>
-                <div className={S.addedStartTimeContainer}>
-                  {dateInfo.startTime}
+              <CategoryDropDown
+                onCategorySelect={handleCategoryChange}
+                selectedCategory={category}
+              />
+
+              <textarea
+                className={`${S.descriptionContainer} ${S.inputWithPlaceholder}`}
+                placeholder="설명"
+                value={description}
+                onChange={handleDescriptionChange}
+              />
+
+              <h2>가격</h2>
+              <input
+                className={`${S.contentContainer} ${S.inputWithPlaceholder}`}
+                type="text"
+                placeholder="가격"
+                value={price}
+                onChange={handlePriceChange}
+              />
+              {priceError && (
+                <p style={{ color: 'red', fontSize: '12px' }}>{priceError}</p>
+              )}
+
+              <h2>주소</h2>
+              <div style={{ position: 'relative' }}>
+                <input
+                  className={`${S.contentContainer} ${S.inputWithPlaceholder}`}
+                  type="text"
+                  placeholder="주소를 입력해주세요"
+                  value={address}
+                  readOnly
+                />
+                <button
+                  className={S.postSearchButton}
+                  onClick={handlePostcodeClick}
+                >
+                  우편번호 검색
+                </button>
+              </div>
+              {isPostcodeVisible && (
+                <DaumPostcode onComplete={handlePostcodeComplete} />
+              )}
+
+              <h2>예약 가능한 시간대</h2>
+              <div className={S.reservationContainer}>
+                <div className={S.dateContainer}>
+                  <p style={{ color: selectedDate ? 'black' : '#a1a1a1' }}>
+                    {selectedDate
+                      ? `${selectedDate.getFullYear().toString().slice(-2)}/${(
+                          selectedDate.getMonth() + 1
+                        )
+                          .toString()
+                          .padStart(2, '0')}/${selectedDate
+                          .getDate()
+                          .toString()
+                          .padStart(2, '0')}`
+                      : 'YY/MM/DD'}
+                  </p>
+                  <Image
+                    src="../../../icons/calendar.svg"
+                    alt="달력버튼"
+                    width={32}
+                    height={32}
+                    style={{
+                      position: 'absolute',
+                      right: '8px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => setIsCalendarVisible((prev) => !prev)}
+                  />
+                  {isCalendarVisible && (
+                    <div className={S.calendarWrapper}>
+                      <DayPicker
+                        selected={selectedDate}
+                        onDayClick={(date) => {
+                          setSelectedDate(date);
+                          setIsCalendarVisible(false);
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
+                <StartTimeDropDown
+                  onChange={setStartTime}
+                  selected={startTime}
+                />
                 <p className={S.tildeSymbol}>~</p>
-                <div className={S.addedEndTimeContainer}>
-                  {dateInfo.endTime}
-                </div>
+                <EndTimeDropDown onChange={setEndTime} selected={endTime} />
                 <Image
-                  src="/icons/minusbutton.svg"
-                  alt="빼기버튼"
+                  src="/icons/plusbutton.svg"
+                  alt="추가버튼"
                   width={56}
                   height={56}
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => handleRemoveDate(index)}
+                  onClick={handleAddDate}
+                  style={{
+                    cursor:
+                      startTime === '시간선택' ||
+                      endTime === '시간선택' ||
+                      !selectedDate
+                        ? 'not-allowed'
+                        : 'pointer',
+                    opacity:
+                      startTime === '시간선택' ||
+                      endTime === '시간선택' ||
+                      !selectedDate
+                        ? 0.5
+                        : 1,
+                  }}
                 />
               </div>
-            ))}
-          </div>
+              <div className={S.line} />
 
-          {/* 배너 이미지 */}
-          <h2>배너 이미지</h2>
-          <div className={S.bannerContainer}>
-            <label htmlFor="banner-upload" className={S.imageRegister}>
-              <input
-                id="banner-upload"
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={handleBannerImageChange}
-              />
-              {bannerImageUrl ? '이미지 변경' : '이미지 업로드'}
-            </label>
-            {bannerImageUrl && (
-              <div style={{ position: 'relative', width: 180, height: 180 }}>
-                <Image
-                  className={S.images}
-                  src={bannerImageUrl}
-                  alt="배너 이미지 미리보기"
-                  fill
-                />
-                <Xbotton
-                  className={S.deleteButton}
-                  onClick={handleDeleteBannerImage}
-                />
+              {/* 일정 목록 */}
+              <div>
+                {dates.map((dateInfo, index) => (
+                  <div key={index} className={S.addedDateWrapper}>
+                    <div className={S.addedDateContainer}>{dateInfo.date}</div>
+                    <div className={S.addedStartTimeContainer}>
+                      {dateInfo.startTime}
+                    </div>
+                    <p className={S.tildeSymbol}>~</p>
+                    <div className={S.addedEndTimeContainer}>
+                      {dateInfo.endTime}
+                    </div>
+                    <Image
+                      src="/icons/minusbutton.svg"
+                      alt="빼기버튼"
+                      width={56}
+                      height={56}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => handleRemoveDate(index)}
+                    />
+                  </div>
+                ))}
               </div>
-            )}
-          </div>
 
-          {/* 소개 이미지 */}
-          <h2>소개 이미지</h2>
-          <div className={S.introContainer}>
-            <label htmlFor="intro-upload" className={S.imageRegister}>
-              <input
-                id="intro-upload"
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={handleIntroImageChange}
-              />
-              이미지 업로드
-            </label>
-            {introImageUrls.map((url, index) => (
-              <div
-                key={index}
-                style={{ position: 'relative', width: 180, height: 180 }}
-              >
-                <Image
-                  className={S.images}
-                  src={url}
-                  alt={`소개 이미지 ${index + 1}`}
-                  fill
-                />
-                <Xbotton
-                  className={S.deleteButton}
-                  onClick={() => handleDeleteIntroImage(index)}
-                />
+              <h2>배너 이미지</h2>
+              <div className={S.bannerContainer}>
+                <label htmlFor="banner-upload" className={S.imageRegister}>
+                  <input
+                    id="banner-upload"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleBannerImageChange}
+                  />
+                  {bannerImageUrl ? '이미지 변경' : '이미지 업로드'}
+                </label>
+                {bannerImageUrl && (
+                  <div
+                    style={{ position: 'relative', width: 180, height: 180 }}
+                  >
+                    <Image
+                      className={S.images}
+                      src={bannerImageUrl}
+                      alt="배너 이미지 미리보기"
+                      fill
+                    />
+                    <Xbotton
+                      className={S.deleteButton}
+                      onClick={handleDeleteBannerImage}
+                    />
+                  </div>
+                )}
               </div>
-            ))}
-          </div>
+
+              <h2>소개 이미지</h2>
+              <div className={S.introContainer}>
+                <label htmlFor="intro-upload" className={S.imageRegister}>
+                  <input
+                    id="intro-upload"
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleIntroImageChange}
+                  />
+                  이미지 업로드
+                </label>
+                {introImageUrls.map((url, index) => (
+                  <div
+                    key={index}
+                    style={{ position: 'relative', width: 180, height: 180 }}
+                  >
+                    <Image
+                      className={S.images}
+                      src={url}
+                      alt={`소개 이미지 ${index + 1}`}
+                      fill
+                    />
+                    <Xbotton
+                      className={S.deleteButton}
+                      onClick={() => handleDeleteIntroImage(index)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
