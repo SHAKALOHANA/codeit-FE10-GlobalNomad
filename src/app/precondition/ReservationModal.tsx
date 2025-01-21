@@ -12,6 +12,7 @@ import {
 } from './ReservationModal.css';
 import TimeDropDown from './TimeDropDown';
 import ReservationContent from './ReservationContent';
+import { instance } from '../../app/api/instance';
 
 interface ReservationModalProps {
   date: string | null;
@@ -50,25 +51,15 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     if (!selectedActivityId || !date) return;
 
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzM1MDY3NywiZXhwIjoxNzM3MzUyNDc3LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.0KuvbeYp5txHf0DsLeEhBEiOlSX0UpTsDst0eCnfCNY';
-
-      const response = await fetch(
-        `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reserved-schedule?date=${date}`,
+      const response = await instance.get(
+        `/my-activities/${selectedActivityId}/reserved-schedule`,
         {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
+          params: { date },
         }
       );
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch schedule counts');
-      }
+      const data = response.data;
 
-      const data = await response.json();
       const counts = data.reduce(
         (acc: any, schedule: any) => {
           acc.pending += schedule.count.pending;
@@ -78,6 +69,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
         },
         { pending: 0, confirmed: 0, declined: 0 }
       );
+
       setScheduleCount(counts);
     } catch (error) {
       console.error('Error fetching schedule counts:', error);
@@ -86,7 +78,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
   useEffect(() => {
     fetchScheduleCounts();
-  }, [selectedActivityId, date]);
+  }, [selectedActivityId, date, fetchScheduleCounts]);
 
   if (!date) return null;
 

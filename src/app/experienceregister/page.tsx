@@ -10,6 +10,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
 import CustomButton from '../../components/CustomButton';
+import { instance } from '../../app/api/instance';
 import {
   mainContainer,
   sideContainer,
@@ -148,42 +149,26 @@ const ExperienceRegister = () => {
     try {
       console.log('Banner Image:', bannerImage);
       console.log('Intro Images:', introImages);
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzM1NTg3OSwiZXhwIjoxNzM3MzU3Njc5LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.3zE0gEKtwkaK8qIAekSiqd4j_UwE67kvA-pkEc5-oqw';
+
       let uploadedBannerUrl = '';
-      let uploadedSubImageUrls: string[] = [];
+      const uploadedSubImageUrls: string[] = [];
 
       // 배너 이미지 업로드
       if (bannerImage) {
         const bannerFormData = new FormData();
         bannerFormData.append('image', bannerImage);
 
-        const bannerResponse = await fetch(
-          'https://sp-globalnomad-api.vercel.app/10-1/activities/image',
+        const bannerResponse = await instance.post(
+          '/activities/image',
+          bannerFormData,
           {
-            method: 'POST',
             headers: {
-              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
             },
-            body: bannerFormData,
           }
         );
 
-        if (!bannerResponse.ok) {
-          const errorText = await bannerResponse.text();
-          console.error(
-            '배너 이미지 업로드 실패:',
-            bannerResponse.status,
-            errorText
-          );
-          throw new Error(
-            `배너 이미지 업로드 실패: ${bannerResponse.status} - ${errorText}`
-          );
-        }
-
-        const bannerData = await bannerResponse.json();
-        console.log('배너 이미지 업로드 성공:', bannerData);
-        uploadedBannerUrl = bannerData.activityImageUrl;
+        uploadedBannerUrl = bannerResponse.data.activityImageUrl;
       }
 
       // 소개 이미지 업로드
@@ -191,20 +176,17 @@ const ExperienceRegister = () => {
         const introFormData = new FormData();
         introFormData.append('image', image);
 
-        const introResponse = await fetch(
-          'https://sp-globalnomad-api.vercel.app/10-1/activities/image',
+        const introResponse = await instance.post(
+          '/activities/image',
+          introFormData,
           {
-            method: 'POST',
             headers: {
-              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
             },
-            body: introFormData,
           }
         );
 
-        if (!introResponse.ok) throw new Error('소개 이미지 업로드 실패');
-        const introData = await introResponse.json();
-        uploadedSubImageUrls.push(introData.activityImageUrl);
+        uploadedSubImageUrls.push(introResponse.data.activityImageUrl);
       }
 
       const requestData: ActivityData = {
@@ -218,23 +200,12 @@ const ExperienceRegister = () => {
         subImageUrls: uploadedSubImageUrls,
       };
 
-      const response = await fetch(
-        'https://sp-globalnomad-api.vercel.app/10-1/activities',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
+      const response = await instance.post('/activities', requestData);
 
-      if (response.ok) {
-        alert('성공');
+      if (response.status === 201) {
+        alert('등록 성공');
       } else {
-        const errorText = await response.text();
-        alert('실패');
+        alert('등록 실패');
       }
     } catch (error) {
       alert('에러 발생');
@@ -404,11 +375,21 @@ const ExperienceRegister = () => {
             </label>
             {previewUrl && (
               <div style={{ position: 'relative' }}>
-                <img className={images} src={previewUrl} alt="배너 이미지" />
-                <img
+                <Image
+                  className={images}
+                  layout="intrinsic"
+                  width={180}
+                  height={180}
+                  src={previewUrl}
+                  alt="배너 이미지"
+                />
+                <Image
                   src="../../../icons/xbutton.svg"
                   alt="삭제 버튼"
                   className={deleteButton}
+                  layout="intrinsic"
+                  width={40}
+                  height={40}
                   onClick={() => {
                     setBannerImage(null);
                     setPreviewUrl(null);
@@ -434,15 +415,21 @@ const ExperienceRegister = () => {
 
             {introImages.map((image, index) => (
               <div key={index} style={{ position: 'relative' }}>
-                <img
+                <Image
                   className={images}
                   src={URL.createObjectURL(image)}
                   alt={`소개 이미지 ${index + 1}`}
+                  layout="intrinsic"
+                  width={180}
+                  height={180}
                 />
-                <img
+                <Image
                   src="../../../icons/xbutton.svg"
                   alt="이미지 삭제"
                   className={deleteButton}
+                  layout="intrinsic"
+                  width={40}
+                  height={40}
                   onClick={() =>
                     setIntroImages((prevImages) =>
                       prevImages.filter((_, idx) => idx !== index)

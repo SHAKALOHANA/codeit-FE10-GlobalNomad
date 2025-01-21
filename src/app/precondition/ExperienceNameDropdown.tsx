@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   DropDownContainer,
   DropDownBoxWrap,
   CategoryMenuBox,
   ListItem,
 } from './ExperienceNameDropdown.css';
+import { instance } from '../../app/api/instance';
 
 interface ExperienceNameDropDownProps {
   onCategorySelect: (categoryId: string) => void;
@@ -27,30 +29,18 @@ const ExperienceNameDropdown = ({
 
   const fetchActivities = async () => {
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzM1MDY3NywiZXhwIjoxNzM3MzUyNDc3LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.0KuvbeYp5txHf0DsLeEhBEiOlSX0UpTsDst0eCnfCNY';
+      const response = await instance.get('/my-activities?size=40');
 
-      const response = await fetch(
-        'https://sp-globalnomad-api.vercel.app/10-1/my-activities?size=40',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error(`Failed to fetch activities: ${response.statusText}`);
       }
 
-      const data = await response.json();
-
-      const fetchedActivities = data.activities.map((activity: any) => ({
-        id: activity.id,
-        title: activity.title,
-      }));
+      const fetchedActivities = response.data.activities.map(
+        (activity: any) => ({
+          id: activity.id,
+          title: activity.title,
+        })
+      );
 
       setActivities(fetchedActivities);
     } catch (error) {
@@ -82,7 +72,7 @@ const ExperienceNameDropdown = ({
         >
           {selectedTitle}
         </p>
-        <img
+        <Image
           src="../../../icons/chevron_down.svg"
           alt="Chevron Down"
           width={24}

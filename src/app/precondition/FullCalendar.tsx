@@ -14,7 +14,7 @@ import {
   dayGridDay,
   dayNumberText,
 } from './FullCalendar.css';
-import { modalContainer } from './ReservationModal.css';
+import { instance } from '../../app/api/instance';
 
 interface CalendarProps {
   selectedId: string;
@@ -25,40 +25,21 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
     { title: string; date: string; classNames?: string[]; scheduleId: string }[]
   >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [scheduleId, setScheduleId] = useState<string | null>(null);
 
-  const [currentMonth, setCurrentMonth] = useState<number>(
-    new Date().getMonth() + 1
-  );
-  const [currentYear, setCurrentYear] = useState<number>(
-    new Date().getFullYear()
-  );
+  const [currentMonth] = useState<number>(new Date().getMonth() + 1);
+  const [currentYear] = useState<number>(new Date().getFullYear());
 
   const fetchEvents = async () => {
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzM1MDY3NywiZXhwIjoxNzM3MzUyNDc3LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.0KuvbeYp5txHf0DsLeEhBEiOlSX0UpTsDst0eCnfCNY';
-
-      const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
+      const url = `/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
         currentMonth
       ).padStart(2, '0')}`;
 
       console.log('API 호출 URL:', url);
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await instance.get(url);
 
-      if (!response.ok) {
-        console.error('API 호출 실패:', response.status, response.statusText);
-        return;
-      }
-
-      const data = await response.json();
+      const data = response.data;
       console.log('API 응답 데이터:', data);
 
       if (!Array.isArray(data)) {
@@ -136,25 +117,18 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [selectedId, currentYear, currentMonth]);
+  }, [selectedId, currentYear, currentMonth, fetchEvents]);
 
   const handleDateClick = (info: { dateStr: string }) => {
     setSelectedDate(info.dateStr);
-
-    const clickedEvent = events.find((event) => event.date === info.dateStr);
-
-    if (clickedEvent) {
-      setScheduleId(clickedEvent.scheduleId);
-    }
   };
 
   const handleCloseModal = () => {
     setSelectedDate(null);
-
-    setScheduleId(null);
   };
 
   const calendarHeight = 'auto';
+
   return (
     <div style={{ position: 'relative' }}>
       <FullCalendar
