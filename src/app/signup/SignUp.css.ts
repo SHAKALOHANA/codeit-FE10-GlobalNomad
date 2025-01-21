@@ -7,11 +7,10 @@ export const container = style({
   alignItems: 'center',
   justifyContent: 'center',
   height: '100vh',
+  backgroundColor: theme.colors.white,
 });
 
 export const card = style({
-  width: '640px',
-  backgroundColor: theme.colors.white,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -66,6 +65,7 @@ export const signupBtn = style({
 export const loginArea = style({
   display: 'flex',
   gap: '10px',
+  marginBottom:'48px',
 });
 
 export const text = style({
@@ -78,3 +78,29 @@ export const linkButton = style({
   fontSize: theme.text['lg-regular'].fontSize,
   color: theme.colors.green1,
 });
+
+export const modalOverlay =style({
+  position: 'fixed',
+  background: "rgba(0, 0, 0, 0.7)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: "1000",
+});
+
+export const modalContent = style ({
+  background: 'white',
+  width: '540px',
+  height: '250px',
+  padding: '20px',
+  borderRadius: '8px',
+  textAlign: 'center',
+})
+
+export const closeButton = style ({
+  width: '120px',
+  height:'48px',
+  marginTop: '10px',
+  padding: '10px 20px',
+  cursor: 'pointer',
+})

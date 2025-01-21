@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Providers } from './providers/ReactQueryProvider';
+import ReactQueryProvider from './providers/ReactQueryProvider';
+import { ProfileProvider } from './context/ProfileContext';
 import './global.css';
 
 export const metadata: Metadata = {
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <Providers>
+        <ReactQueryProvider>
+        <ProfileProvider>
           <Header />
-          {children}
-          <div id="portal" />
+            {children}
+            <div id="portal" />
           <Footer />
-        </Providers>
+        </ProfileProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
