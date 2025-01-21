@@ -1,5 +1,5 @@
-export interface MyActivitiesType {
-  cursorId: number;
+export interface MyActivitiesResProps {
+  cursorId: number | null;
   totalCount: number;
   activities: [
     {

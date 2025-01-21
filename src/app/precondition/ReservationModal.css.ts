@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+import { theme } from '../global.css';
 
 export const modalContainer = style({
   width: '429px',
@@ -7,6 +8,10 @@ export const modalContainer = style({
   border: '1px solid #dddddd', //색수정필요
   backgroundColor: '#ffffff',
   padding: '24px',
+  position: 'absolute',
+  top: '60px',
+  right: '0px',
+  zIndex: 10,
 });
 
 export const header = style({
@@ -19,23 +24,21 @@ export const header = style({
 
 export const menu = style({
   display: 'flex',
+  marginTop: '20px',
 });
 
-export const reservationContainer = style({
-  width: '381px',
-  height: '116px',
-  border: '1px solid #79747e',
-  margin: '10px auto',
-  padding: '0px 10px',
-  position: 'relative',
+export const tabButton = style({
+  backgroundColor: theme.colors.white,
+  border: '0px',
+  fontSize: '20px',
+  color: theme.colors.gray1,
 });
 
-export const buttonContainer = style({
-  width: '170px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  position: 'absolute',
-  bottom: '10px',
-  right: '10px',
+export const selectedTab = style({
+  border: '0px',
+  backgroundColor: theme.colors.white,
+  fontSize: '20px',
+  fontWeight: '600',
+  color: theme.colors.green1,
 });
 

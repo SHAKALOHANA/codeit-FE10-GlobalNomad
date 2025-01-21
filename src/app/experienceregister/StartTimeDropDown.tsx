@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import {
   DropDownContainer,
   DropDownBoxWrap,
@@ -40,7 +41,7 @@ const StartTimeDropDown: React.FC<StartTimeDropDownProps> = ({
         >
           {selected}
         </p>
-        <img
+        <Image
           src="../../../icons/chevron_down.svg"
           alt="Chevron Down"
           width={24}

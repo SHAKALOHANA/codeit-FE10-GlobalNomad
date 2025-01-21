@@ -10,6 +10,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
 import CustomButton from '../../components/CustomButton';
+import { instance } from '../../app/api/instance';
 import {
   mainContainer,
   sideContainer,
@@ -23,7 +24,6 @@ import {
   line,
   postSearchButton,
   imageRegister,
-  imagePreviewContainer,
   bannerContainer,
   introContainer,
   images,
@@ -54,9 +54,7 @@ interface ActivityData {
 
 const ExperienceRegister = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const [dates, setDates] = useState<
-    { date: string; startTime: string; endTime: string }[]
-  >([]);
+  const [dates, setDates] = useState<Schedule[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState<string>('시간선택');
   const [endTime, setEndTime] = useState<string>('시간선택');
@@ -73,7 +71,6 @@ const ExperienceRegister = () => {
   const [category, setCategory] = useState<string>('');
 
   const handleCategoryChange = (selectedCategory: string) => {
-    console.log('선택된 카테고리:', selectedCategory);
     setCategory(selectedCategory);
   };
 
@@ -103,7 +100,6 @@ const ExperienceRegister = () => {
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-
     if (/^\d*$/.test(value)) {
       setPrice(value);
       setPriceError(null);
@@ -150,48 +146,68 @@ const ExperienceRegister = () => {
   };
 
   const handleSubmit = async () => {
-    const requestData: ActivityData = {
-      title,
-      category,
-      description,
-      address,
-      price: Number(price),
-      schedules: dates.map((date) => ({
-        date: date.date,
-        startTime: date.startTime,
-        endTime: date.endTime,
-      })),
-      bannerImageUrl:
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/10-1_1361_1736271222406.png',
-      subImageUrls: [
-        'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/10-1_1361_1736271352229.png',
-      ],
-    };
-
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjI3NjEyMiwiZXhwIjoxNzM2Mjc3OTIyLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.h74PY6G1hbQvxaLTlj36ln7__b0CivI7nexUpn2UKG4';
-      const response = await fetch(
-        'https://sp-globalnomad-api.vercel.app/10-1/activities',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(requestData),
-        }
-      );
+      console.log('Banner Image:', bannerImage);
+      console.log('Intro Images:', introImages);
 
-      if (response.ok) {
-        alert('성공');
+      let uploadedBannerUrl = '';
+      const uploadedSubImageUrls: string[] = [];
+
+      // 배너 이미지 업로드
+      if (bannerImage) {
+        const bannerFormData = new FormData();
+        bannerFormData.append('image', bannerImage);
+
+        const bannerResponse = await instance.post(
+          '/activities/image',
+          bannerFormData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        uploadedBannerUrl = bannerResponse.data.activityImageUrl;
+      }
+
+      // 소개 이미지 업로드
+      for (const image of introImages) {
+        const introFormData = new FormData();
+        introFormData.append('image', image);
+
+        const introResponse = await instance.post(
+          '/activities/image',
+          introFormData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        uploadedSubImageUrls.push(introResponse.data.activityImageUrl);
+      }
+
+      const requestData: ActivityData = {
+        title,
+        category,
+        description,
+        address,
+        price: Number(price),
+        schedules: dates,
+        bannerImageUrl: uploadedBannerUrl,
+        subImageUrls: uploadedSubImageUrls,
+      };
+
+      const response = await instance.post('/activities', requestData);
+
+      if (response.status === 201) {
+        alert('등록 성공');
       } else {
-        const errorText = await response.text();
-        console.error('API 응답 실패:', errorText);
-        alert('실패');
+        alert('등록 실패');
       }
     } catch (error) {
-      console.error('Error:', error);
       alert('에러 발생');
     }
   };
@@ -359,11 +375,21 @@ const ExperienceRegister = () => {
             </label>
             {previewUrl && (
               <div style={{ position: 'relative' }}>
-                <img className={images} src={previewUrl} alt="배너 이미지" />
-                <img
+                <Image
+                  className={images}
+                  layout="intrinsic"
+                  width={180}
+                  height={180}
+                  src={previewUrl}
+                  alt="배너 이미지"
+                />
+                <Image
                   src="../../../icons/xbutton.svg"
                   alt="삭제 버튼"
                   className={deleteButton}
+                  layout="intrinsic"
+                  width={40}
+                  height={40}
                   onClick={() => {
                     setBannerImage(null);
                     setPreviewUrl(null);
@@ -389,15 +415,21 @@ const ExperienceRegister = () => {
 
             {introImages.map((image, index) => (
               <div key={index} style={{ position: 'relative' }}>
-                <img
+                <Image
                   className={images}
                   src={URL.createObjectURL(image)}
                   alt={`소개 이미지 ${index + 1}`}
+                  layout="intrinsic"
+                  width={180}
+                  height={180}
                 />
-                <img
+                <Image
                   src="../../../icons/xbutton.svg"
                   alt="이미지 삭제"
                   className={deleteButton}
+                  layout="intrinsic"
+                  width={40}
+                  height={40}
                   onClick={() =>
                     setIntroImages((prevImages) =>
                       prevImages.filter((_, idx) => idx !== index)
