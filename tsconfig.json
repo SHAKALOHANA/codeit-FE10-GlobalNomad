@@ -18,11 +18,15 @@
         "name": "next"
       }
     ],
+    "types": [
+      "kakao.maps.d.ts"
+    ],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": [
+    "svgr.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
