@@ -1,5 +1,72 @@
 import { instance } from './instance';
 
+
+interface Schedule {
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+export interface ActivityData {
+  title: string;
+  category: string;
+  description: string;
+  address: string;
+  price: number;
+  schedules: Schedule[];
+  bannerImageUrl: string;
+  subImageUrls: string[];
+}
+
+/** /activities POST의 응답 타입 */
+export type CreateActivityResParams = {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  address: string;
+  bannerImageUrl: string;
+  rating: number;
+  reviewCount: number;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  subImages: {
+    imageUrl: string;
+    id: number;
+  }[];
+  schedules: {
+    date: string; // ISO date string
+    times: {
+      startTime: string; // e.g. "HH:mm"
+      endTime: string; // e.g. "HH:mm"
+      id: number;
+    }[];
+  }[];
+};
+
+export const uploadActivityImage = async (file: File): Promise<string> => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const { data } = await instance.post<{ activityImageUrl: string }>(
+    '/activities/image',
+    formData,
+    { headers: { 'Content-Type': 'multipart/form-data' } }
+  );
+
+  // 서버가 돌려주는 최종 URL
+  return data.activityImageUrl;
+};
+
+/** 액티비티 등록 API */
+export const postActivity = async (
+  data: ActivityData
+): Promise<CreateActivityResParams> => {
+  const response = await instance.post('/activities', data);
+  return response.data; // 서버응답 형태가 명확하다면 그에 맞게 타입을 지정하세요!
+};
+
 interface PostRefreshParams {
   refreshToken: string;
 }

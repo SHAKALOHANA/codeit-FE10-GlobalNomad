@@ -9,6 +9,7 @@ export const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
+
 	if (config.url === "/auth/tokens") return config; 
 
 	try {
