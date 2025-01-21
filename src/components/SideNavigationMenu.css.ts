@@ -1,7 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '../app/global.css';
 import { mediaQueries } from '@/styles/media';
-import { relative } from 'path';
 
 export const containerBox = style({
   backgroundColor: theme.colors.white,
@@ -10,6 +9,7 @@ export const containerBox = style({
   padding: '24px',
   gap: '40px',
   borderRadius: '12px',
+  textDecorationLine: 'none',
   border: `1px solid ${theme.colors.gray7}`,
 
   '@media': {
@@ -89,7 +89,6 @@ export const inactiveText = style({
   color: '#a1a1a1',
 });
 
-
 export const activeImage = style({
   filter:
     'invert(21%) sepia(13%) saturate(1362%) hue-rotate(122deg) brightness(96%) contrast(93%)',
@@ -98,6 +97,4 @@ export const activeImage = style({
 export const inactiveImage = style({
   filter:
     'invert(61%) sepia(4%) saturate(145%) hue-rotate(186deg) brightness(94%) contrast(90%)',
-
 });
-

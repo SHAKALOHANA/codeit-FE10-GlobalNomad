@@ -112,7 +112,6 @@ export default function MyActivitiesPage() {
             <MyActivitiesList activities={allActivities} />
 
             {isFetchingNextPage && <p>추가 로딩 중...</p>}
-            {!hasNextPage && <p>더 이상 불러올 데이터가 없습니다.</p>}
             <div ref={loadMoreRef} />
           </div>
         )}
