@@ -45,6 +45,7 @@ export default function MyInfo({
         <div className={S.inputContainer}>
           <label className={S.labelStyle}>닉네임</label>
           <CustomInput
+            id="nickname"
             mode="myNickname"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
@@ -52,13 +53,18 @@ export default function MyInfo({
         </div>
         <div className={S.inputContainer}>
           <label className={S.labelStyle}>이메일</label>
-          <CustomInput mode="myEmail" value={myInfo.email} />
+          <CustomInput
+            mode="myEmail"
+            id="email"
+            value={myInfo.email}
+            readOnly
+          />
         </div>
         <div className={S.inputContainer}>
           <label className={S.labelStyle}>비밀번호</label>
           <CustomInput
             mode="myPassword"
-            type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -67,7 +73,7 @@ export default function MyInfo({
           <label className={S.labelStyle}>비밀번호 재입력</label>
           <CustomInput
             mode="myPasswordConfirm"
-            type="password"
+            id="passwordConfirm"
             value={passwordConfirm}
             onChange={(e) => setPasswordConfirm(e.target.value)}
             onBlur={() => setPasswordConfirmTouched(true)}

@@ -1,6 +1,5 @@
 import { instance } from './instance';
 
-
 interface Schedule {
   date: string;
   startTime: string;
