@@ -22,13 +22,26 @@ export const containerBox = style({
   },
 });
 
+export const profileImageContainer = style({
+  width: '160px',
+  height: '160px',
+  margin: '0 auto',
+  position: 'relative',
+});
+
 export const profileImage = style({
   width: '160px',
   height: '160px',
   borderRadius: '50%',
   backgroundColor: '#e3e5e8',
   margin: '0 auto',
-  position: 'relative',
+  overflow: 'hidden',
+});
+
+export const profileImg = style({
+  width: '160px',
+  height: '160px',
+  borderRadius: '50%',
 });
 
 export const editButton = style({
@@ -97,4 +110,8 @@ export const activeImage = style({
 export const inactiveImage = style({
   filter:
     'invert(61%) sepia(4%) saturate(145%) hue-rotate(186deg) brightness(94%) contrast(90%)',
+});
+
+export const linkStyle = style({
+  textDecorationLine: 'none',
 });

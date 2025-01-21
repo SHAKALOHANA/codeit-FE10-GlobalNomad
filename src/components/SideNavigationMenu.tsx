@@ -16,11 +16,36 @@ import {
   inactiveText,
   activeImage,
   inactiveImage,
+  linkStyle,
+  profileImageContainer,
 } from './SideNavigationMenu.css';
 
+import { useQuery } from '@tanstack/react-query';
+import { instance } from '@/app/api/instance';
+import { MyInfoData } from '@/types/MyInfo';
+
+export type UpdateUserBody = Partial<{
+  profileImageUrl: string | null;
+}>;
+
 const SideNavigationMenu = () => {
+  const { data: MyInfo, isLoading } = useQuery<MyInfoData, Error>({
+    queryKey: ['myInfo'],
+    queryFn: async () => {
+      const { data } = await instance.get('/users/me');
+      return data;
+    },
+  });
+
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [profileImageSrc, setProfileImageSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (MyInfo?.profileImageUrl) {
+      setProfileImageSrc(MyInfo.profileImageUrl);
+    }
+  }, [MyInfo]);
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -35,56 +60,106 @@ const SideNavigationMenu = () => {
     }
   }, [pathname]);
 
-  const handleProfileImageChange = (
+  const handleProfileImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-      const maxSizeInMB = 5;
 
-      const fileExtension = file.name.split('.').pop()?.toLowerCase();
-      if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
-        alert('이미지 파일만 업로드할 수 있습니다. (jpg, jpeg, png, gif)');
-        event.target.value = '';
-        return;
+    if (!file) return;
+
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    const maxSizeInMB = 5;
+
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    if (!fileExtension || !allowedExtensions.includes(fileExtension)) {
+      alert('이미지 파일만 업로드할 수 있습니다. (jpg, jpeg, png, gif, webp)');
+      event.target.value = '';
+      return;
+    }
+
+    if (file.size > maxSizeInMB * 1024 * 1024) {
+      alert(`파일 크기는 최대 ${maxSizeInMB}MB를 초과할 수 없습니다.`);
+      event.target.value = '';
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const uploadResponse = await instance.post('/users/me/image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      const imageUrl = uploadResponse.data?.profileImageUrl;
+
+      if (!imageUrl) {
+        throw new Error('이미지 URL이 응답에 없습니다.');
       }
 
-      if (file.size > maxSizeInMB * 1024 * 1024) {
-        alert(`파일 크기는 최대 ${maxSizeInMB}MB를 초과할 수 없습니다.`);
-        event.target.value = '';
-        return;
-      }
+      console.log('이미지 업로드 성공, 이미지 URL:', imageUrl);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImageSrc(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const patchResponse = await instance.patch('/users/me', {
+          profileImageUrl: imageUrl,
+        });
+
+        console.log('프로필 업데이트 성공:', patchResponse.data); // 디버깅용 로그
+        setProfileImageSrc(patchResponse.data.profileImageUrl);
+
+        alert('프로필 이미지가 업데이트되었습니다.');
+      } catch (patchError) {
+        console.error('프로필 업데이트 실패:', patchError);
+        alert('사용자 정보 업데이트에 실패했습니다.');
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('에러 발생:', error.message);
+        alert('이미지 업로드 중 문제가 발생했습니다.');
+      } else {
+        console.error('알 수 없는 에러:', error);
+        alert('예상치 못한 문제가 발생했습니다.');
+      }
+    } finally {
+      event.target.value = '';
     }
   };
 
   return (
     <div className={containerBox}>
-      <div className={profileImage}>
-        {profileImageSrc ? (
+      <div className={profileImageContainer}>
+        <div className={profileImage}>
+          {profileImageSrc ? (
+            <Image
+              src={profileImageSrc}
+              className="profileImage"
+              alt="프로필 이미지"
+              width={160}
+              height={160}
+            />
+          ) : (
+            <Image
+              src="/images/default_profile_image.png"
+              className="defaultProfileImage"
+              alt="기본 프로필 이미지"
+              width={160}
+              height={160}
+            />
+          )}
           <Image
-            src={profileImageSrc}
-            alt="프로필 이미지"
-            width={160}
-            height={160}
+            className={editButton}
+            src="/icons/profileeditbutton.svg"
+            alt="프로필편집버튼"
+            width={44}
+            height={44}
+            onClick={() => document.getElementById('fileInput')?.click()}
           />
-        ) : (
-          <div />
-        )}
-        <Image
-          className={editButton}
-          src="/icons/profileeditbutton.svg"
-          alt="프로필편집버튼"
-          width={44}
-          height={44}
-          onClick={() => document.getElementById('fileInput')?.click()}
-        />
+        </div>
+      </div>
+      <div>
+        {isLoading && <p></p>} {/* 로딩 상태 표시 */}
         <input
           id="fileInput"
           type="file"
@@ -94,7 +169,7 @@ const SideNavigationMenu = () => {
         />
       </div>
       <div className={navigationBoxes}>
-        <Link href="/my-info">
+        <Link href="/my-info" className={linkStyle}>
           <div
             className={`${navigationBox} ${
               activeIndex === 0 ? activeNavigationBox : ''
@@ -114,7 +189,7 @@ const SideNavigationMenu = () => {
             </p>
           </div>
         </Link>
-        <Link href="/my-reservations">
+        <Link href="/my-reservations" className={linkStyle}>
           <div
             className={`${navigationBox} ${
               activeIndex === 1 ? activeNavigationBox : ''
@@ -134,7 +209,7 @@ const SideNavigationMenu = () => {
             </p>
           </div>
         </Link>
-        <Link href="/my-activities">
+        <Link href="/my-activities" className={linkStyle}>
           <div
             className={`${navigationBox} ${
               activeIndex === 2 ? activeNavigationBox : ''
@@ -154,7 +229,7 @@ const SideNavigationMenu = () => {
             </p>
           </div>
         </Link>
-        <Link href="/precondition">
+        <Link href="/precondition" className={linkStyle}>
           <div
             className={`${navigationBox} ${
               activeIndex === 3 ? activeNavigationBox : ''
