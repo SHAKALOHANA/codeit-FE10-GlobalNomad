@@ -6,7 +6,6 @@ export const cardContainer = style({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
   margin: '0 auto',
 });
 
@@ -77,11 +76,11 @@ export const reservationStatus1 = style({
 
 export const reservationStatus2 = styleVariants({
   pending: {
-    color: theme.colors.yellow1,
+    color: theme.colors.blue2,
   },
 
   confirmed: {
-    color: theme.colors.orange1,
+    color: theme.colors.yellow1,
   },
 
   declined: {
@@ -93,10 +92,6 @@ export const reservationStatus2 = styleVariants({
   },
 
   completed: {
-    color: theme.colors.blue2,
-  },
-
-  completed_experience: {
     color: theme.colors.gray2,
   },
 });
@@ -110,6 +105,7 @@ export const titleButton = style({
   fontSize: theme.text['xl-bold'].fontSize,
   fontWeight: theme.text['xl-bold'].fontWeight,
   lineHeight: theme.text['xl-bold'].lineHeight,
+  backgroundColor: theme.colors.gray9,
   width: '491px',
   border: 'none',
   textAlign: 'left',

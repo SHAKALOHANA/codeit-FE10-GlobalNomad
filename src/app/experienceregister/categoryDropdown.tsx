@@ -6,7 +6,7 @@ import {
   DropDownBoxWrap,
   CategoryMenuBox,
   ListItem,
-} from './CategoryDropDown.css';
+} from './CategoryDropdown.css';
 
 interface CategoryDropDownProps {
   onCategorySelect: (category: string) => void;
@@ -20,7 +20,7 @@ const CategoryDropDown = ({ onCategorySelect }: CategoryDropDownProps) => {
 
   const onOptionClicked = (value: string) => () => {
     setSelectedCategory(value);
-    onCategorySelect(value); // 부모 컴포넌트로 선택된 카테고리 전달
+    onCategorySelect(value);
     setIsOpen(false);
   };
 
@@ -47,8 +47,8 @@ const CategoryDropDown = ({ onCategorySelect }: CategoryDropDownProps) => {
       {isOpen && (
         <div className={DropDownBoxWrap}>
           <ul className={DropDownContainer}>
-            <li className={ListItem} onClick={onOptionClicked('문화예술')}>
-              문화예술
+            <li className={ListItem} onClick={onOptionClicked('문화 · 예술')}>
+              문화 · 예술
             </li>
             <li className={ListItem} onClick={onOptionClicked('식음료')}>
               식음료
