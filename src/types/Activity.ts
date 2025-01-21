@@ -1,13 +1,8 @@
+import { scheduleTime } from "./Schedules";
+
 type subImageArr = {
   imageUrl: string;
   id: number;
-}
-
-type scheduleTime = {
-  id: number;
-  date: string;
-  startTime: string;
-  endTime: string;
 }
 
 export type Activity = {
