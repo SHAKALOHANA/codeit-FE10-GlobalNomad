@@ -35,7 +35,12 @@ export default function Activities({ params }: Props) {
     <div>
     <div className={styles.container}>
       {/* 제목 섹션 */}
+      <p className={`${styles.extraText} ${styles.colorNomad}`}>{activity?.category}</p>
       <h1 className={styles.title}>{activity?.title}</h1>
+      <p className={`${styles.extraText} ${styles.extra}`}>
+        <div className={styles.colorBlack}>⭐ {activity.rating}{'('}{activity.reviewCount}{')'}</div>
+        <div className={`${styles.colorNomad}`}>📍 {activity.address}</div>
+      </p>
 
       {/* 이미지 섹션 */}
       <div className={styles.imageSection}>
@@ -64,10 +69,11 @@ export default function Activities({ params }: Props) {
           />
         </div>
       </div>
-      <br /><br /><hr />
+      <br /><br />
 
       <div className={styles.contentsContatiner}>
         <div className={styles.sections}>
+        <hr />
       {/* 체험 설명 */}
       <section className={styles.section}>
         <h2>체험 설명</h2>
