@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    externalDir: true,
+  },
 
   webpack(config: Configuration) {
     // 기존의 svg 로더 rule을 찾고 싶다면 아래처럼 할 수도 있지만
