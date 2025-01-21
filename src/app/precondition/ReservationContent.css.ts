@@ -11,10 +11,12 @@ export const reservationContainer = style({
 });
 
 export const buttonContainer = style({
-  width: '82px',
+  width: '170px',
   position: 'absolute',
   bottom: '10px',
   right: '10px',
+  display: 'flex',
+  justifyContent: 'space-between',
 });
 
 export const confirmedButton = style({
@@ -33,5 +35,19 @@ export const declinedButton = style({
   borderRadius: '26.5px',
   backgroundColor: theme.colors.red3,
   color: theme.colors.red1,
+});
+
+export const confirmedContainer = style({
+  width: '82px',
+  position: 'absolute',
+  bottom: '10px',
+  right: '10px',
+});
+
+export const declinedContainer = style({
+  width: '82px',
+  position: 'absolute',
+  bottom: '10px',
+  right: '10px',
 });
 

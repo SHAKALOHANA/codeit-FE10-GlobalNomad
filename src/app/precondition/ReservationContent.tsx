@@ -4,8 +4,11 @@ import {
   buttonContainer,
   confirmedButton,
   declinedButton,
+  confirmedContainer,
+  declinedContainer,
 } from './ReservationContent.css';
 import CustomButton from '../../components/CustomButton';
+import { instance } from '../../app/api/instance';
 
 interface Reservation {
   nickname: string;
@@ -32,28 +35,17 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
       try {
         if (!scheduleId || !selectedActivityId) return;
 
-        const token =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzMxNzE5MCwiZXhwIjoxNzM3MzE4OTkwLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.iX1cqOX0PoztNlP6r81C6NBN0jAYMLs2EDLPPW_Lb7s';
+        const url = `/my-activities/${selectedActivityId}/reservations`;
+        const params = {
+          size: 10,
+          scheduleId,
+          status: activeTab,
+        };
 
-        const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reservations?size=10&scheduleId=${scheduleId}&status=${activeTab}`;
-
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          console.error('API 호출 실패:', response.status, response.statusText);
-          return;
-        }
-
-        const data = await response.json();
+        const response = await instance.get(url, { params });
 
         setReservations(
-          data.reservations.map((reservation: any) => ({
+          response.data.reservations.map((reservation: any) => ({
             nickname: reservation.nickname,
             headCount: reservation.headCount,
             totalPrice: reservation.totalPrice,
@@ -70,29 +62,12 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
 
   const handleApproveReservation = async (id: number) => {
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzMxNzE5MCwiZXhwIjoxNzM3MzE4OTkwLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.iX1cqOX0PoztNlP6r81C6NBN0jAYMLs2EDLPPW_Lb7s';
-
-      const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedActivityId}/reservations/${id}`;
+      const url = `/my-activities/${selectedActivityId}/reservations/${id}`;
       const data = {
         status: 'confirmed',
       };
 
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('예약 승인 실패:', errorText);
-        alert(`예약 승인 실패: ${errorText || response.statusText}`);
-        return;
-      }
+      await instance.patch(url, data);
 
       setReservations((prevReservations) =>
         prevReservations.filter((reservation) => reservation.id !== id)
@@ -105,12 +80,32 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
     }
   };
 
+  const handleRejectReservation = async (id: number) => {
+    try {
+      const url = `/my-activities/${selectedActivityId}/reservations/${id}`;
+      const data = {
+        status: 'declined',
+      };
+
+      await instance.patch(url, data);
+
+      setReservations((prevReservations) =>
+        prevReservations.filter((reservation) => reservation.id !== id)
+      );
+
+      console.log('예약 거절 성공');
+    } catch (error) {
+      console.error('예약 거절 중 오류 발생:', error);
+      alert('예약 거절 중 오류 발생');
+    }
+  };
+
   return (
     <>
       {reservations.map((reservation) => (
         <div key={reservation.id} className={reservationContainer}>
-          <p>{reservation.nickname}</p>
-          <p>{reservation.headCount}명</p>
+          <p>닉네임 {reservation.nickname}</p>
+          <p>인원 {reservation.headCount}명</p>
           {activeTab === 'pending' && (
             <div className={buttonContainer}>
               <CustomButton
@@ -119,15 +114,21 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
               >
                 승인하기
               </CustomButton>
+              <CustomButton
+                mode="reservationReject"
+                onClick={() => handleRejectReservation(reservation.id)}
+              >
+                거절하기
+              </CustomButton>
             </div>
           )}
           {activeTab === 'confirmed' && (
-            <div className={buttonContainer}>
+            <div className={confirmedContainer}>
               <button className={confirmedButton}>예약 승인</button>
             </div>
           )}
           {activeTab === 'declined' && (
-            <div className={buttonContainer}>
+            <div className={declinedContainer}>
               <button className={declinedButton}>예약 거절</button>
             </div>
           )}

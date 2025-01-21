@@ -103,7 +103,12 @@ const SignIn = () => {
             priority
           />
         </Link>
-        <form onSubmit={handleLogin}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLogin();
+          }}
+        >
           <div>
             <label className={label}>이메일</label>
             <input
@@ -166,3 +171,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
