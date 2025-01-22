@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ReactQueryProvider from './providers/ReactQueryProvider';
+import {Providers} from './providers/ReactQueryProvider';
 import { ProfileProvider } from './context/ProfileContext';
 import './global.css';
 
@@ -18,14 +18,14 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <ReactQueryProvider>
+        <Providers>
         <ProfileProvider>
           <Header />
             {children}
             <div id="portal" />
           <Footer />
         </ProfileProvider>
-        </ReactQueryProvider>
+        </Providers>
       </body>
     </html>
   );

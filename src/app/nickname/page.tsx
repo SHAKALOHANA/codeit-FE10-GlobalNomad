@@ -1,74 +1,48 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const NicknameInput: React.FC = () => {
   const [nickname, setNickname] = useState('');
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
-  const [token] = useState<string | null>(null); // 토큰 상태 추가
+  // TODO: 해당 메소드 맞는지 확인 필요
   const router = useRouter();
 
-  // URL에서 인가 코드 가져오기 및 토큰 요청
-  useEffect(() => {
+  const getKakaoCode = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-
-    if (code) {
-      fetchKakaoAccessToken(code); // 인가 코드로 토큰 요청
-    } else {
-      console.error('인가 코드가 없습니다.');
-    }
-  }, []);
-
-  const fetchKakaoAccessToken = async (code: string) => {
-    const response = await fetch(`/api/auth/kakao?code=${code}`)
-    console.log(response);
+    return code
   }
 
-  const checkNicknameAvailability = async () => {
-    if (!nickname || !token) { // 토큰이 없으면 체크하지 않음
+  const handleKakaoSignUp = async () => {
+    const code = getKakaoCode();
+
+    if (!nickname || !code) {
       setIsAvailable(null);
       return;
     }
 
     try {
-      const response = await fetch(`https://sp-globalnomad-api.vercel.app/10-1/sign-up/kakao`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          nickname: nickname, // 닉네임
-          redirectUri: 'http://localhost:3000/oauth/kakao', // 리디렉션 URI
-          token: token, // 여기에 실제 토큰 값을 넣음
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("data is:", data);
-        setIsAvailable(data.available);
-        return data.available;
-      } else {
-        const errorData = await response.json().catch(err => {
-          console.error("Error parsing JSON response:", err); // JSON 파싱 에러
-          return { message: '응답을 처리하는 중 오류가 발생했습니다.' };
-        });
-        console.log("Server error response:", errorData);
-        if (response.status === 400) {
-          setErrorMessage('잘못된 인가 코드입니다.');
-        } else if (response.status === 409) {
-          setErrorMessage('닉네임이 이미 사용 중입니다. 다른 닉네임을 입력하세요.');
-          setIsAvailable(false);
-        } else {
-          setErrorMessage(errorData.message || '닉네임 중복 확인에 실패했습니다.');
+      const response = await fetch(
+        `https://sp-globalnomad-api.vercel.app/10-1/oauth/sign-up/kakao`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            nickname, // 닉네임
+            redirectUri: 'http://localhost:3000/nickname',
+            token: code,
+          }),
         }
-        // 사용 가능 여부를 null로 설정
-        setIsAvailable(null);
-        return false; 
-      }
+      );
+
+      const responseData = await response.json()
+      console.log(responseData);
+      if(response.ok) router.push('/')
     } catch (error) {
       console.error('Error checking nickname:', error);
       setErrorMessage('서버 오류가 발생했습니다.');
@@ -79,15 +53,7 @@ const NicknameInput: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    const isAvailable = await checkNicknameAvailability(); // 중복 확인 요청
-
-    if (isAvailable) {
-      // 닉네임이 사용 가능할 경우 홈으로 리디렉션
-      router.push('/');
-    } else {
-      setErrorMessage('닉네임이 중복되었습니다. 다른 닉네임을 입력하세요.');
-    }
+    await handleKakaoSignUp();  
   };
 
   return (
@@ -99,7 +65,6 @@ const NicknameInput: React.FC = () => {
           value={nickname}
           onChange={(e) => {
             setNickname(e.target.value);
-            checkNicknameAvailability();
           }}
           placeholder="닉네임을 입력하세요"
         />
