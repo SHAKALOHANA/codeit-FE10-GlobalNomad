@@ -68,6 +68,11 @@ export const enabledDate = style({
   },
 });
 
+export const selectedDate = style({
+  backgroundColor: theme.colors.green1,
+  color: theme.colors.white,
+});
+
 export const timeSelectionContainer = style({
   margin: '10px 0px',
 });
