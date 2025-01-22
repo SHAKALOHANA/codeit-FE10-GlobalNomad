@@ -1,42 +1,73 @@
-import React from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
+'use client';
 
-type KakaoMapProps = {
+import React, { useEffect, useRef } from 'react';
+
+interface MapProps {
   address: string;
-};
+}
 
-const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
-  const [position, setPosition] = React.useState<{ lat: number; lng: number } | null>(null);
+const KakaoMap = ({ address }: MapProps) => {
+  const mapContainer = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const geocoder = new window.kakao.maps.services.Geocoder();
+  useEffect(() => {
+    // 1) Kakao 지도 스크립트 로드 (autoload=false 추가)
+    const script = document.createElement('script');
+    script.src =
+      'https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=9070eccd51c9a7ceee9493b2835e12f7&libraries=services';
+    script.async = true;
+    document.head.appendChild(script);
 
-    // 주소를 좌표로 변환
-    geocoder.addressSearch(address, (result, status) => {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const coords = {
-          lat: parseFloat(result[0].y),
-          lng: parseFloat(result[0].x),
-        };
-        setPosition(coords); // 변환된 좌표를 상태에 저장
-      } else {
-        console.error('주소를 찾을 수 없습니다.');
-      }
-    });
+    // 2) 스크립트 로드 후 kakao.maps.load() 내에서 지도 초기화
+    script.onload = () => {
+      const { kakao } = window as any;
+
+      // kakao.maps.load 안에서 지도 생성 및 주소 변환
+      kakao.maps.load(() => {
+        if (!mapContainer.current) return;
+
+        // 지도 생성
+        const map = new kakao.maps.Map(mapContainer.current, {
+          center: new kakao.maps.LatLng(37.5665, 126.978), // 서울 좌표
+          level: 3,
+        });
+
+        // 주소 → 좌표 변환
+        const geocoder = new kakao.maps.services.Geocoder();
+        geocoder.addressSearch(address, (result: any, status: any) => {
+          if (status === kakao.maps.services.Status.OK) {
+            const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+            // 지도 중심 이동
+            map.setCenter(coords);
+
+            // 마커 생성
+            new kakao.maps.Marker({
+              map,
+              position: coords,
+            });
+          } else {
+            console.error('주소 변환 실패:', status);
+          }
+        });
+      });
+    };
+
+    // 3) 컴포넌트 언마운트 시 스크립트 제거
+    return () => {
+      document.head.removeChild(script);
+    };
   }, [address]);
 
-  if (!position) {
-    return <div>지도를 불러오는 중...</div>;
-  }
 
   return (
-    <Map
-      center={position} // 지도의 중심 좌표 설정
-      style={{ width: '100%', height: '100%' }} // 지도의 크기 설정
-      level={3} // 확대 레벨
-    >
-      <MapMarker position={position} />
-    </Map>
+    <div
+      ref={mapContainer}
+      style={{
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#f0f0f0',
+      }}
+    />
   );
 };
 
