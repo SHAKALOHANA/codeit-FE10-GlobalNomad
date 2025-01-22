@@ -10,7 +10,6 @@ import {
 } from './SocialSignin.css';
 import Image from 'next/image';
 
-
 interface SocialLoginProps {
   setLoginError: (message: string) => void;
 }
@@ -82,7 +81,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
   //   }
   // };
 
-  // // TODO: 토큰 받는 자리, 인가 코드를 받아서 액세스 토큰을 요청하는 함수 
+  // // TODO: 토큰 받는 자리, 인가 코드를 받아서 액세스 토큰을 요청하는 함수
   // const fetchKakaoAccessToken = async (code: string) => {
   //   try {
   //     const response = await fetch(`https://kauth.kakao.com/oauth/token`, {
