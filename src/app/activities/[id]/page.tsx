@@ -3,24 +3,26 @@
 import { useActivity } from "@/app/api/activity";
 import Map from "../../../components/Map";
 import BasicMap from "@/components/Kakaomap";
-import { useState } from "react";
+import ReservationBar from "@/components/ReservationBar";
+import { use, useState } from "react";
 import * as styles from "./activity.css";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { Activity } from '@/types/Activity';
 
 interface Props {
-  params: {
-    id: string;
-  };
+  params: Promise<{id: string}>;
 }
 
 export default function Activities({ params }: Props) {
-  const id = parseInt(params.id, 10);
-  const { data: activity, isLoading, error } = useActivity(id);
+  const { id } = use(params);
+  const activityId = parseInt(id, 10);
+
+  const { data: activity, isLoading, error } = useActivity(activityId);
 
   //const [address, setAddress] = useState("");
   const [selected, setSelected] = useState<Date>();
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -37,10 +39,10 @@ export default function Activities({ params }: Props) {
       {/* 제목 섹션 */}
       <p className={`${styles.extraText} ${styles.colorNomad}`}>{activity?.category}</p>
       <h1 className={styles.title}>{activity?.title}</h1>
-      <p className={`${styles.extraText} ${styles.extra}`}>
+      <div className={`${styles.extraText} ${styles.extra}`}>
         <div className={styles.colorBlack}>⭐ {activity.rating}{'('}{activity.reviewCount}{')'}</div>
         <div className={`${styles.colorNomad}`}>📍 {activity.address}</div>
-      </p>
+      </div>
 
       {/* 이미지 섹션 */}
       <div className={styles.imageSection}>
@@ -89,6 +91,7 @@ export default function Activities({ params }: Props) {
           {/*}
           <Map address={"서울 송파구 올림픽로 240"} />
           */}
+          {/*<BasicMap address={activity.address}/>*/}
           <BasicMap />
         </div>
       </section>
@@ -132,29 +135,10 @@ export default function Activities({ params }: Props) {
       <div className={styles.registerContainer}>  
       {/* 예약 섹션 */}
       <section className={styles.section}>
-        <h2>&#8361; 1,000 <small> / 인</small></h2>
-        <form className={styles.bookingForm}>
-          <label className={styles.labels}>
-            날짜
-            <DayPicker
-      mode="single"
-      selected={selected}
-      onSelect={setSelected}
-      footer={
-        selected ? `Selected: ${selected.toLocaleDateString()}` : ""
-      }
-    />
-          </label>
-          <label>
-            시간
-          </label>
-          <label>
-            참여 인원 수
-          </label>
-          <button type="submit" className={styles.button}>
-            예약하기
-          </button>
-        </form>
+      <ReservationBar
+        price={activity.price}
+        schedules={activity.schedules}
+      />
       </section>
         </div>
       </div>

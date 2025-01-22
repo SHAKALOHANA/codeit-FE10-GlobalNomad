@@ -20,6 +20,7 @@ export const extraText = style({
   fontSize: theme.text["md-regular"].fontSize,
   fontWeight: theme.text["md-regular"].fontWeight,
   lineHeight: theme.text["md-regular"].lineHeight,
+  margin: "10px 0px",
 });
 
 export const extra = style({
