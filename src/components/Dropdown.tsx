@@ -1,11 +1,9 @@
-'use client'
+'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import type { CustomDropdownMode } from '@/types/CustomDropdownMode';
 import * as styles from './Dropdown.css';
 import DropdownBox from './Dropdown/DropdownBox';
 import DropdownMenu from './Dropdown/DropdownMenu';
-
 
 interface DropdownItem {
   label: string;
@@ -32,7 +30,10 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items }) => {
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsMenuOpen(false);
     }
   };
@@ -50,7 +51,11 @@ const Dropdown: React.FC<DropdownProps> = ({ label, items }) => {
   return (
     <div className={styles.dropdown} ref={dropdownRef}>
       <DropdownBox onClick={handleButtonClick} label={selectedLabel} />
-      <DropdownMenu items={items} onSelect={handleItemSelect} isVisible={isMenuOpen} />
+      <DropdownMenu
+        items={items}
+        onSelect={handleItemSelect}
+        isVisible={isMenuOpen}
+      />
     </div>
   );
 };

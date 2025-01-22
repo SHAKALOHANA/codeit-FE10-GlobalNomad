@@ -1,5 +1,4 @@
-import { style } from '@vanilla-extract/css'
-import { mediaQueries } from '@/styles/media';
+import { style } from '@vanilla-extract/css';
 
 export const dropdown = style({
   position: 'relative',

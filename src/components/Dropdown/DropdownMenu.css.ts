@@ -4,8 +4,8 @@ import { mediaQueries } from '@/styles/media';
 
 export const dropdownMenu = style({
   position: 'absolute',
-  top: '100%',
-  left: 0,
+  top: '95%',
+  left: '-220%',
   backgroundColor: theme.colors.white,
   color: theme.colors.green1,
   borderRadius: '6px',
@@ -39,12 +39,14 @@ export const dropdownItem = style({
   transition: 'background-color 0.3s, color 0.3s',
   selectors: {
     '&:hover': {
-      backgroundColor: '#f8f9fa',
-      color: '#007bff',
+      backgroundColor: `${theme.colors.green2}`,
+      color: `${theme.colors.nomadBlack}`,
+      fontWeight: theme.text['lg-semibold'].fontWeight,
     },
     '&:active': {
-      backgroundColor: '#e9ecef',
-      color: '#0056b3',
+      backgroundColor: `${theme.colors.green1}`,
+      color: `${theme.colors.white}`,
+      fontWeight: theme.text['lg-semibold'].fontWeight,
     },
   },
 });
@@ -64,65 +66,51 @@ export const variantsMenu = styleVariants({
   price: {
     width: '127px',
     height: '53px',
-    selectors: {
-    },
+    selectors: {},
     '@media': {
-      [mediaQueries.tablet]: {
-      },
-      [mediaQueries.mobile]: {
-      },
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {},
     },
   },
   threedot: {
     width: '10px',
     height: '48px',
-    selectors: {
-    },
+    selectors: {},
     '@media': {
-      [mediaQueries.tablet]: {
-      },
-      [mediaQueries.mobile]: {
-      },
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {},
     },
   },
   filter: {
     width: '160px',
     height: '53px',
     '@media': {
-      [mediaQueries.tablet]: {
-      },
-      [mediaQueries.mobile]: {
-      },
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {},
     },
   },
   category: {
     height: '56px',
     borderRadius: '4px',
     '@media': {
-      [mediaQueries.tablet]: {
-      },
-      [mediaQueries.mobile]: {
-      },
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {},
     },
   },
   time: {
     width: '140px',
     height: '56px',
     '@media': {
-      [mediaQueries.tablet]: {
-      },
-      [mediaQueries.mobile]: {
-      },
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {},
     },
   },
   activity: {
     height: '56px',
     borderRadius: '4px',
     '@media': {
-      [mediaQueries.tablet]: {
-      },
-      [mediaQueries.mobile]: {
-      },
+      [mediaQueries.tablet]: {},
+      [mediaQueries.mobile]: {},
     },
   },
 });
