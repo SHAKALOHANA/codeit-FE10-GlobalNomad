@@ -1,18 +1,26 @@
 'use client'
 
 import { useActivity } from "@/app/api/activity";
-import Map from "../../../components/Map";
-import BasicMap from "@/components/Kakaomap";
 import ReservationBar from "@/components/ReservationBar";
-import { use, useState } from "react";
+import { use, useState, useEffect, useRef } from "react";
 import * as styles from "./activity.css";
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
-import { Activity } from '@/types/Activity';
+import KakaoMap from "../../../components/Map";
+import Image from "next/image";
+import DropdownMenu from "@/components/Dropdown/DropdownMenu";
 
 interface Props {
   params: Promise<{id: string}>;
 }
+interface DropdownItem {
+  label: string;
+  value: string;
+}
+
+const items: DropdownItem[] = [
+  {label: '수정하기', value:'edit'},
+  {label: '삭제하기', value:'delete'},
+];
 
 export default function Activities({ params }: Props) {
   const { id } = use(params);
@@ -20,10 +28,30 @@ export default function Activities({ params }: Props) {
 
   const { data: activity, isLoading, error } = useActivity(activityId);
 
-  //const [address, setAddress] = useState("");
-  const [selected, setSelected] = useState<Date>();
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const handleButtonClick = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const handleItemSelect = (value: string) => {
+    setIsMenuOpen(false);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
@@ -33,12 +61,20 @@ export default function Activities({ params }: Props) {
   if (!activity) {
     return <div>활동 정보를 찾을 수 없습니다.</div>;
   }
+
+
   return (
     <div>
     <div className={styles.container}>
       {/* 제목 섹션 */}
       <p className={`${styles.extraText} ${styles.colorNomad}`}>{activity?.category}</p>
-      <h1 className={styles.title}>{activity?.title}</h1>
+      <div className={styles.titleArea}>
+        <h1 className={styles.title}>{activity?.title}</h1>
+        <div className={styles.threedots} ref={dropdownRef}>
+          <button className={styles.btnMeatball} onClick={handleButtonClick}><Image src='/icons/meatball.svg' width={40} height={40} alt={'meatball'} /></button>
+          <DropdownMenu items={items} onSelect={handleItemSelect} isVisible={isMenuOpen} />
+        </div>
+      </div>
       <div className={`${styles.extraText} ${styles.extra}`}>
         <div className={styles.colorBlack}>⭐ {activity.rating}{'('}{activity.reviewCount}{')'}</div>
         <div className={`${styles.colorNomad}`}>📍 {activity.address}</div>
@@ -47,28 +83,21 @@ export default function Activities({ params }: Props) {
       {/* 이미지 섹션 */}
       <div className={styles.imageSection}>
         <div className={styles.mainImageContainer}>
-          <img
-            src="/images/dance.png"
-            alt="Main Dance Image"
-            className={styles.mainImage}
-          />
+          <Image src={activity.bannerImageUrl} width={500} height={500} alt={'bannerImage'} />
         </div>
         <div className={styles.thumbnailContainer}>
-          <img
-            src="/images/dance.png"
-            alt="Thumbnail 1"
-            className={styles.thumbnail}
-          />
-          <img
-            src="/images/dance.png"
-            alt="Thumbnail 2"
-            className={styles.thumbnail}
-          />
-          <img
-            src="/images/dance.png"
-            alt="Thumbnail 3"
-            className={styles.thumbnail}
-          />
+          {activity.subImages.map((url) => (
+          <div key={url.id} className={styles.thumbnail}>
+            <Image
+              key={url.id}
+              src={url.imageUrl}
+              alt={`Subimage`}
+              layout="fill" // 이미지 크기 자동 조절
+              objectFit="cover" // 이미지가 컨테이너에 맞게 조정
+              priority={url.id === 0} // 첫 번째 이미지를 우선 로드
+            />
+          </div>
+          ))}
         </div>
       </div>
       <br /><br />
@@ -88,11 +117,7 @@ export default function Activities({ params }: Props) {
       <section className={styles.section}>
       <br /><hr /><br />
         <div className={styles.mapContainer}>
-          {/*}
-          <Map address={"서울 송파구 올림픽로 240"} />
-          */}
-          {/*<BasicMap address={activity.address}/>*/}
-          <BasicMap />
+          <KakaoMap address={activity.address} />
         </div>
       </section>
       <br /><br /><hr />
@@ -100,8 +125,9 @@ export default function Activities({ params }: Props) {
       {/* 후기 섹션 */}
       <section className={styles.section}>
         <h2>후기</h2>
-        <div>
-          별점
+        <div className={styles.ratingText}>
+          <div>{activity.rating}</div>
+          <div className={styles.countReview}>⭐{activity.reviewCount}개의 후기</div>
         </div>
         <div className={styles.review}>
           <h3 className={styles.reviewTitle}>후기 1</h3>

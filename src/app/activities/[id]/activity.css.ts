@@ -7,6 +7,23 @@ export const container = style({
   padding: "20px",
 });
 
+export const titleArea = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+});
+
+export const threedots = style({
+  width: '150px',
+  position: 'relative',
+  display: 'flex',
+  justifyContent: 'right',
+});
+export const btnMeatball = style({
+  backgroundColor: theme.colors.white,
+  border: '0',
+  cursor: 'pointer',
+});
+
 export const title = style({
   fontSize: theme.text["3xl-bold"].fontSize,
   fontWeight: theme.text["3xl-bold"].fontWeight,
@@ -56,17 +73,17 @@ export const mainImage = style({
 
 export const thumbnailContainer = style({
   display: "grid",
-  gridTemplateColumns: 'repeat(2, 1fr)',
+  gridTemplateColumns: 'repeat(3, 1fr)',
   gridTemplateRows: 'repeat(2, 1fr)',
   gap: "5px",
   width: '50%',
 });
 
 export const thumbnail = style({
-  width: "100%",
-  height: '100%',
-  objectFit: 'cover',
+  width: "200px",
+  height: '200px',
   borderRadius: "8px",
+  position: 'relative',
 });
 
 export const contentsContatiner = style({
@@ -169,4 +186,18 @@ export const pagBu = style({
 
 export const labels = style({
   width: '308px',
+});
+
+export const ratingText = style({
+  fontSize: '50px',
+  fontWeight: theme.text["2lg-semibold"].fontWeight,
+  color: theme.colors.nomadBlack,
+  display: 'flex',
+  alignItems: 'end',
+});
+
+export const countReview = style({
+  fontSize: theme.text["sm-medium"].fontSize,
+  fontWeight: theme.text["sm-medium"].fontWeight,
+  margin: '10px',
 });
