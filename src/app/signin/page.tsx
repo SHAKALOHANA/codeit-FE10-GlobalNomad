@@ -1,9 +1,10 @@
 'use client';
 
-import { useProfileContext } from '../context/ProfileContext';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useUserContext } from '@/app/context/UserContext';
 import { useRouter } from 'next/navigation';
 import { postLogIn } from '../api/authApi';
+import { instance } from '@/app/api/instance';
 import SocialLogin from './socialSignin';
 import Link from 'next/link';
 import axios from 'axios';
@@ -28,9 +29,10 @@ interface ApiError {
 }
 
 const SignIn = () => {
+  const { saveUserInfo } = useUserContext();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setIsLoggedIn, setProfileImageUrl } = useProfileContext();
 
   // TODO: error가 세개가 모두 잘 쓰이는지 확인 필요
   const [emailError, setEmailError] = useState('');
@@ -78,12 +80,12 @@ const SignIn = () => {
       const data = await postLogIn({ email, password });
       console.log('Login response:', data);
 
-      setIsLoggedIn(true);
-      setProfileImageUrl(data.user.profileImageUrl);
-
       localStorage.setItem('accessToken', data.accessToken); // accessToken 저장
       localStorage.setItem('refreshToken', data.refreshToken);
       localStorage.setItem('email', data.user.email);
+
+      const meResponse = await instance.get('/users/me');
+      saveUserInfo(meResponse.data);
       router.push('/');
     } catch (error) {
       console.error('Error during login:', error);
@@ -174,4 +176,3 @@ const SignIn = () => {
 };
 
 export default SignIn;
-
