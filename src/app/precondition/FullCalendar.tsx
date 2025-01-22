@@ -5,55 +5,81 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { EventClickArg } from '@fullcalendar/core';
 import koLocale from '@fullcalendar/core/locales/ko';
 import ReservationModal from './ReservationModal';
-import { headerToolbar, dayCellContent } from './FullCalendar.css';
+import {
+  pendingEvent,
+  completedEvent,
+  confirmedEvent,
+  dayGridDay,
+  dayNumberText,
+} from './FullCalendar.css';
+import { instance } from '../../app/api/instance';
 
 interface CalendarProps {
-  selectedTitle: string;
+  selectedId: string;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ selectedTitle }) => {
-  const [events, setEvents] = useState<{ title: string; date: string }[]>([]);
+const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
+  const [events, setEvents] = useState<
+    { title: string; date: string; classNames?: string[]; scheduleId: string }[]
+  >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+
+  const [currentMonth] = useState<number>(new Date().getMonth() + 1);
+  const [currentYear] = useState<number>(new Date().getFullYear());
 
   const fetchEvents = async () => {
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNjcwODA2MSwiZXhwIjoxNzM2NzA5ODYxLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.WTy11QmdbrKRBd9RZeGhNImJfM4hKuHC_NOsjByDzlI';
+      const url = `/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
+        currentMonth
+      ).padStart(2, '0')}`;
 
-      const response = await fetch(
-        'https://sp-globalnomad-api.vercel.app/10-1/my-activities?size=40',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log('API 호출 URL:', url);
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch events: ${response.statusText}`);
+      const response = await instance.get(url);
+
+      const data = response.data;
+      console.log('API 응답 데이터:', data);
+
+      if (!Array.isArray(data)) {
+        console.error('Invalid data format:', data);
+        return;
       }
 
-      const data = await response.json();
+      const apiEvents = data.flatMap((entry) => {
+        const { date, reservations } = entry;
+        const eventsForDate = [];
 
-      const filteredActivities = data.activities.filter(
-        (activity: { title: string }) => activity.title === selectedTitle
-      );
+        if (reservations.pending > 0) {
+          eventsForDate.push({
+            title: `예약 ${reservations.pending}`,
+            date,
+            classNames: ['pending'],
+            scheduleId: entry.scheduleId,
+          });
+        }
 
-      const dateCount: { [key: string]: number } = {};
-      filteredActivities.forEach((activity: { createdAt: string }) => {
-        const date = activity.createdAt.split('T')[0];
-        dateCount[date] = (dateCount[date] || 0) + 1;
+        if (reservations.completed > 0) {
+          eventsForDate.push({
+            title: `완료 ${reservations.completed}`,
+            date,
+            classNames: ['completed'],
+            scheduleId: entry.scheduleId,
+          });
+        }
+
+        if (reservations.confirmed > 0) {
+          eventsForDate.push({
+            title: `승인 ${reservations.confirmed}`,
+            date,
+            classNames: ['confirmed'],
+            scheduleId: entry.scheduleId,
+          });
+        }
+
+        return eventsForDate;
       });
-
-      const apiEvents = Object.entries(dateCount).map(([date, count]) => ({
-        title: count > 1 ? `예약 ${count}` : '예약 1',
-        date,
-      }));
 
       setEvents(apiEvents);
     } catch (error) {
@@ -61,22 +87,50 @@ const Calendar: React.FC<CalendarProps> = ({ selectedTitle }) => {
     }
   };
 
+  const updateEventStatus = () => {
+    const now = new Date();
+
+    setEvents((prevEvents) =>
+      prevEvents.map((event) => {
+        if (
+          event.classNames?.includes('confirmed') &&
+          new Date(event.date) < now
+        ) {
+          return {
+            ...event,
+            title: event.title.replace('승인', '완료'),
+            classNames: ['completed'],
+          };
+        }
+        return event;
+      })
+    );
+  };
+
   useEffect(() => {
-    if (selectedTitle !== '체험을 선택하세요') {
+    if (selectedId) {
       fetchEvents();
     }
-  }, [selectedTitle]);
+
+    const interval = setInterval(() => {
+      updateEventStatus();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [selectedId, currentYear, currentMonth, fetchEvents]);
 
   const handleDateClick = (info: { dateStr: string }) => {
-    setSelectedDate(info.dateStr); // 모달에 날짜 전달
+    setSelectedDate(info.dateStr);
   };
 
   const handleCloseModal = () => {
-    setSelectedDate(null); // 모달 닫기
+    setSelectedDate(null);
   };
 
+  const calendarHeight = 'auto';
+
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -92,12 +146,36 @@ const Calendar: React.FC<CalendarProps> = ({ selectedTitle }) => {
         }}
         dayHeaderFormat={{ weekday: 'short' }}
         dayCellContent={(arg) => (
-          <div className={dayCellContent}>
-            {arg.dayNumberText.replace('일', '')}
+          <div className={dayGridDay}>
+            <span className={dayNumberText}>
+              {arg.dayNumberText.replace('일', '')}
+            </span>
           </div>
         )}
+        height={calendarHeight}
+        eventContent={(eventInfo) => {
+          let eventStyle = '';
+
+          if (eventInfo.event.classNames.includes('pending')) {
+            eventStyle = pendingEvent;
+          } else if (eventInfo.event.classNames.includes('completed')) {
+            eventStyle = completedEvent;
+          } else if (eventInfo.event.classNames.includes('confirmed')) {
+            eventStyle = confirmedEvent;
+          }
+
+          return (
+            <div className={eventStyle}>
+              <span>{eventInfo.event.title}</span>
+            </div>
+          );
+        }}
       />
-      <ReservationModal date={selectedDate} onClose={handleCloseModal} />
+      <ReservationModal
+        date={selectedDate}
+        onClose={handleCloseModal}
+        selectedActivityId={selectedId}
+      />
     </div>
   );
 };

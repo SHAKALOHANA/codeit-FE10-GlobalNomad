@@ -3,7 +3,7 @@ import { theme } from '../global.css';
 import { mediaQueries } from '@/styles/media';
 
 export const CategoryMenuBox = style({
-  width: '792px',
+  width: '382px',
   height: '56px',
   borderRadius: '4px',
   border: `1px solid ${theme.colors.gray2}`,
@@ -13,11 +13,10 @@ export const CategoryMenuBox = style({
   alignItems: 'center',
   padding: '0 10px',
   cursor: 'pointer',
-  marginBottom: '40px',
 
   '@media': {
     [mediaQueries.tablet]: {
-      width: '429px',
+      width: '382px',
     },
     [mediaQueries.mobile]: {
       width: '343px',
@@ -26,17 +25,16 @@ export const CategoryMenuBox = style({
 });
 
 export const DropDownBoxWrap = style({
-  position: 'absolute',
-  width: '792px',
+  position: 'relative',
+  width: '382px',
   borderRadius: '4px',
   border: `1px solid ${theme.colors.gray2}`,
   backgroundColor: theme.colors.white,
   zIndex: 10,
-  top: '56px',
 
   '@media': {
     [mediaQueries.tablet]: {
-      width: '429px',
+      width: '382px',
     },
     [mediaQueries.mobile]: {
       width: '343px',

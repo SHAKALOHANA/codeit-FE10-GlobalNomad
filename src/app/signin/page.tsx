@@ -74,6 +74,7 @@ const SignIn = () => {
     }
     // 로그인 API 호출
     try {
+      console.log('Calling login API...');
       const data = await postLogIn({ email, password });
       console.log('Login response:', data);
 
@@ -173,3 +174,4 @@ const SignIn = () => {
 };
 
 export default SignIn;
+

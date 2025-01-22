@@ -16,14 +16,14 @@ interface CustomInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
-  ({ mode = 'nickname', placeholder, type, ...props }, ref) => {
+  ({ mode = 'nickname', placeholder, type, className, ...props }, ref) => {
     const uniqueId = useId();
     const internalId = `custom-input-${uniqueId}`;
     const finalId = props.id ?? internalId;
 
     const variantClass = inputVariants[mode];
 
-    const combinedClassName = [baseInput, variantClass]
+    const combinedClassName = [baseInput, variantClass, className]
       .filter(Boolean)
       .join(' ');
 

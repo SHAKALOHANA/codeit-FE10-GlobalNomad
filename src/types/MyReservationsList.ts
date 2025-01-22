@@ -4,7 +4,6 @@ export enum ReservationStatus {
   declined = 'declined',
   canceled = 'canceled',
   completed = 'completed',
-  completed_experience = 'completed_experience',
 }
 
 export const STATUS_LIST: ReservationStatus[] = [
@@ -13,7 +12,6 @@ export const STATUS_LIST: ReservationStatus[] = [
   ReservationStatus.declined,
   ReservationStatus.canceled,
   ReservationStatus.completed,
-  ReservationStatus.completed_experience,
 ];
 
 export interface ReservationsType {
@@ -47,9 +45,8 @@ export type ButtonMode = 'none' | 'reservationCancel' | 'writeReview';
 
 export const statusToButtonMode: Record<ReservationStatus, ButtonMode> = {
   [ReservationStatus.pending]: 'reservationCancel',
-  [ReservationStatus.confirmed]: 'reservationCancel',
+  [ReservationStatus.confirmed]: 'none',
   [ReservationStatus.declined]: 'none',
   [ReservationStatus.canceled]: 'none',
-  [ReservationStatus.completed]: 'reservationCancel',
-  [ReservationStatus.completed_experience]: 'writeReview',
+  [ReservationStatus.completed]: 'writeReview',
 };

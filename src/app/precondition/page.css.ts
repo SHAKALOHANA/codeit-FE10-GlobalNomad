@@ -4,6 +4,7 @@ import { mediaQueries } from '@/styles/media';
 
 export const mainContainer = style({
   width: '1200px',
+  height: '1800px',
   display: 'flex',
   justifyContent: 'space-between',
   margin: '30px auto',
