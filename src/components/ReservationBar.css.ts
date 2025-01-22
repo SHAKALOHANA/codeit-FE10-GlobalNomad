@@ -11,11 +11,15 @@ export const reservationBar = style({
 });
 
 export const price = style({
-  fontSize: '1.2rem',
+  fontSize: theme.text['3xl-bold'].fontSize,
   fontWeight: 'bold',
   marginBottom: '16px',
 });
 
+export const smallprice = style({
+  fontSize: theme.text['xl-regular'].fontSize,
+  fontWeight: theme.text['xl-regular'].fontWeight,
+})
 export const calendar = style({
   marginBottom: '16px',
   width: '90%',
@@ -51,6 +55,7 @@ export const reserveButton = style({
       backgroundColor: theme.colors.green1,
     },
   },
+  marginBottom: '10px',
 });
 export const enabledDate = style({
   backgroundColor: theme.colors.green2,

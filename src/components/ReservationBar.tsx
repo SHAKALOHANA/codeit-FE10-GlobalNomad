@@ -3,39 +3,76 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css'; // DayPicker 기본 스타일
 import * as styles from './ReservationBar.css';
 import { scheduleTime } from '@/types/Schedules';
+import { useMutation } from '@tanstack/react-query';
+import { postActivityReservation } from '@/app/api/activity';
 
 interface Props {
+  activityId: number;
   price: number; // 1인당 가격
   schedules: scheduleTime[]; // 예약 가능한 날짜 및 시간
 }
 
-const ReservationBar: React.FC<Props> = ({ price, schedules }) => {
+interface reservationProps {
+  activityId: number;
+  reservation: {
+    scheduleId: number;
+    headCount: number;
+  }
+}
+
+const ReservationBar: React.FC<Props> = ({ activityId, price, schedules }) => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-  const [selectedTime, setSelectedTime] = useState<string | undefined>();
-  const [people, setPeople] = useState<number>(1);
+  const [selectedSchedule, setSelectedSchedule] = useState<scheduleTime | null>(
+    null
+  );  const [people, setPeople] = useState<number>(1);
+
+  const mutation = useMutation({
+    mutationFn: postActivityReservation,
+    onSuccess: () => {
+      alert('예약이 완료되었습니다!');
+    },
+    onError: () => {
+      alert('예약 중 문제가 발생했습니다. 다시 시도해주세요.');
+    },
+  });
 
   const availableDates = schedules.map((schedule) => new Date(schedule.date));
 
   // 선택된 날짜의 스케줄 확인
-  const availableTimes =
-    schedules
-      .filter((schedule) =>
-        selectedDate
-          ? new Date(schedule.date).toDateString() ===
-            selectedDate.toDateString()
-          : false
-      )
-      .map(
-        (schedule) => `${schedule.startTime} ~ ${schedule.endTime}`
-      );
+  const availableSchedules = schedules.filter((schedule) =>
+    selectedDate
+      ? new Date(schedule.date).toDateString() ===
+        selectedDate.toDateString()
+      : false
+  );
 
   // 총 가격 계산
   const totalPrice = price * people;
 
+  const handleReservation = () => {
+    if (!selectedSchedule) {
+      alert('날짜와 시간을 선택해주세요.');
+      return;
+    }
+
+    // 예약 데이터 구성
+    const bookingData:reservationProps = {
+      activityId: activityId,
+      reservation:
+      {
+        scheduleId: selectedSchedule.id,
+        headCount: 0,
+      }
+    };
+
+    // 예약 요청 전송
+    mutation.mutate(bookingData);
+  };
+
   return (
     <div className={styles.reservationBar}>
       <div className={styles.price}>
-        <p>₩{price.toLocaleString()} / 인</p>
+        <p>₩{price.toLocaleString()} <small className={styles.smallprice}>/ 인</small></p>
       </div>
       
       <hr />
@@ -55,21 +92,22 @@ const ReservationBar: React.FC<Props> = ({ price, schedules }) => {
         />
       </div>
 
-      {selectedDate && availableTimes.length > 0 && (
+      {selectedDate && (
         <div className={styles.timeSelectionContainer}>
-          <p className={styles.smallLabel}>예약 가능 시간:</p>
           <div className={styles.timeButtons}>
-            {availableTimes.map((time, index) => (
-              <button
-                key={index}
-                className={`${styles.timeButton} ${
-                  selectedTime === time ? styles.selectedTime : ''
-                }`}
-                onClick={() => setSelectedTime(time)}
-              >
-                {time}
-              </button>
-            ))}
+          {availableSchedules.map((schedule) => (
+            <div
+              key={schedule.id}
+              className={`${styles.timeButton} ${
+                selectedSchedule?.id === schedule.id
+                  ? styles.selectedTime
+                  : ''
+              }`}
+              onClick={() => setSelectedSchedule(schedule)}
+            >
+              {`${schedule.startTime} ~ ${schedule.endTime}`}
+            </div>
+          ))}
           </div>
         </div>
       )}
@@ -94,8 +132,8 @@ const ReservationBar: React.FC<Props> = ({ price, schedules }) => {
           </button>
         </div>
       </div>
-      
-      <button className={styles.reserveButton}>예약하기</button>
+
+      <button className={styles.reserveButton} onClick={handleReservation}>예약하기</button>
 
       <hr />
 

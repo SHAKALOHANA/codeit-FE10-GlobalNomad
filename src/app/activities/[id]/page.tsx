@@ -136,6 +136,7 @@ export default function Activities({ params }: Props) {
       {/* 예약 섹션 */}
       <section className={styles.section}>
       <ReservationBar
+        activityId={activity.id}
         price={activity.price}
         schedules={activity.schedules}
       />
