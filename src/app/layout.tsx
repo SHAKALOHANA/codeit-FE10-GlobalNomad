@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import {Providers} from './providers/ReactQueryProvider';
+import { Providers } from './providers/ReactQueryProvider';
 import { ProfileProvider } from './context/ProfileContext';
 import './global.css';
+import ClientLayout from '../components/ClientLayout';
 
 export const metadata: Metadata = {
   title: '',
@@ -19,12 +18,12 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Providers>
-        <ProfileProvider>
-          <Header />
+          <ProfileProvider>
+          <ClientLayout>
             {children}
             <div id="portal" />
-          <Footer />
-        </ProfileProvider>
+          </ClientLayout>
+          </ProfileProvider>
         </Providers>
       </body>
     </html>
