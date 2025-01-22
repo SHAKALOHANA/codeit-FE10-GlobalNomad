@@ -1,72 +1,25 @@
-'use client'
+export const initializeMap = (address: string) => {
+  const script = document.createElement('script');
+  script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=9070eccd51c9a7ceee9493b2835e12f7&autoload=false`;
+  script.onload = () => {
+    kakao.maps.load(() => {
+      const container = document.getElementById('map');
+      const options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+      };
+      const map = new kakao.maps.Map(container, options);
 
-import React, { useEffect, useRef } from "react";
-
-interface MapProps {
-  address: string;
-}
-
-const Map = ({ address }: MapProps) => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Kakao Maps API 로드
-    const script = document.createElement("script");
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=9070eccd51c9a7ceee9493b2835e12f7&libraries=services`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      if (!mapContainer.current) return;
-
-      // Kakao Maps API 객체 초기화
-      const kakao = (window as any).kakao;
-
-      const map = new kakao.maps.Map(mapContainer.current, {
-        center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 서울 좌표
-        level: 3, // 기본 확대/축소 수준
-      });
-
+      // 주소 -> 좌표 변환
       const geocoder = new kakao.maps.services.Geocoder();
-
-      // 주소를 좌표로 변환
-      geocoder.addressSearch(address, (result: any, status: any) => {
+      geocoder.addressSearch(address, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
           const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-
-          // 지도 중심 이동
+          const marker = new kakao.maps.Marker({ map, position: coords });
           map.setCenter(coords);
-
-          // 마커 생성
-          new kakao.maps.Marker({
-            map,
-            position: coords,
-          });
-        } else {
-          console.error("주소 변환 실패:", status);
         }
       });
-    };
-
-    return () => {
-      // 스크립트 정리
-      document.head.removeChild(script);
-    };
-  }, [address]);
-
-  return (
-    <div
-      ref={mapContainer}
-      style={{
-        width: "800px",
-        height: "500px",
-        backgroundColor: "#f0f0f0",
-        textAlign: "center",
-        lineHeight: "500px",
-      }}
-    >
-    </div>
-  );
+    });
+  };
+  document.head.appendChild(script);
 };
-
-export default Map;
