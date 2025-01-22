@@ -2,7 +2,6 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/Activity';
-import axios from 'axios';
 import { instance } from '@/app/api/instance';
 
 interface postReservationProps {

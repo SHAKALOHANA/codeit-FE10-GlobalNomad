@@ -1,25 +1,43 @@
-export const initializeMap = (address: string) => {
-  const script = document.createElement('script');
-  script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=9070eccd51c9a7ceee9493b2835e12f7&autoload=false`;
-  script.onload = () => {
-    kakao.maps.load(() => {
-      const container = document.getElementById('map');
-      const options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
-      };
-      const map = new kakao.maps.Map(container, options);
+import React from 'react';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
-      // 주소 -> 좌표 변환
-      const geocoder = new kakao.maps.services.Geocoder();
-      geocoder.addressSearch(address, (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-          const marker = new kakao.maps.Marker({ map, position: coords });
-          map.setCenter(coords);
-        }
-      });
-    });
-  };
-  document.head.appendChild(script);
+type KakaoMapProps = {
+  address: string;
 };
+
+const KakaoMap: React.FC<KakaoMapProps> = ({ address }) => {
+  const [position, setPosition] = React.useState<{ lat: number; lng: number } | null>(null);
+
+  React.useEffect(() => {
+    const geocoder = new window.kakao.maps.services.Geocoder();
+
+    // 주소를 좌표로 변환
+    geocoder.addressSearch(address, (result, status) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const coords = {
+          lat: parseFloat(result[0].y),
+          lng: parseFloat(result[0].x),
+        };
+        setPosition(coords); // 변환된 좌표를 상태에 저장
+      } else {
+        console.error('주소를 찾을 수 없습니다.');
+      }
+    });
+  }, [address]);
+
+  if (!position) {
+    return <div>지도를 불러오는 중...</div>;
+  }
+
+  return (
+    <Map
+      center={position} // 지도의 중심 좌표 설정
+      style={{ width: '100%', height: '100%' }} // 지도의 크기 설정
+      level={3} // 확대 레벨
+    >
+      <MapMarker position={position} />
+    </Map>
+  );
+};
+
+export default KakaoMap;
