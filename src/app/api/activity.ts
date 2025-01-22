@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Activity } from '@/types/Activity';
 import axios from 'axios';
+import { instance } from '@/app/api/instance';
 
 interface postReservationProps {
   activityId: number;
@@ -11,13 +12,6 @@ interface postReservationProps {
     headCount: number;
   }
 }
-
-const BASE_URL = "https://sp-globalnomad-api.vercel.app/10-1";
-
-const instance = axios.create({
-	baseURL: BASE_URL,
-	headers: { "Content-Type": "application/json" },
-});
 
 const fetchActivityById = async (id: number): Promise<Activity> => {
   const response = await instance.get(`/activities/${id}`);

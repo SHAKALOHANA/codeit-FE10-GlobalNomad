@@ -88,6 +88,7 @@ const ReservationBar: React.FC<Props> = ({ activityId, price, schedules }) => {
           }}
           modifiersClassNames={{
             enabled: styles.enabledDate,
+            selected: styles.selectedDate,
           }}
         />
       </div>
