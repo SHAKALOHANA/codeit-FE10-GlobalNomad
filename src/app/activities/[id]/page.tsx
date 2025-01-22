@@ -1,14 +1,11 @@
 'use client'
 
 import { useActivity } from "@/app/api/activity";
-import Map from "../../../components/Map";
-import BasicMap from "@/components/Kakaomap";
 import ReservationBar from "@/components/ReservationBar";
-import { use, useState } from "react";
+import { use } from "react";
 import * as styles from "./activity.css";
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
-import { Activity } from '@/types/Activity';
+import KakaoMap from "../../../components/Map";
 
 interface Props {
   params: Promise<{id: string}>;
@@ -19,10 +16,6 @@ export default function Activities({ params }: Props) {
   const activityId = parseInt(id, 10);
 
   const { data: activity, isLoading, error } = useActivity(activityId);
-
-  //const [address, setAddress] = useState("");
-  const [selected, setSelected] = useState<Date>();
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -88,11 +81,7 @@ export default function Activities({ params }: Props) {
       <section className={styles.section}>
       <br /><hr /><br />
         <div className={styles.mapContainer}>
-          {/*}
-          <Map address={"서울 송파구 올림픽로 240"} />
-          */}
-          {/*<BasicMap address={activity.address}/>*/}
-          <BasicMap />
+          <KakaoMap address={activity.address} />
         </div>
       </section>
       <br /><br /><hr />
