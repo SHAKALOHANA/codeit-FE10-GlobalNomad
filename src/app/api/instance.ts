@@ -9,7 +9,6 @@ export const instance = axios.create({
 });
 
 instance.interceptors.request.use(async (config) => {
-
 	if (config.url === "/auth/tokens") return config; 
 
 	try {
@@ -36,9 +35,13 @@ instance.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError<{ message: string }>) => {
 		const res = error.response;
-		if (res)
+		if (res) {
 			console.log(`[${res.status}:${res.config.url}] ${res.data.message}`);
-
+      return Promise.reject({
+        status: res.status,
+        message: res.data.message,
+      });
+    }
 		return Promise.reject(error);
 	}
 );

@@ -1,18 +1,56 @@
 import { style } from "@vanilla-extract/css";
 import { theme } from '@/app/global.css';
 
-
 export const container = style({
   maxWidth: "1200px",
   margin: "0 auto",
   padding: "20px",
 });
 
+export const titleArea = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+});
+
+export const threedots = style({
+  width: '150px',
+  position: 'relative',
+  display: 'flex',
+  justifyContent: 'right',
+});
+export const btnMeatball = style({
+  backgroundColor: theme.colors.white,
+  border: '0',
+  cursor: 'pointer',
+});
+
 export const title = style({
-  fontSize: "2rem",
-  fontWeight: "bold",
-  marginBottom: "20px",
+  fontSize: theme.text["3xl-bold"].fontSize,
+  fontWeight: theme.text["3xl-bold"].fontWeight,
+  lineHeight: theme.text["3xl-bold"].lineHeight,
+  color: theme.colors.nomadBlack,
+  margin: "10px 0px",
   textAlign: "left",
+});
+
+export const extraText = style({
+  fontSize: theme.text["md-regular"].fontSize,
+  fontWeight: theme.text["md-regular"].fontWeight,
+  lineHeight: theme.text["md-regular"].lineHeight,
+  margin: "10px 0px",
+});
+
+export const extra = style({
+  display: 'flex',
+  gap: '20px',
+});
+
+export const colorNomad = style({
+  color: theme.colors.nomadBlack,
+});
+
+export const colorBlack = style({
+  color: theme.colors.black,
 });
 
 export const imageSection = style({
@@ -35,17 +73,17 @@ export const mainImage = style({
 
 export const thumbnailContainer = style({
   display: "grid",
-  gridTemplateColumns: 'repeat(2, 1fr)',
+  gridTemplateColumns: 'repeat(3, 1fr)',
   gridTemplateRows: 'repeat(2, 1fr)',
   gap: "5px",
   width: '50%',
 });
 
 export const thumbnail = style({
-  width: "100%",
-  height: '100%',
-  objectFit: 'cover',
+  width: "200px",
+  height: '200px',
   borderRadius: "8px",
+  position: 'relative',
 });
 
 export const contentsContatiner = style({
@@ -148,4 +186,18 @@ export const pagBu = style({
 
 export const labels = style({
   width: '308px',
+});
+
+export const ratingText = style({
+  fontSize: '50px',
+  fontWeight: theme.text["2lg-semibold"].fontWeight,
+  color: theme.colors.nomadBlack,
+  display: 'flex',
+  alignItems: 'end',
+});
+
+export const countReview = style({
+  fontSize: theme.text["sm-medium"].fontSize,
+  fontWeight: theme.text["sm-medium"].fontWeight,
+  margin: '10px',
 });

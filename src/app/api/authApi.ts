@@ -146,6 +146,15 @@ export const postSignUp = async ({
 }: PostSignUpParams) => {
   const bodyObj = { email, nickname, password };
 
-  const response = await instance.post<PostSignUpRes>('/users', bodyObj);
-  return response.data;
+  try {
+    const response = await instance.post<PostSignUpRes>('/users', bodyObj);
+    return response.data; // 성공 시 데이터 반환
+  } catch (error) {
+    // 409 에러 처리 추가
+    const axiosError = error as AxiosError;
+    if (axiosError.response && axiosError.response.status === 409) {
+      throw new Error('이미 사용중인 이메일입니다.'); // 사용자 정의 에러 메시지
+    }
+    throw error; // 다른 에러는 그대로 던짐
+  }
 };

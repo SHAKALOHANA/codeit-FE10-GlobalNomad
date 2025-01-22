@@ -1,27 +1,22 @@
-import { style } from "@vanilla-extract/css";
-import { theme } from "../global.css";
+import { style } from '@vanilla-extract/css';
+import { theme } from '../global.css';
 
 export const container = style({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: "24px",
-  height: "100v",
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 });
 
 export const card = style({
-  width: "700px",
-  height: "803px",
-  borderRadius: "16px",
-  padding: "80px 48px",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
+  width: '700px',
+  paddingTop: '118px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
 });
 
 export const logo = style({
-  marginBottom: "64px"
+  marginBottom: '64px',
 });
 
 export const label = style({
@@ -38,7 +33,7 @@ export const inputField = style({
   fontSize: theme.text['xs-regular'].fontSize,
   border: `1px solid ${theme.colors.gray2}`,
   borderRadius: '6px',
-  marginBottom: "20px"
+  marginBottom: '20px',
 });
 
 export const errorMessage = style({
@@ -53,10 +48,10 @@ export const errorVisible = style({
 });
 
 export const signinBox = style({
-  display: "flex",
-  flexDirection: "column",
-  gap: "15px",
-  padding: "56px 0",
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '15px',
+  padding: '56px 0',
 });
 
 export const signinBtn = style({
@@ -68,18 +63,18 @@ export const signinBtn = style({
 });
 
 export const signupArea = style({
-  display: "flex",
-  gap: "10px",
-  marginBottom: "48px",
-})
+  display: 'flex',
+  gap: '10px',
+  marginBottom: '48px',
+});
 
 export const text = style({
   fontSize: theme.text['lg-regular'].fontSize,
   color: '#333236',
-  margin: "auto",
+  margin: 'auto',
 });
 
 export const linkButton = style({
   fontSize: theme.text['lg-regular'].fontSize,
-  color: "#333236",
+  color: '#333236',
 });

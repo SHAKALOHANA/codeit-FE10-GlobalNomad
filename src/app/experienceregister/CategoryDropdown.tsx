@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
+
+import Image from 'next/image';
+
 import {
   DropDownContainer,
   DropDownBoxWrap,
@@ -35,7 +38,9 @@ const CategoryDropDown = ({ onCategorySelect }: CategoryDropDownProps) => {
         >
           {selectedCategory}
         </p>
-        <img
+
+        <Image
+
           src="../../../icons/chevron_down.svg"
           alt="Chevron Down"
           width={24}
@@ -73,3 +78,4 @@ const CategoryDropDown = ({ onCategorySelect }: CategoryDropDownProps) => {
 };
 
 export default CategoryDropDown;
+

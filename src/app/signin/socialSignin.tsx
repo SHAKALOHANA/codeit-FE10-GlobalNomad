@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import {
   socialBtn,
   socialInfo,
@@ -10,16 +10,23 @@ import {
 } from './SocialSignin.css';
 import Image from 'next/image';
 
+
 interface SocialLoginProps {
   setLoginError: (message: string) => void;
 }
+
+// interface KakaoUserInfo {
+//   id: number;
+//   nickname: string;
+//   profile_image: string;
+// }
 
 const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
   const router = useRouter();
 
   const handleLoginKakao = () => {
     const KAKAO_APP_KEY = process.env.NEXT_PUBLIC_KAKAO_APP_KEY; // 카카오 앱 키
-    const REDIRECT_URI = 'http://localhost:3000/api/auth/kakao'; // 리디렉션 URI
+    const REDIRECT_URI = 'http://localhost:3000/nickname'; // 리디렉션 URI
     // 카카오 로그인 페이지로 리디렉션
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_APP_KEY}&redirect_uri=${encodeURIComponent(
       REDIRECT_URI
@@ -45,7 +52,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
     if (response.ok) {
       const data = await response.json();
       console.log('구글 로그인 성공:', data);
-      router.push('/signin'); // 구글 로그인 성공 시 리다이렉트
+      router.push('/signin');
     } else {
       const errorData = await response.json();
       const errorMessage = errorData.message || '소셜 로그인에 실패했습니다.';
@@ -54,43 +61,67 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
     }
   };
 
-  const handleSocialLogin = async (provider: 'kakao' | 'google') => {
-    if (provider === 'kakao') {
-      handleLoginKakao();
-      return;
-    }
-    handleLoginGoogle();
-  };
-  // 인가 코드를 받아서 액세스 토큰을 요청하는 함수
-  const fetchKakaoAccessToken = async (code: string) => {
-    const response = await fetch('/api/auth/kakao/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ code }),
-    });
+  // const fetchUserInfo = async (accessToken: string) => {
+  //   const response = await fetch('https://kapi.kakao.com/v2/user/me', {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Access Token:', data.access_token);
-      // 여기에 액세스 토큰을 사용하여 추가 작업을 수행
-    } else {
-      const errorData = await response.json();
-      const errorMessage = errorData.message || '토큰 발급에 실패했습니다.';
-      setLoginError(errorMessage);
-      router.push(`/signin?error=${encodeURIComponent(errorMessage)}`);
-    }
-  };
+  //   if (response.ok) {
+  //     const userInfo: KakaoUserInfo = await response.json();
+  //     console.log('사용자 정보:', userInfo);
+  //   } else {
+  //     const errorData = await response.json();
+  //     const errorMessage =
+  //       errorData.message || '사용자 정보를 가져오는 데 실패했습니다.';
+  //     setLoginError(errorMessage);
+  //     router.push(`/signin?error=${encodeURIComponent(errorMessage)}`);
+  //   }
+  // };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
+  // // TODO: 토큰 받는 자리, 인가 코드를 받아서 액세스 토큰을 요청하는 함수
+  // const fetchKakaoAccessToken = async (code: string) => {
+  //   try {
+  //     const response = await fetch(`https://kauth.kakao.com/oauth/token`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/x-www-form-urlencoded',
+  //       },
+  //       body: new URLSearchParams({
+  //         grant_type: 'authorization_code',
+  //         client_id: process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY || '', // 카카오 REST API 키
+  //         redirect_uri: 'http://localhost:3000/nickname', // 리디렉션 URI
+  //         code: code, // 인가 코드
+  //       }).toString(),
+  //     });
 
-    if (code) {
-      fetchKakaoAccessToken(code); // 인가 코드를 사용하여 액세스 토큰 요청
-    }
-  }, []);
+  //     const data = await response.json();
+
+  //     if (response.ok) {
+  //       await fetchUserInfo(data.access_token); // 액세스 토큰을 사용하여 사용자 정보 요청
+  //     } else {
+  //       const errorMessage = data.message || '토큰 발급에 실패했습니다.';
+  //       setLoginError(errorMessage);
+  //       router.push(`/signin?error=${encodeURIComponent(errorMessage)}`);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoginError('서버 오류입니다.');
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const code = urlParams.get('code');
+
+  //   if (code) {
+  //     // fetchKakaoAccessToken 함수를 호출하여 액세스 토큰 요청
+  //     fetchKakaoAccessToken(code);
+  //   }
+  // }, []);
 
   return (
     <div className={socialContainer}>
@@ -100,10 +131,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
         <img src="/icons/Vector2499.svg" />
       </div>
       <div className={SNSBtnBox}>
-        <button
-          onClick={() => handleSocialLogin('google')}
-          className={socialBtn}
-        >
+        <button onClick={handleLoginGoogle} className={socialBtn}>
           <Image
             src="/icons/logo_google.svg"
             alt="구글 로고"
@@ -112,10 +140,7 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
             priority
           />
         </button>
-        <button
-          onClick={() => handleSocialLogin('kakao')}
-          className={socialBtn}
-        >
+        <button onClick={handleLoginKakao} className={socialBtn}>
           <Image
             src="/icons/logo_kakao.svg"
             alt="카카오 로고"

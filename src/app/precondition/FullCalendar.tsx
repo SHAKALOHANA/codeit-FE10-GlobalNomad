@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -14,7 +14,7 @@ import {
   dayGridDay,
   dayNumberText,
 } from './FullCalendar.css';
-import { modalContainer } from './ReservationModal.css';
+import { instance } from '../../app/api/instance';
 
 interface CalendarProps {
   selectedId: string;
@@ -25,40 +25,23 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
     { title: string; date: string; classNames?: string[]; scheduleId: string }[]
   >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [scheduleId, setScheduleId] = useState<string | null>(null);
 
-  const [currentMonth, setCurrentMonth] = useState<number>(
-    new Date().getMonth() + 1
-  );
-  const [currentYear, setCurrentYear] = useState<number>(
-    new Date().getFullYear()
-  );
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
+    if (!selectedId) return;
+
     try {
-      const token =
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM2MSwidGVhbUlkIjoiMTAtMSIsImlhdCI6MTczNzMxNzE5MCwiZXhwIjoxNzM3MzE4OTkwLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.iX1cqOX0PoztNlP6r81C6NBN0jAYMLs2EDLPPW_Lb7s';
-
-      const url = `https://sp-globalnomad-api.vercel.app/10-1/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
+      const url = `/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
         currentMonth
       ).padStart(2, '0')}`;
 
       console.log('API 호출 URL:', url);
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await instance.get(url);
+      const data = response.data;
 
-      if (!response.ok) {
-        console.error('API 호출 실패:', response.status, response.statusText);
-        return;
-      }
-
-      const data = await response.json();
       console.log('API 응답 데이터:', data);
 
       if (!Array.isArray(data)) {
@@ -104,57 +87,22 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-  };
-
-  const updateEventStatus = () => {
-    const now = new Date();
-
-    setEvents((prevEvents) =>
-      prevEvents.map((event) => {
-        if (
-          event.classNames?.includes('confirmed') &&
-          new Date(event.date) < now
-        ) {
-          return {
-            ...event,
-            title: event.title.replace('승인', '완료'),
-            classNames: ['completed'],
-          };
-        }
-        return event;
-      })
-    );
-  };
+  }, [selectedId, currentYear, currentMonth]);
 
   useEffect(() => {
-    if (selectedId) {
-      fetchEvents();
-    }
-
-    const interval = setInterval(() => {
-      updateEventStatus();
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [selectedId, currentYear, currentMonth]);
+    fetchEvents();
+  }, [fetchEvents]);
 
   const handleDateClick = (info: { dateStr: string }) => {
     setSelectedDate(info.dateStr);
-
-    const clickedEvent = events.find((event) => event.date === info.dateStr);
-
-    if (clickedEvent) {
-      setScheduleId(clickedEvent.scheduleId);
-    }
   };
 
   const handleCloseModal = () => {
     setSelectedDate(null);
-
-    setScheduleId(null);
   };
 
   const calendarHeight = 'auto';
+
   return (
     <div style={{ position: 'relative' }}>
       <FullCalendar

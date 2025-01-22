@@ -13,6 +13,7 @@ export const CategoryMenuBox = style({
   alignItems: 'center',
   padding: '0 10px',
   cursor: 'pointer',
+  marginBottom: '40px',
 
   '@media': {
     [mediaQueries.tablet]: {
@@ -25,12 +26,13 @@ export const CategoryMenuBox = style({
 });
 
 export const DropDownBoxWrap = style({
-  position: 'relative',
+  position: 'absolute',
   width: '792px',
   borderRadius: '4px',
   border: `1px solid ${theme.colors.gray2}`,
   backgroundColor: theme.colors.white,
   zIndex: 10,
+  top: '56px',
 
   '@media': {
     [mediaQueries.tablet]: {
