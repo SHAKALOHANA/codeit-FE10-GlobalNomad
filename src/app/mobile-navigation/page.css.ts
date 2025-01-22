@@ -1,24 +1,15 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../app/global.css';
-import { mediaQueries } from '@/styles/media';
+import { theme } from '@/app/global.css';
 
 export const containerBox = style({
   backgroundColor: theme.colors.white,
-  width: '384px',
+  margin: '0 auto',
+  width: '344px',
   height: '432px',
   padding: '24px',
   gap: '40px',
   borderRadius: '12px',
   border: `1px solid ${theme.colors.gray7}`,
-
-  '@media': {
-    [mediaQueries.tablet]: {
-      width: '251px',
-    },
-    [mediaQueries.mobile]: {
-      width: '344px',
-    },
-  },
 });
 
 export const profileImageContainer = style({
@@ -50,38 +41,21 @@ export const editButton = style({
 });
 
 export const navigationBoxes = style({
-  width: '336px',
+  width: '296px',
   height: '200px',
   marginTop: '24px',
   display: 'flex',
   justifyContent: 'space-between',
   flexDirection: 'column',
-  '@media': {
-    [mediaQueries.tablet]: {
-      width: '203px',
-    },
-    [mediaQueries.mobile]: {
-      width: '296px',
-    },
-  },
 });
 
 export const navigationBox = style({
-  width: '336px',
+  width: '296px',
   height: '44px',
   display: 'flex',
   alignItems: 'center',
   backgroundColor: theme.colors.white,
   transition: 'background-color 0.3s, border-radius 0.3s',
-
-  '@media': {
-    [mediaQueries.tablet]: {
-      width: '203px',
-    },
-    [mediaQueries.mobile]: {
-      width: '296px',
-    },
-  },
 });
 
 export const navigationBoxImage = style({
