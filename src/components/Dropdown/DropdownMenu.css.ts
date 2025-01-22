@@ -39,8 +39,9 @@ export const dropdownItem = style({
   transition: 'background-color 0.3s, color 0.3s',
   selectors: {
     '&:hover': {
-      backgroundColor: '#f8f9fa',
-      color: '#007bff',
+      backgroundColor: theme.colors.green2,
+      color: theme.colors.nomadBlack,
+      fontWeight: 'bold',
     },
     '&:active': {
       backgroundColor: '#e9ecef',
