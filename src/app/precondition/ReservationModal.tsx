@@ -78,7 +78,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 
   useEffect(() => {
     fetchScheduleCounts();
-  }, [selectedActivityId, date, fetchScheduleCounts]);
+  }, [selectedActivityId, date]);
 
   if (!date) return null;
 

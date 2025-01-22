@@ -5,12 +5,11 @@ export const container = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
-  height: '100vh',
-  backgroundColor: theme.colors.white,
 });
 
 export const card = style({
+  width: "640px",
+  paddingTop: "118px",
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
