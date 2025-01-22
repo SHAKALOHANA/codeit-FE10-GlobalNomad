@@ -126,7 +126,8 @@ export default function Activities({ params }: Props) {
       <section className={styles.section}>
         <h2>후기</h2>
         <div className={styles.ratingText}>
-          {activity.rating}
+          <div>{activity.rating}</div>
+          <div className={styles.countReview}>⭐{activity.reviewCount}개의 후기</div>
         </div>
         <div className={styles.review}>
           <h3 className={styles.reviewTitle}>후기 1</h3>

@@ -192,4 +192,12 @@ export const ratingText = style({
   fontSize: '50px',
   fontWeight: theme.text["2lg-semibold"].fontWeight,
   color: theme.colors.nomadBlack,
+  display: 'flex',
+  alignItems: 'end',
+});
+
+export const countReview = style({
+  fontSize: theme.text["sm-medium"].fontSize,
+  fontWeight: theme.text["sm-medium"].fontWeight,
+  margin: '10px',
 });
