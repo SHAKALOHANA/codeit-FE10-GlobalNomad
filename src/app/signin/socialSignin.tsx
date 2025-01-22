@@ -10,6 +10,7 @@ import {
 } from './SocialSignin.css';
 import Image from 'next/image';
 
+
 interface SocialLoginProps {
   setLoginError: (message: string) => void;
 }

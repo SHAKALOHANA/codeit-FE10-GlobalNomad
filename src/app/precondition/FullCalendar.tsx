@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -26,10 +26,12 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
   >([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const [currentMonth] = useState<number>(new Date().getMonth() + 1);
-  const [currentYear] = useState<number>(new Date().getFullYear());
+  const currentMonth = new Date().getMonth() + 1;
+  const currentYear = new Date().getFullYear();
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
+    if (!selectedId) return;
+
     try {
       const url = `/my-activities/${selectedId}/reservation-dashboard?year=${currentYear}&month=${String(
         currentMonth
@@ -38,8 +40,8 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
       console.log('API 호출 URL:', url);
 
       const response = await instance.get(url);
-
       const data = response.data;
+
       console.log('API 응답 데이터:', data);
 
       if (!Array.isArray(data)) {
@@ -85,39 +87,11 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-  };
-
-  const updateEventStatus = () => {
-    const now = new Date();
-
-    setEvents((prevEvents) =>
-      prevEvents.map((event) => {
-        if (
-          event.classNames?.includes('confirmed') &&
-          new Date(event.date) < now
-        ) {
-          return {
-            ...event,
-            title: event.title.replace('승인', '완료'),
-            classNames: ['completed'],
-          };
-        }
-        return event;
-      })
-    );
-  };
+  }, [selectedId, currentYear, currentMonth]);
 
   useEffect(() => {
-    if (selectedId) {
-      fetchEvents();
-    }
-
-    const interval = setInterval(() => {
-      updateEventStatus();
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [selectedId, currentYear, currentMonth, fetchEvents]);
+    fetchEvents();
+  }, [fetchEvents]);
 
   const handleDateClick = (info: { dateStr: string }) => {
     setSelectedDate(info.dateStr);
