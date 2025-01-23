@@ -58,7 +58,7 @@ export default function MyExperienceCard({ ...activity }: MyActivityCardProps) {
     switch (value) {
       case 'edit':
         // 수정하기
-        router.push(`/experienceedit?activityId=${activity.id}`);
+        router.push(`/edit-activity/${activity.id}`);
         break;
       case 'delete':
         // 삭제하기
