@@ -1,20 +1,20 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { instance } from '@/app/api/instance';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import SideNavigationMenu from '../../components/SideNavigationMenu';
-import CategoryDropDown from './components/categoryDropdown';
-import StartTimeDropDown from '../experienceregister/StartTimeDropDown';
-import EndTimeDropDown from '../experienceregister/EndTimeDropDown';
+import SideNavigationMenu from '@/components/SideNavigationMenu';
+import CategoryDropDown from './../components/categoryDropdown';
+import StartTimeDropDown from '@/app/experienceregister/StartTimeDropDown';
+import EndTimeDropDown from '@/app/experienceregister/EndTimeDropDown';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import DaumPostcode from 'react-daum-postcode';
-import CustomButton from '../../components/CustomButton';
+import CustomButton from '@/components/CustomButton';
 import * as S from './page.css';
-import Xbotton from '../../../public/icons/xbutton.svg';
+import Xbotton from '../../../../public/icons/xbutton.svg';
 
 /* ------------------ 타입 정의 ------------------ */
 interface Schedule {
@@ -65,11 +65,10 @@ interface UpdateMyActivityBodyData {
   }[];
 }
 
-// props에서 activityId를 받는 대신, 쿼리 파라미터를 직접 읽음
 export default function ExperienceEdit() {
-  // 1) searchParams 로부터 activityId를 읽어옴
-  const searchParams = useSearchParams();
-  const activityIdString = searchParams.get('activityId');
+  const params = useParams<{ activityId: string }>();
+
+  const activityIdString = params.activityId; // string | undefined
   const activityId = activityIdString
     ? parseInt(activityIdString, 10)
     : undefined;

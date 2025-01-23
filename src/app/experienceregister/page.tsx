@@ -52,6 +52,13 @@ interface ActivityData {
   subImageUrls: string[];
 }
 
+interface DaumPostcodeData {
+  address: string;
+  zonecode: string;
+  addressType: 'R' | 'J';
+  userSelectedType: 'R' | 'J';
+}
+
 const ExperienceRegister = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [dates, setDates] = useState<Schedule[]>([]);
@@ -136,7 +143,7 @@ const ExperienceRegister = () => {
     }
   };
 
-  const handlePostcodeComplete = (data: any) => {
+  const handlePostcodeComplete = (data: DaumPostcodeData) => {
     setAddress(data.address);
     setIsPostcodeVisible(false);
   };
@@ -208,7 +215,8 @@ const ExperienceRegister = () => {
         alert('등록 실패');
       }
     } catch (error) {
-      alert('에러 발생');
+      console.error('Error registering activity:', error);
+      alert('등록 실패');
     }
   };
 
@@ -447,4 +455,3 @@ const ExperienceRegister = () => {
 };
 
 export default ExperienceRegister;
-

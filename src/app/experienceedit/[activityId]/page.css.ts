@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css';
-import { theme } from '../global.css';
+import { theme } from '../../global.css';
 import { mediaQueries } from '@/styles/media';
 
 export const mainContainer = style({

@@ -1,4 +1,5 @@
 import { instance } from './instance';
+import { AxiosError } from 'axios';
 
 interface Schedule {
   date: string;

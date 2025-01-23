@@ -17,6 +17,13 @@ interface Reservation {
   id: number;
 }
 
+interface ReservationResponseItem {
+  nickname: string;
+  headCount: number;
+  totalPrice: number;
+  id: number;
+}
+
 interface ReservationContentProps {
   selectedActivityId: string;
   scheduleId: string;
@@ -45,12 +52,14 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
         const response = await instance.get(url, { params });
 
         setReservations(
-          response.data.reservations.map((reservation: any) => ({
-            nickname: reservation.nickname,
-            headCount: reservation.headCount,
-            totalPrice: reservation.totalPrice,
-            id: reservation.id,
-          }))
+          response.data.reservations.map(
+            (reservation: ReservationResponseItem) => ({
+              nickname: reservation.nickname,
+              headCount: reservation.headCount,
+              totalPrice: reservation.totalPrice,
+              id: reservation.id,
+            })
+          )
         );
       } catch (error) {
         console.error('예약 데이터 불러오기 실패:', error);
@@ -139,4 +148,3 @@ const ReservationContent: React.FC<ReservationContentProps> = ({
 };
 
 export default ReservationContent;
-

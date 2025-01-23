@@ -146,7 +146,7 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
         }}
       />
       <ReservationModal
-        date={selectedDate}
+        date={selectedDate ?? ''}
         onClose={handleCloseModal}
         selectedActivityId={selectedId}
       />
@@ -155,4 +155,3 @@ const Calendar: React.FC<CalendarProps> = ({ selectedId }) => {
 };
 
 export default Calendar;
-

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header';
 import SideNavigationMenu from '../../components/SideNavigationMenu';
 import Calendar from './FullCalendar';
 import ExperienceNameDropdown from './ExperienceNameDropdown';
@@ -31,7 +30,6 @@ const Precondition = () => {
 
   return (
     <div>
-      <Header />
       <div className={mainContainer}>
         {!isMobile && <SideNavigationMenu />}
         <div className={sideContainer}>
@@ -45,4 +43,3 @@ const Precondition = () => {
 };
 
 export default Precondition;
-

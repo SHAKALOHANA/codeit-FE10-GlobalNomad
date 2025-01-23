@@ -19,6 +19,11 @@ interface Activity {
   title: string;
 }
 
+interface ActivityAPIItem {
+  id: string;
+  title: string;
+}
+
 const ExperienceNameDropdown = ({
   onCategorySelect,
 }: ExperienceNameDropDownProps) => {
@@ -36,7 +41,7 @@ const ExperienceNameDropdown = ({
       }
 
       const fetchedActivities = response.data.activities.map(
-        (activity: any) => ({
+        (activity: ActivityAPIItem) => ({
           id: activity.id,
           title: activity.title,
         })
@@ -101,4 +106,3 @@ const ExperienceNameDropdown = ({
 };
 
 export default ExperienceNameDropdown;
-
