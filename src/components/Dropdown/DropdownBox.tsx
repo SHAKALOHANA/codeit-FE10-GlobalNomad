@@ -5,15 +5,6 @@ interface DropdownBoxProps {
   label: string;
 }
 
-const DropdownIn: React.FC<DropdownBoxProps> = ({ onClick, label }) => (
-  <input
-    type="button"
-    value={label}
-    onClick={onClick}
-    className={styles.dropdownButton}
-  />
-);
-
 const DropdownBox: React.FC<DropdownBoxProps> = ({ onClick, label }) => (
   <button onClick={onClick} className={styles.dropdownButton}>
     <span className={styles.dropdownText}>{label}</span>
