@@ -60,4 +60,5 @@ export const headerTitle = style({
   fontSize: theme.text['3xl-bold'].fontSize,
   fontWeight: theme.text['3xl-bold'].fontWeight,
   lineHeight: '38px',
+  marginLeft: '10px',
 });

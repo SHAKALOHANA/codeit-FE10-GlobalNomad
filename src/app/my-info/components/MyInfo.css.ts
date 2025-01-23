@@ -17,6 +17,7 @@ export const myInfoContainer = style({
   width: '792px',
   height: '502px',
   gap: '24px',
+  marginLeft: '10px',
   '@media': {
     [mediaQueries.tablet]: {
       width: '429px',

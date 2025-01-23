@@ -64,7 +64,7 @@ export const headerTitle = style({
   fontSize: theme.text['3xl-bold'].fontSize,
   fontWeight: theme.text['3xl-bold'].fontWeight,
   lineHeight: '38px',
-  margin: '0',
+  marginLeft: '10px',
 
   '@media': {
     [mediaQueries.tablet]: {
