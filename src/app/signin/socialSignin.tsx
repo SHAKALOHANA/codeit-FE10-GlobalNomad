@@ -10,7 +10,6 @@ import {
 } from './SocialSignin.css';
 import Image from 'next/image';
 
-
 interface SocialLoginProps {
   setLoginError: (message: string) => void;
 }
@@ -126,9 +125,9 @@ const SocialLogin: React.FC<SocialLoginProps> = ({ setLoginError }) => {
   return (
     <div className={socialContainer}>
       <div className={socialInfo}>
-        <img src="/icons/Vector2499.svg" />
+        <Image src="/icons/Vector2499.svg" alt="" width="180" height="2" />
         <div style={{ color: '#79747E' }}>SNS계정으로 회원가입하기</div>
-        <img src="/icons/Vector2499.svg" />
+        <Image src="/icons/Vector2499.svg" alt="" width="180" height="2" />
       </div>
       <div className={SNSBtnBox}>
         <button onClick={handleLoginGoogle} className={socialBtn}>
