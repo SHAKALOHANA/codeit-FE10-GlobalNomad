@@ -333,6 +333,7 @@ export const tags = style({
   fontWeight: theme.text['2lg-medium'].fontWeight,
   lineHeight: theme.text['2lg-medium'].lineHeight,
   padding: '16px',
+  backgroundColor: theme.colors.white,
 });
 
 export const cardActivityContainer = style({
@@ -367,15 +368,6 @@ export const cardActivity = style({
   borderRadius: '20px',
   overflow: 'hidden',
   position: 'relative',
-  /*
-  selectors: {
-    '&::after': {
-      display: 'block',
-      content: '',
-      paddingBottom: '100%',
-    },
-  },
-  */
 });
 
 export const cardActivityImage = style({

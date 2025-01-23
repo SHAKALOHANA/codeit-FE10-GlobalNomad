@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useRef, useEffect } from 'react';
-import type { CustomDropdownMode } from '@/types/CustomDropdownMode';
 import * as styles from './Dropdown.css';
 import DropdownBox from './Dropdown/DropdownBox';
 import DropdownMenu from './Dropdown/DropdownMenu';
