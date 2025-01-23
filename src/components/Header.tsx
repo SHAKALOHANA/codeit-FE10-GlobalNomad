@@ -1,33 +1,32 @@
 'use client';
 
-import { useProfileContext } from '../app/context/ProfileContext';
 import Link from 'next/link';
 import Image from 'next/image';
 import { headerStyle, linkStyle, linkAtrribute } from './Header.css';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useUserContext } from '../app/context/UserContext';
 
 const Header = () => {
-  const { isLoggedIn, profileImageUrl } = useProfileContext();
-  const defaultProfileImage = '/images/defaultProfileImage.png';
-  const [isMobile, setIsMobile] = useState(false);
+  // 1) UserContext에서 이미 가져온 userInfo
+  const { isLoggedIn, userInfo } = useUserContext();
 
-  // 모바일 화면 크기 감지
+  // 2) 프로필 이미지 결정
+  const defaultProfileImage = '/images/defaultProfileImage.png';
+  const profileImageUrl = userInfo?.profileImageUrl
+    ? userInfo.profileImageUrl
+    : defaultProfileImage;
+
+  // 3) 반응형 처리
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 767);
     };
-
-    // 초기 화면 크기 세팅
     handleResize();
-
-    // 리사이즈 이벤트 리스너 등록
     window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 모바일에서 아이콘 클릭 시 이동
   const handleIconClick = () => {
     if (isMobile) {
       window.location.href = '/mobile-navigation';
@@ -59,11 +58,11 @@ const Header = () => {
             </Link>
             <Link href="/my-info" onClick={handleIconClick}>
               <Image
-                src={profileImageUrl || defaultProfileImage}
+                src={profileImageUrl}
                 alt="Profile"
-                width= {32}
-                height= {32}
-                style={{borderRadius: '50%'}}
+                width={32}
+                height={32}
+                style={{ borderRadius: '50%' }}
               />
             </Link>
           </>

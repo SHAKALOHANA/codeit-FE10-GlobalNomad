@@ -8,27 +8,15 @@ import CustomButton from '@/components/CustomButton';
 import SideNavigationMenu from '@/components/SideNavigationMenu';
 import MyInfo from './components/MyInfo';
 import * as S from './page.css';
+import {
+  MyInfoData,
+  UpdateUserBody,
+  MyInfoPatchResponse,
+} from '@/types/MyInfo';
 
 interface ErrorData {
   message: string;
 }
-
-interface MyInfoData {
-  id: number;
-  email: string;
-  nickname: string;
-  profileImageUrl: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-type PatchResponse = MyInfoData;
-
-type UpdateUserBody = Partial<{
-  nickname: string;
-  newPassword: string;
-  profileImageUrl: string | null;
-}>;
 
 export default function MyPage() {
   const queryClient = useQueryClient();
@@ -57,12 +45,12 @@ export default function MyPage() {
   }, [myInfo?.nickname]);
 
   const updateUserMutation = useMutation<
-    PatchResponse,
+    MyInfoPatchResponse,
     AxiosError<ErrorData>,
     UpdateUserBody
   >({
     mutationFn: async (updateBody: UpdateUserBody) => {
-      const { data } = await instance.patch<PatchResponse>(
+      const { data } = await instance.patch<MyInfoPatchResponse>(
         '/users/me',
         updateBody
       );

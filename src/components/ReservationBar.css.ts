@@ -110,7 +110,6 @@ export const timeButton = style({
 export const selectedTime = style({
   backgroundColor: theme.colors.nomadBlack,
   color: theme.colors.white,
-  fontWeight: theme.text['lg-bold'].fontWeight,
 });
 
 export const peopleButtons = style({
