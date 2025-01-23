@@ -1,14 +1,19 @@
 'use client';
 
-import React, { useRef, useState, useCallback, FormEvent } from 'react';
+import React, { useRef, useState, useCallback, FormEvent, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as style from './main.css';
 import CustomButton from '@/components/CustomButton';
-
 import { usePopularActivities } from '@/hooks/usePopularActivities';
 import { useAllActivities } from '@/hooks/useAllActivities';
 import { useResponsivePageSize } from '@/hooks/useResponsivePageSize';
+import { ActivitiesProps } from '@/app/api/activitiesList';
+import DropdownMenu from '@/components/Dropdown/DropdownMenu';
+import DropdownBox from '@/components/Dropdown/DropdownBox';
+import * as styles from '../components/Dropdown.css'
+
+
 
 const categories = [
   '문화 · 예술',
@@ -19,10 +24,17 @@ const categories = [
   '웰빙',
 ] as const;
 
+interface DropdownItem {
+  label: string;
+  value: string;
+}
+const items: DropdownItem[] = [
+  { label: '가격이 낮은 순', value: 'price_asc' },
+  { label: '가격이 높은 순', value: 'price_desc' },
+];
 const sortOptions = ['price_asc', 'price_desc'] as const;
 
 // 1) 중복 제거 함수
-import { ActivitiesProps } from '@/app/api/activitiesList';
 
 function removeDuplicateActivities(arr: ActivitiesProps[]): ActivitiesProps[] {
   const seen = new Set<number>();
@@ -132,6 +144,37 @@ export default function Main() {
 
   // 실제 '모든 체험' 목록 데이터
   const allActivities = allActivitiesData?.activities || [];
+
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  
+  const handleButtonClick = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+  
+  const handleItemSelect = (value: 'price_asc' | 'price_desc') => {
+    setSelectedValue(value);
+    handleSortChange(value);
+    setIsMenuOpen(false);
+  };
+  
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsMenuOpen(false);
+    }
+  };
+  
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+  const selectedLabel =
+    items.find((item) => item.value === selectedValue)?.label || '가격';
+  
 
   return (
     <div>
@@ -243,15 +286,10 @@ export default function Main() {
             ))}
           </div>
             <div className={style.tagContainer}>
-              {sortOptions.map((opt) => (
-                <button
-                  key={opt}
-                  className={style.tags}
-                  onClick={() => handleSortChange(opt)}
-                >
-                  {opt === 'price_asc' ? '가격 낮은순' : '가격 높은순'}
-                </button>
-              ))}
+              <div className={styles.dropdown} ref={dropdownRef}>
+                <DropdownBox onClick={handleButtonClick} label={selectedLabel} />
+                <DropdownMenu items={items} onSelect={handleItemSelect} isVisible={isMenuOpen} />
+              </div>
             </div>
           </div>
           
@@ -280,17 +318,18 @@ export default function Main() {
                         width={200}
                         height={120}
                       />
+                      <div className={style.cardTextAll}>
+                        <p className={style.ratingText}>
+                        ⭐ {activity.rating}({activity.reviewCount})
+                        </p>
 
-                      <p>
-                        {activity.rating}({activity.reviewCount})
-                      </p>
+                        <h3 className={style.cardAllTitle}>{activity.title}</h3>
 
-                      <h3 className={style.cardH}>{activity.title}</h3>
-
-                      <p className={style.cardP}>
-                        ₩{activity.price.toLocaleString()}{' '}
-                        <small className={style.cardSmall}>/ 인</small>
-                      </p>
+                        <p className={style.cardP}>
+                          ₩{activity.price.toLocaleString()}{' '}
+                          <small className={style.cardSmall}>/ 인</small>
+                        </p>
+                      </div>
                     </Link>
                   </div>
                 ))}
