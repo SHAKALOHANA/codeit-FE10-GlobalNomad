@@ -415,3 +415,19 @@ export const linkLine = style({
     textDecorationLine: 'underline',
   },
 });
+
+export const cardAllTitle = style({
+  fontSize: theme.text['2xl-bold'].fontSize,
+  fontWeight: theme.text['2xl-semibold'].fontWeight,
+  lineHeight: theme.text['2xl-bold'].lineHeight,
+  color: theme.colors.nomadBlack,
+  margin: '0',
+});
+
+export const cardTextAll = style({
+  lineHeight: theme.text['2xl-bold'].lineHeight,
+});
+
+export const ratingText = style({
+  margin: '0',
+});
