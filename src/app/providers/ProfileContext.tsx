@@ -1,19 +1,20 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface ProfileContextType {
+interface ProfileContextProps {
   isLoggedIn: boolean;
   profileImageUrl?: string;
-  setIsLoggedIn: (status: boolean) => void;
+  setIsLoggedIn: (value: boolean) => void;
   setProfileImageUrl: (url: string) => void;
 }
 
-const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
+const ProfileContext = createContext<ProfileContextProps | undefined>(
+  undefined
+);
 
-export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const ProfileProvider = ({ children }: { children: ReactNode }) => {
+  // 전역으로 관리될 상태
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [profileImageUrl, setProfileImageUrl] = useState<string>(
     '/images/defaultProfileImage.png'
@@ -33,6 +34,7 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// Hook
 export const useProfileContext = () => {
   const context = useContext(ProfileContext);
   if (!context) {
