@@ -1,6 +1,5 @@
 import { style } from '@vanilla-extract/css';
 import { theme } from '@/app/global.css';
-import { mediaQueries } from '@/styles/media';
 
 export const reservationBar = style({
   border: '1px solid #ddd',
@@ -19,7 +18,7 @@ export const price = style({
 export const smallprice = style({
   fontSize: theme.text['xl-regular'].fontSize,
   fontWeight: theme.text['xl-regular'].fontWeight,
-})
+});
 export const calendar = style({
   marginBottom: '16px',
   width: '90%',
@@ -38,20 +37,20 @@ export const totalPrice = style({
   fontWeight: 'bold',
   margin: '16px 0px',
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
 });
 
 export const reserveButton = style({
-  padding: "10px",
+  padding: '10px',
   width: '100%',
-  fontSize: "1rem",
+  fontSize: '1rem',
   backgroundColor: theme.colors.nomadBlack,
-  color: "white",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
+  color: 'white',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
   selectors: {
-    "&:hover": {
+    '&:hover': {
       backgroundColor: theme.colors.green1,
     },
   },

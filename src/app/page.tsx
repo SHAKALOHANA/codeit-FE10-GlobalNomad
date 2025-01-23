@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useRef, useState, useCallback, FormEvent, useEffect } from 'react';
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  FormEvent,
+  useEffect,
+} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import * as style from './main.css';
@@ -11,9 +17,7 @@ import { useResponsivePageSize } from '@/hooks/useResponsivePageSize';
 import { ActivitiesProps } from '@/app/api/activitiesList';
 import DropdownMenu from '@/components/Dropdown/DropdownMenu';
 import DropdownBox from '@/components/Dropdown/DropdownBox';
-import * as styles from '../components/Dropdown.css'
-
-
+import * as styles from '../components/Dropdown.css';
 
 const categories = [
   '문화 · 예술',
@@ -28,11 +32,13 @@ interface DropdownItem {
   label: string;
   value: string;
 }
+
 const items: DropdownItem[] = [
   { label: '가격이 낮은 순', value: 'price_asc' },
   { label: '가격이 높은 순', value: 'price_desc' },
 ];
-const sortOptions = ['price_asc', 'price_desc'] as const;
+
+// const sortOptions = ['price_asc', 'price_desc'] as const;
 
 // 1) 중복 제거 함수
 
@@ -148,33 +154,45 @@ export default function Main() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  
+
   const handleButtonClick = () => {
     setIsMenuOpen((prev) => !prev);
   };
-  
+
   const handleItemSelect = (value: 'price_asc' | 'price_desc') => {
     setSelectedValue(value);
     handleSortChange(value);
     setIsMenuOpen(false);
   };
-  
+
+  const handleDropdownSelect = (value: string) => {
+    // 안전하게 조건 검사
+    if (value === 'price_asc' || value === 'price_desc') {
+      handleItemSelect(value);
+    } else {
+      // 혹은 무시하거나 에러 처리
+      console.warn('Unexpected sort value:', value);
+    }
+  };
+
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsMenuOpen(false);
     }
   };
-  
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  
+
   const selectedLabel =
     items.find((item) => item.value === selectedValue)?.label || '가격';
-  
 
   return (
     <div>
@@ -274,27 +292,33 @@ export default function Main() {
               카테고리 / 정렬 선택 영역
              ----------------------------------------------------------------*/}
           <div className={style.TagAndDropdown}>
-             <div className={style.tagContainer}>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                className={style.tags}
-                onClick={() => handleCategoryChange(cat)}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+            <div className={style.tagContainer}>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  className={style.tags}
+                  onClick={() => handleCategoryChange(cat)}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
             <div className={style.tagContainer}>
               <div className={styles.dropdown} ref={dropdownRef}>
-                <DropdownBox onClick={handleButtonClick} label={selectedLabel} />
+                <DropdownBox
+                  onClick={handleButtonClick}
+                  label={selectedLabel}
+                />
                 <div className={style.dropdownContainer}>
-                  <DropdownMenu items={items} onSelect={handleItemSelect} isVisible={isMenuOpen} />
+                  <DropdownMenu
+                    items={items}
+                    onSelect={handleDropdownSelect}
+                    isVisible={isMenuOpen}
+                  />
                 </div>
               </div>
             </div>
           </div>
-          
 
           {/** ----------------------------------------------------------------
                [모든 체험] 섹션: useAllActivities (페이지네이션)
@@ -322,7 +346,7 @@ export default function Main() {
                       />
                       <div className={style.cardTextAll}>
                         <p className={style.ratingText}>
-                        ⭐ {activity.rating}({activity.reviewCount})
+                          ⭐ {activity.rating}({activity.reviewCount})
                         </p>
 
                         <h3 className={style.cardAllTitle}>{activity.title}</h3>

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useScheduleCounts } from '@/hooks/useScheduleCounts';
 
 import {
   modalContainer,
@@ -12,12 +13,17 @@ import {
 } from './ReservationModal.css';
 import TimeDropDown from './TimeDropDown';
 import ReservationContent from './ReservationContent';
-import { instance } from '../../app/api/instance';
 
 interface ReservationModalProps {
   date: string | null;
   selectedActivityId: string;
   onClose: () => void;
+}
+
+interface Count {
+  pending: number;
+  confirmed: number;
+  declined: number;
 }
 
 const ReservationModal: React.FC<ReservationModalProps> = ({
@@ -39,6 +45,28 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     declined: 0,
   });
 
+  const { data: scheduleData } = useScheduleCounts(selectedActivityId, date);
+
+  useEffect(() => {
+    if (!scheduleData || !Array.isArray(scheduleData)) {
+      // scheduleData가 없거나 배열 형태가 아니면 초기화
+      setScheduleCount({ pending: 0, confirmed: 0, declined: 0 });
+      return;
+    }
+
+    const counts = scheduleData.reduce(
+      (acc, schedule) => {
+        acc.pending += schedule.count.pending;
+        acc.confirmed += schedule.count.confirmed;
+        acc.declined += schedule.count.declined;
+        return acc;
+      },
+      { pending: 0, confirmed: 0, declined: 0 } as Count
+    );
+
+    setScheduleCount(counts);
+  }, [scheduleData]);
+
   const handleTimeSelect = (
     selectedScheduleId: string,
     count: { pending: number; confirmed: number; declined: number }
@@ -47,39 +75,6 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
     setScheduleCount(count);
   };
 
-  const fetchScheduleCounts = async () => {
-    if (!selectedActivityId || !date) return;
-
-    try {
-      const response = await instance.get(
-        `/my-activities/${selectedActivityId}/reserved-schedule`,
-        {
-          params: { date },
-        }
-      );
-
-      const data = response.data;
-
-      const counts = data.reduce(
-        (acc: any, schedule: any) => {
-          acc.pending += schedule.count.pending;
-          acc.confirmed += schedule.count.confirmed;
-          acc.declined += schedule.count.declined;
-          return acc;
-        },
-        { pending: 0, confirmed: 0, declined: 0 }
-      );
-
-      setScheduleCount(counts);
-    } catch (error) {
-      console.error('Error fetching schedule counts:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchScheduleCounts();
-  }, [selectedActivityId, date]);
-
   if (!date) return null;
 
   return (
@@ -87,7 +82,7 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
       <div className={header}>
         <h1>예약 정보</h1>
         <Image
-          src="../../../icons/modalxbutton.svg"
+          src="/icons/modalxbutton.svg"
           alt="창닫기버튼"
           width={40}
           height={40}
@@ -140,4 +135,3 @@ const ReservationModal: React.FC<ReservationModalProps> = ({
 };
 
 export default ReservationModal;
-
