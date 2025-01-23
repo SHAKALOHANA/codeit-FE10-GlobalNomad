@@ -18,7 +18,7 @@ import {
   inactiveImage,
   linkStyle,
   profileImageContainer,
-} from './SideNavigationMenu.css';
+} from './page.css';
 
 import { useQuery } from '@tanstack/react-query';
 import { instance } from '@/app/api/instance';

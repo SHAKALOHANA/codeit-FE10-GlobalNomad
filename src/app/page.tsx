@@ -13,6 +13,8 @@ import DropdownMenu from '@/components/Dropdown/DropdownMenu';
 import DropdownBox from '@/components/Dropdown/DropdownBox';
 import * as styles from '../components/Dropdown.css'
 
+
+
 const categories = [
   '문화 · 예술',
   '식음료',
@@ -21,6 +23,7 @@ const categories = [
   '관광',
   '웰빙',
 ] as const;
+
 interface DropdownItem {
   label: string;
   value: string;
@@ -32,6 +35,7 @@ const items: DropdownItem[] = [
 const sortOptions = ['price_asc', 'price_desc'] as const;
 
 // 1) 중복 제거 함수
+
 function removeDuplicateActivities(arr: ActivitiesProps[]): ActivitiesProps[] {
   const seen = new Set<number>();
   return arr.filter((item) => {
@@ -140,6 +144,7 @@ export default function Main() {
 
   // 실제 '모든 체험' 목록 데이터
   const allActivities = allActivitiesData?.activities || [];
+
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -170,6 +175,7 @@ export default function Main() {
   const selectedLabel =
     items.find((item) => item.value === selectedValue)?.label || '가격';
   
+
   return (
     <div>
       <div className={style.container}>
@@ -324,7 +330,6 @@ export default function Main() {
                           <small className={style.cardSmall}>/ 인</small>
                         </p>
                       </div>
-
                     </Link>
                   </div>
                 ))}

@@ -69,7 +69,7 @@ interface UpdateMyActivityBodyData {
 export default function ExperienceEdit() {
   // 1) searchParams 로부터 activityId를 읽어옴
   const searchParams = useSearchParams();
-  const activityIdString = searchParams.get('activityId'); // "3612" 등 문자열
+  const activityIdString = searchParams.get('activityId');
   const activityId = activityIdString
     ? parseInt(activityIdString, 10)
     : undefined;
@@ -93,9 +93,6 @@ export default function ExperienceEdit() {
     // activityId가 없으면 요청 X
     enabled: !!activityId,
   });
-
-  // 이하 기존 로직 동일
-  // (dates, selectedDate, price, address, etc...)
 
   const [dates, setDates] = useState<Schedule[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -260,7 +257,6 @@ export default function ExperienceEdit() {
       });
 
       // 2) 응답에서 실제 업로드된 이미지 URL 받기
-      // 예: { "activityImageUrl": "https://.../some/path.jpg" }
       const { activityImageUrl } = res.data;
 
       // 3) introImageUrls 배열에 추가

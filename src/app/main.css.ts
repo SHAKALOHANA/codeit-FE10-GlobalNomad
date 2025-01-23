@@ -430,4 +430,5 @@ export const cardTextAll = style({
 
 export const ratingText = style({
   margin: '0',
+
 });
