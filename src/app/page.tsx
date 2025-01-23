@@ -273,7 +273,7 @@ export default function Main() {
           {/* ----------------------------------------------------------------
               카테고리 / 정렬 선택 영역
              ----------------------------------------------------------------*/}
-          <div>
+          <div className={style.TagAndDropdown}>
              <div className={style.tagContainer}>
             {categories.map((cat) => (
               <button
@@ -288,7 +288,9 @@ export default function Main() {
             <div className={style.tagContainer}>
               <div className={styles.dropdown} ref={dropdownRef}>
                 <DropdownBox onClick={handleButtonClick} label={selectedLabel} />
-                <DropdownMenu items={items} onSelect={handleItemSelect} isVisible={isMenuOpen} />
+                <div className={style.dropdownContainer}>
+                  <DropdownMenu items={items} onSelect={handleItemSelect} isVisible={isMenuOpen} />
+                </div>
               </div>
             </div>
           </div>

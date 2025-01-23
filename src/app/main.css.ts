@@ -430,5 +430,14 @@ export const cardTextAll = style({
 
 export const ratingText = style({
   margin: '0',
+});
 
+export const dropdownContainer = style({
+  position: 'relative',
+  left: '280px',
+});
+
+export const TagAndDropdown = style({
+  display: 'flex',
+  justifyContent: 'space-between',
 });
