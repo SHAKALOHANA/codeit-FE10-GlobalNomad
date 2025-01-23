@@ -141,7 +141,7 @@ const SideNavigationMenu = () => {
             />
           ) : (
             <Image
-              src="/images/default_profile_image.png"
+              src="/images/defaultProfileImage.png"
               className="defaultProfileImage"
               alt="기본 프로필 이미지"
               width={160}
